@@ -3,9 +3,6 @@ from .models import Article
 from .forms import ArticleForm
 from django.contrib.auth.decorators import login_required
 
-
-# Create your views here.
-
 # Create your views here.
 def index(request):
     articles = Article.objects.all().order_by("-pk")
@@ -56,3 +53,10 @@ def update(request, pk):
         "form": form,
     }
     return render(request, "articles/update.html", context)
+
+def location_get(request):
+    user_location = request.session.get("userLocation", "none")
+    context = {
+        "userLocation": user_location,
+    }
+    return render(request, "articles/locations.html", context)

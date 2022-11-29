@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Geo</title>
+</head>
+<body>
+<p id="result"></p>
+<p>{{userLocation}}</p>
+<p>{{session_test}}</p>
+<script>
+
+var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 0
+};
+
+function success(pos) {
+  var crd = pos.coords;
+  const result = document.querySelector('#result')
+  result.innerHTML= [crd.latitude,crd.longitude]
+  sessionStorage.setItem('userLocation','session')
+  console.log(sessionStorage.getItem("userLocation"))
+}
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+}
+
+navigator.geolocation.getCurrentPosition(success,error)
+
+</script>
+</body>
+</html>
