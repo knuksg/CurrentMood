@@ -25,7 +25,6 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = "django-insecure-t06)#e^lfp=!&$7&oc7nrb0qav5y4o&s#@^*pa4v)4g+pdg)mc"
 load_dotenv()
 SECRET_KEY = os.getenv("SECRET_KEY")
 
@@ -43,7 +42,7 @@ INSTALLED_APPS = [
     "articles",
     "main",
     # third-party
-    'imagekit',
+    "imagekit",
     # basic
     "django_bootstrap5",
     "django_extensions",
@@ -119,9 +118,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "KO-KR"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Asia/Seoul"
 
 USE_I18N = True
 
@@ -140,5 +139,5 @@ STATIC_URL = "/static/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-MEDIA_ROOT = BASE_DIR / 'images'
-MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / "images"
+MEDIA_URL = "/media/"
