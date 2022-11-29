@@ -1,0 +1,40 @@
+{% extends 'main/base.html' %}
+{% load django_bootstrap5 %}
+
+{% block body %}
+  <h5>글 번호:
+    {{ article.pk }}</h5>
+  <h1>제목:
+    {{ article.title }}</h1>
+  <h5>작성자:
+    {{ article.user }}
+    |
+    {{ article.created_at }}</h5>
+  <p>{{ article.content }}</p>
+
+  {% if article.image %}
+    <img src="{{ article.image.url }}" alt="">
+  {% endif %}
+
+{% comment %} 버튼 {% endcomment %}
+  <div class="mt-5">
+    <button class="btn btn-secondary">
+      <a href="{% url 'articles:index' %}" class="text-white text-decoration-none">
+        메인
+      </a>
+    </button>
+
+    <button class="btn btn-primary">
+      <a href="{% url 'articles:update' article.pk %}" class="text-white text-decoration-none">
+        수정
+      </a>
+    </button>
+
+    <button class="btn btn-danger">
+      <a href="{% url 'articles:delete' article.pk %}" class="text-white text-decoration-none">
+        삭제
+      </a>
+    </button>
+  </div>
+
+{% endblock body %}
