@@ -3,6 +3,6 @@
 
 ## Contributors
 
-<a href="https://github.com/unboxing96/99/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=unboxing96/99" />
+<a href="https://github.com/unboxing96/CurrentMood/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=unboxing96/CurrentMood" />
 </a>
