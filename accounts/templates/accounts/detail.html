@@ -4,7 +4,16 @@
 
 <h1>회원정보 페이지</h1>
 <hr>
-<h1 class="fw-bold mt-3">{{ user.username }}님의 프로필</h1>
+<h1 class="fw-bold mt-3">
+  <span>
+    {% if user.user_img %}
+    <img class="m-3 rounded-circle" src="{{ user.user_img.url }}" alt="{{ user.user_img }}">
+    {% else %}
+    "이미지 없음"
+    {% endif %}
+  </span>
+  {{ user.username }}님의 프로필
+</h1>
 <p>{{ user.full_name }}</p>
 <p>{{ user.address }}</p>
 <p>{{ user.email }}</p>

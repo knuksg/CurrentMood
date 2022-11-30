@@ -7,7 +7,7 @@
 <hr>
 
 <div class="container">
-      <form action="" method="POST">
+      <form action="" method="POST" enctype="multipart/form-data">
           {% csrf_token %}
           {% bootstrap_form form %}
           {% bootstrap_button button_type="submit" content="회원정보 수정" %}
