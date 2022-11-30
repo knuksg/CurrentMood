@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect
 from .models import User
 from .forms import CustomUserCreationForm, CustomUserChangeForm
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
+from django.contrib import messages
+from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import get_user_model
@@ -60,7 +62,7 @@ def update(request, pk):
         form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
-            return redirect("accounts:detail", pk)
+            return redirect("accounts:mypage")
     else:
         form = CustomUserChangeForm(instance=request.user)
     context = {"form": form}
@@ -77,6 +79,17 @@ def detail(request, pk):
         "user": user,
     }
     return render(request, "accounts/detail.html", context)
+
+
+@login_required
+def mypage(request):
+
+    user = get_user_model().objects.get(pk=request.user.pk)
+
+    context = {
+        "user": user,
+    }
+    return render(request, "accounts/mypage.html", context)
 
 
 @login_required
@@ -102,3 +115,68 @@ def follow(request, pk):
         return redirect("accounts:detail", pk)
     else:
         return redirect("base:base")
+
+
+@login_required
+def followlist(request, pk):
+
+    user = get_user_model().objects.get(pk=pk)
+
+    context = {
+        "user": user,
+    }
+    return render(request, "accounts/followlist.html", context)
+
+
+@login_required
+def followerlist(request, pk):
+
+    user = get_user_model().objects.get(pk=pk)
+
+    context = {
+        "user": user,
+    }
+    return render(request, "accounts/followerlist.html", context)
+
+
+@login_required
+def my_followlist(request, pk):
+
+    user = get_user_model().objects.get(pk=pk)
+
+    context = {
+        "user": user,
+    }
+    return render(request, "accounts/my_followlist.html", context)
+
+
+@login_required
+def my_followerlist(request, pk):
+
+    user = get_user_model().objects.get(pk=pk)
+
+    context = {
+        "user": user,
+    }
+    return render(request, "accounts/my_followerlist.html", context)
+
+
+@login_required
+def password(request):
+
+    if request.method == "POST":
+        form = PasswordChangeForm(request.user, request.POST)
+        if form.is_valid():
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, "비밀번호가 성공적으로 변경되었습니다.")
+            return redirect("accounts:login")
+        else:
+            messages.error(request, "비밀번호 변경에 실패하였습니다.")
+    else:
+        form = PasswordChangeForm(request.user)
+
+    context = {
+        "form": form,
+    }
+    return render(request, "accounts/password.html", context)
