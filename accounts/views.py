@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from .models import User
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
@@ -10,7 +11,14 @@ from django.contrib.auth.decorators import login_required
 
 
 def index(request):
-    return render(request, "accounts/index.html")
+
+    users = User.objects.all()
+
+    context = {
+        "users": users,
+    }
+
+    return render(request, "accounts/index.html", context)
 
 
 def signup(request):
@@ -64,6 +72,7 @@ def update(request, pk):
 def detail(request, pk):
 
     user = get_user_model().objects.get(pk=pk)
+
     context = {
         "user": user,
     }
@@ -82,11 +91,14 @@ def delete(request):
 @login_required
 def follow(request, pk):
 
-    user = get_user_model().objects.get(pk=pk)
+    if request.user.pk != pk:
+        user = get_user_model().objects.get(pk=pk)
 
-    if request.user in user.followers.all():
-        user.followers.remove(request.user)
+        if request.user in user.followers.all():
+            user.followers.remove(request.user)
+        else:
+            user.followers.add(request.user)
+
+        return redirect("accounts:detail", pk)
     else:
-        user.followers.add(request.user)
-
-    return redirect("accounts:detail", pk)
+        return redirect("base:base")
