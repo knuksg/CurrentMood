@@ -9,6 +9,10 @@ import requests
 import os
 
 # Create your views here.
+def private(request):
+    return render(request, "articles/private.html")
+
+
 def index(request):
     articles = Article.objects.all().order_by("-pk")
     context = {
