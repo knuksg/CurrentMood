@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     "main",
     # third-party
     "imagekit",
+    "googlemaps",
     # basic
     "django_bootstrap5",
     "django_extensions",
