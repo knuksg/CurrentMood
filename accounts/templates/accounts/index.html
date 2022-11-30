@@ -7,7 +7,7 @@
   <div>
     {% if request.user.is_authenticated %}
       <span>안녕하세요, {{ request.user }}님^^</span>
-      <a href="{% url 'accounts:detail' request.user.pk %}">회원정보</a>
+      <a href="{% url 'accounts:mypage' %}">내 정보</a>
       <a href="{% url 'accounts:logout' %}">로그아웃</a>
     {% else%}
       <a href="{% url 'accounts:signup' %}">회원가입</a>
@@ -19,7 +19,7 @@
     {% for user in users %}
     <p>
       {{ user.pk }}  |  {{ user.username }}  |  
-      <a href="{% url 'accounts:detail' user.pk %}">정보보기</a>
+      <a href="{% url 'accounts:detail' user.pk %}">회원보기</a>
     </p>
     {% endfor %}
   </div>
