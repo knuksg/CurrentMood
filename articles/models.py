@@ -16,3 +16,7 @@ class Article(models.Model):
         format="JPEG",
         options={"quality": 90},
     )
+
+
+class Place(models.Model):
+    name = models.TextField()
