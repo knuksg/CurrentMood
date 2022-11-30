@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block body %}
+
+<h1>팔로우리스트 페이지</h1>
+<hr>
+<h1 class="fw-bold mt-3">  
+  <span>
+    {% if user.user_img %}
+    <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
+    {% else %}
+    <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
+    {% endif %}
+  </span>
+  {{ user.username }}님이 팔로우하는 사람들
+</h1>
+
+<hr>
+<div>
+  <ul>
+    <li class='fw-bold'>팔로우 리스트 {{ user.followings.count }}명</li>
+    {% for myfollowing in user.followings.all %}
+      {% if myfollowing.user_img %}
+        <li class="list-group-item"><img class=" rounded-circle mx-2" src="{{ myfollowing.user_img.url }}" style="width:50px;">{{ myfollowing.username }}</li>
+      {% else %}
+        <li class="list-group-item"><img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollowing.username }}</li>
+      {% endif %}
+    {% endfor %}
+    {% if not user.followings.all %}
+      <li class="list-group-item">내가 팔로우 하는 사람이 없습니다.</li>
+    {% endif %}
+  </ul>
+</div>
+<hr>
+<a href="{% url 'accounts:mypage' %}">뒤로가기</a>
+
+{% endblock %}

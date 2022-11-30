@@ -1,0 +1,143 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+
+<div class="container d-flex my-3 gap-3">
+  <!-- 1. The <iframe> (video player) will replace this <div> tag. -->
+  <div class="col-3">
+    <h3>동영상 검색하기</h3>
+    <form id="search-form" action="">
+      <input id="search-input" type="text">
+      <button type="submit">search</button>
+    </form>
+    <div id="search-list">
+    </div>
+  </div>
+  <div class="col-3">
+    <h3>Playlist</h3>
+    <div id="play-list">
+    </div>
+  </div>
+  <div id="player" class="col-6"></div>
+</div>
+
+<script>
+  // 2. This code loads the IFrame Player API code asynchronously.
+  var tag = document.createElement('script');
+
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  // 3. This function creates an <iframe> (and YouTube player)
+  //    after the API code downloads.
+
+  function onYouTubeIframeAPIReady() {
+    console.log('Youtube is ready!')
+  }
+
+  // 4. The API will call this function when the video player is ready.
+  function onPlayerReady(event) {
+    event.target.playVideo();
+  }
+
+  // 5. The API calls this function when the player's state changes.
+  //    The function indicates that when playing a video (state=1),
+  //    the player should play for six seconds and then stop.
+  var done = false;
+  function onPlayerStateChange(event) {
+    if (event.data == YT.PlayerState.PLAYING && !done) {
+      // setTimeout(stopVideo, 6000);
+      // done = true;
+    }
+  }
+  function stopVideo() {
+    player.stopVideo();
+  }
+  var player;
+  function playThisVideo(vidid) {
+    if(player){
+      player.destroy();
+    }
+    player = new YT.Player('player', {
+      height: '390',
+      width: '640',
+      videoId: vidid,
+      playerVars: {
+        'controls': 0,
+      },
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+</script>
+
+<!-- CDN axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+  const searchForm = document.querySelector("#search-form")
+  searchForm.addEventListener('submit', function(event) {
+    event.preventDefault()
+    const kw = searchForm.querySelector("#search-input").value
+    getSearchList(kw)
+  })
+
+  function getSearchList(kw) {
+    const apiKey = "AIzaSyC6_bB2PiPp_Vtf8cPdnhoQ-hzL4gNVFIE"
+    axios.get('https://www.googleapis.com/youtube/v3/search', {
+      params: {
+        key: apiKey,
+        part: "snippet",
+        order: "viewCount",
+        q: kw,
+        type: "video"
+      }
+    })
+      .then(function (response) {
+        console.log('good', response)
+        const searchList = document.querySelector('#search-list')
+        searchList.innerHTML = ''
+        const searchItems = response.data.items
+        searchItems.forEach((searchItem) => {
+          searchList.innerHTML += `
+          <div id="` + searchItem.id.videoId + `" class="search-item d-flex gap-3" onclick="playThisVideo('` + searchItem.id.videoId +`')">
+            <img src="`+ searchItem.snippet.thumbnails.default.url + `" alt="">
+            <div>
+              <h5>`+ searchItem.snippet.title +`</h5>
+              <div class="d-flex gap-3">
+                <p>`+ searchItem.snippet.channelTitle +`</p>
+              </div>
+            </div>
+          </div>
+          `
+        })
+      })
+  }
+  <!-- dynamic object 접근을 위한 함수 -->
+  function hasClass(elem, className) {
+    return elem.classList.contains(className)
+  }
+  <!-- addPlayList -->
+  document.addEventListener('click', function(e) {
+    if (hasClass(e.target, 'search-item')) {
+      console.log(e.target)
+      const playList = document.querySelector("#play-list")
+      playList.append(e.target)
+      const searchList = document.querySelector('#search-list')
+      searchList.innerHTML = ''
+      const searchForm = document.querySelector("#search-form")
+      searchForm.reset()
+    }
+    if (hasClass(e.target.parentElement, 'search-item')) {
+      console.log(e.target.parentElement)
+      const playList = document.querySelector("#play-list")
+      playList.append(e.target.parentElement)
+      const searchList = document.querySelector('#search-list')
+      searchList.innerHTML = ''
+      const searchForm = document.querySelector("#search-form")
+      searchForm.reset()
+    }
+  })
+</script>
