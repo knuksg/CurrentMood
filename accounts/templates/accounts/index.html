@@ -1,3 +1,6 @@
+{% extends 'main/base.html' %}
+
+{% block body %}
 
 <h1>accounts 인덱스페이지</h1>
 {% if request.user.is_authenticated %}
@@ -8,3 +11,5 @@
   <a href="{% url 'accounts:signup' %}">회원가입</a>
   <a href="{% url 'accounts:login' %}">로그인</a>
 {% endif %}
+
+{% endblock body %}
