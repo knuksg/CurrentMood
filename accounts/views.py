@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from .models import User
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
@@ -10,7 +11,14 @@ from django.contrib.auth.decorators import login_required
 
 
 def index(request):
-    return render(request, "accounts/index.html")
+
+    users = User.objects.all()
+
+    context = {
+        "users": users,
+    }
+
+    return render(request, "accounts/index.html", context)
 
 
 def signup(request):
@@ -49,7 +57,7 @@ def logout(request):
 @login_required
 def update(request, pk):
     if request.method == "POST":
-        form = CustomUserChangeForm(request.POST, instance=request.user)
+        form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
         if form.is_valid():
             form.save()
             return redirect("accounts:detail", pk)
@@ -63,14 +71,12 @@ def update(request, pk):
 @login_required
 def detail(request, pk):
 
-    if request.user.pk == pk:
-        user = get_user_model().objects.get(pk=pk)
-        context = {
-            "user": user,
-        }
-        return render(request, "accounts/detail.html", context)
-    else:
-        return redirect("accounts:index")
+    user = get_user_model().objects.get(pk=pk)
+
+    context = {
+        "user": user,
+    }
+    return render(request, "accounts/detail.html", context)
 
 
 @login_required
@@ -80,3 +86,19 @@ def delete(request):
     auth_logout(request)
 
     return redirect("accounts:index")
+
+
+@login_required
+def follow(request, pk):
+
+    if request.user.pk != pk:
+        user = get_user_model().objects.get(pk=pk)
+
+        if request.user in user.followers.all():
+            user.followers.remove(request.user)
+        else:
+            user.followers.add(request.user)
+
+        return redirect("accounts:detail", pk)
+    else:
+        return redirect("base:base")

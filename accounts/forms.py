@@ -18,6 +18,7 @@ class CustomUserChangeForm(UserChangeForm):
             "first_name",
             "email",
             "address",
+            "user_img",
         )
         labels = {
             "last_name": "성 (Last_name)",
