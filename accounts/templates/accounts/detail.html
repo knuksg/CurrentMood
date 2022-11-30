@@ -20,6 +20,19 @@
 <a href="{% url 'accounts:update' request.user.pk %}">정보수정</a>
 <a href="{% url 'accounts:delete' %}">회원탈퇴</a>
 <hr>
+<div class="row">      
+  <a href="{% url 'accounts:follow' user.pk %}">
+  {% if request.user in user.followers.all %}
+  팔로우 취소
+  {% else %}
+  팔로우
+  {% endif %}
+  </a>
+</div>
+<div>
+  <p>팔로우 : {{ user.followings.count }} | 팔로워 : {{ user.followers.count }}</p>
+</div>
+<hr>
 <a href="{% url 'accounts:index' %}">뒤로가기</a>
 
 {% endblock %}

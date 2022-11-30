@@ -20,6 +20,9 @@ class User(AbstractUser):
         options={"quality": 100},
         null=True,
     )
+    followings = models.ManyToManyField(
+        "self", symmetrical=False, related_name="followers"
+    )
 
     @property
     def full_name(self):

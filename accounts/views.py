@@ -63,14 +63,11 @@ def update(request, pk):
 @login_required
 def detail(request, pk):
 
-    if request.user.pk == pk:
-        user = get_user_model().objects.get(pk=pk)
-        context = {
-            "user": user,
-        }
-        return render(request, "accounts/detail.html", context)
-    else:
-        return redirect("accounts:index")
+    user = get_user_model().objects.get(pk=pk)
+    context = {
+        "user": user,
+    }
+    return render(request, "accounts/detail.html", context)
 
 
 @login_required
@@ -80,3 +77,16 @@ def delete(request):
     auth_logout(request)
 
     return redirect("accounts:index")
+
+
+@login_required
+def follow(request, pk):
+
+    user = get_user_model().objects.get(pk=pk)
+
+    if request.user in user.followers.all():
+        user.followers.remove(request.user)
+    else:
+        user.followers.add(request.user)
+
+    return redirect("accounts:detail", pk)
