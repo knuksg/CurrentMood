@@ -62,6 +62,9 @@
       height: '390',
       width: '640',
       videoId: vidid,
+      playerVars: {
+        'controls': 0,
+      },
       events: {
         'onReady': onPlayerReady,
         'onStateChange': onPlayerStateChange
@@ -122,6 +125,15 @@
       console.log(e.target)
       const playList = document.querySelector("#play-list")
       playList.append(e.target)
+      const searchList = document.querySelector('#search-list')
+      searchList.innerHTML = ''
+      const searchForm = document.querySelector("#search-form")
+      searchForm.reset()
+    }
+    if (hasClass(e.target.parentElement, 'search-item')) {
+      console.log(e.target.parentElement)
+      const playList = document.querySelector("#play-list")
+      playList.append(e.target.parentElement)
       const searchList = document.querySelector('#search-list')
       searchList.innerHTML = ''
       const searchForm = document.querySelector("#search-form")
