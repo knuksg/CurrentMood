@@ -3,7 +3,7 @@
 
 {% block body %}
 
-<h1>회원정보 페이지</h1>
+<h1>내 정보 페이지</h1>
 <hr>
 <div class='d-flex'>
   <div>
@@ -15,7 +15,7 @@
   </div>
   <div>
     <h1 class="fw-bold mt-3">
-      {{ user.username }}님의 페이지
+      {{ user.username }}님의개인정보
       <span class='fs-5'>
         {% if request.user.pk != user.pk%}
           <a href="{% url 'accounts:follow' user.pk %}">
@@ -29,24 +29,15 @@
       </span>
     </h1>
     <div>
-      <p><a href="{% url 'accounts:followlist' user.pk %}">팔로우</a> : {{ user.followings.count }} | <a href="{% url 'accounts:followerlist' user.pk %}">팔로워</a> : {{ user.followers.count }}</p>
+      <p><a href="{% url 'accounts:my_followlist' user.pk %}">팔로우</a> : {{ user.followings.count }} | <a href="{% url 'accounts:my_followerlist' user.pk %}">팔로워</a> : {{ user.followers.count }}</p>
     </div>
   </div>
 </div>
-<hr>
-<div class="d-flex justify-content-evenly fs-1">
-  <div>
-    <i class="bi bi-music-note-beamed"></i>
-  </div>
-  <div>
-    <i class="bi bi-chat-right-text-fill"></i>
-  </div>
-  <div>
-    <i class="bi bi-heart-fill"></i>
-  </div>
-</div>
+<p>{{ user.full_name }}</p>
+<p>{{ user.address }}</p>
+<p>{{ user.email }}</p>
+<a href="{% url 'accounts:update' user.pk %}">정보수정</a>
 <hr>
 <a href="{% url 'accounts:index' %}">뒤로가기</a>
-
 
 {% endblock %}

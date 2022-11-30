@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="ko">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geo</title>
-</head>
-<body>
+{% extends 'main/base.html' %}
+{% block body %}
 <p id="result"></p>
-<p>{{userLocation}}</p>
-<p>{{session_test}}</p>
+<p>{{geocoded}} 인근</p>
+<P>{{location}}</P>
 <script>
 
 var options = {
@@ -21,9 +14,8 @@ var options = {
 function success(pos) {
   var crd = pos.coords;
   const result = document.querySelector('#result')
-  result.innerHTML= [crd.latitude,crd.longitude]
-  sessionStorage.setItem('userLocation','session')
-  console.log(sessionStorage.getItem("userLocation"))
+  // result.innerHTML= [crd.latitude,crd.longitude]
+  result.innerHTML = ['32.1232','128.2342']
 }
 
 function error(err) {
@@ -33,5 +25,4 @@ function error(err) {
 navigator.geolocation.getCurrentPosition(success,error)
 
 </script>
-</body>
-</html>
+{% endblock body %}
