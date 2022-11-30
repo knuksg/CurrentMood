@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+
+  <h1>회원정보 페이지</h1>
+  <hr>
+  <h1 class="fw-bold mt-3">{{ user.username }}님의 프로필</h1>
+  <p>{{ user.full_name }}</p>
+  <p>{{ user.address }}</p>
+  <p>{{ user.email }}</p>
+  <a href="{% url 'accounts:update' request.user.pk %}">정보수정</a>
+  <a href="{% url 'accounts:delete' %}">회원탈퇴</a>
+  <hr>
+  <a href="{% url 'accounts:index' %}">뒤로가기</a>
+
+  
+</body>
+</html>
