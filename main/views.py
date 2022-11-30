@@ -7,3 +7,6 @@ def base(request):
     
 def test(request):
     return render(request, "main/test.html")
+
+def test2(request):
+    return render(request, "main/test2.html")
