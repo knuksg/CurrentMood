@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from .gmap import geocoding
 import requests
 import os
+import pprint
 
 # Create your views here.
 def index(request):
@@ -61,6 +62,7 @@ def update(request, pk):
 
 
 def location_get(request):
+    print(request.GET.get("addressHtml"))
     # 위치 정보 가져오기 : google geolocation api 요청
     # mac wifi주소를 가져올 수 없는 경우, web geolocation api 정확도가 더 높다.
     gmap_api_key = os.getenv("gmap_api")
@@ -89,15 +91,20 @@ def location_get(request):
         },
     ).json()
     coords = location["location"]
-
-    # geocoding : 결과 중 첫번째 위치를 선정한다.
-    geocoded = geocoding(coords["lat"], coords["lng"])[0]["address_components"][1][
-        "long_name"
-    ]
-    # Place 테이블에 geocodinge된 위치 값을 저장한다.
-    place_name = Place.objects.create(
-        name=geocoded
-    )  # table articles_place has no column named name
+    # user가 없는 경우 : 사용자의 인근 위치를 저장해서 보여준다.
+    geocoded = geocoding(coords["lat"], coords["lng"])
+    for i in range(len(geocoded)):
+        userloc = []
+        geocoded_locations = geocoded[i]  # 장소 객체들
+        for j, k in geocoded_locations.items():
+            if j == "formatted_address":
+                print("".join(k.split(",")[0:2]))
+                user_loc.append("".join(k.split(",")[0:2]))
+    # Place 테이블에 geocoding된 위치 값을 저장한다.
+    for i in user_loc:
+        place_location = Place.objects.create(name=i)
+    # user가 있는 경우
+    ###
     context = {
         "geocoded": geocoded,
     }
