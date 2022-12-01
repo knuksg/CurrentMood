@@ -3,8 +3,13 @@
 
 {% block body %}
   {% comment %} 플레이어 {% endcomment %}
-  <div class="d-flex justify-content-center">
-    <img src="{% static 'image/album.png' %}" alt="" style="width: 30vh;">
+  <div class="player">
+    <img src="{% static 'image/album.png' %}">
+    <div class="player--write">
+      <a href="{% url 'articles:index' %}">
+        <h3><i class="bi bi-pencil-square"></i></h3>
+      </a>
+    </div>
   </div>
 
   <hr>
@@ -53,7 +58,6 @@
       <p>댓글</p>
     </div>
   </div>
-
 {% endblock body %}
 
 {% block script %}
