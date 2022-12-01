@@ -29,14 +29,41 @@
       </span>
     </h1>
     <div>
-      <p><a href="{% url 'accounts:my_followlist' user.pk %}">팔로우</a> : {{ user.followings.count }} | <a href="{% url 'accounts:my_followerlist' user.pk %}">팔로워</a> : {{ user.followers.count }}</p>
+      <p><a href="{% url 'accounts:my_followlist' %}">팔로우</a> : {{ user.followings.count }} | <a href="{% url 'accounts:my_followerlist' %}">팔로워</a> : {{ user.followers.count }}</p>
     </div>
   </div>
 </div>
-<p>{{ user.full_name }}</p>
-<p>{{ user.address }}</p>
-<p>{{ user.email }}</p>
+<p>이름 : {{ user.full_name }}</p>
+<p>거주지 : {{ user.address }}</p>
+<p>이메일 : {{ user.email }}</p>
 <a href="{% url 'accounts:update' user.pk %}">정보수정</a>
+<hr>
+<div class="d-flex justify-content-evenly fs-1">
+  <div>
+    <a href="{% url 'accounts:profile_music' user.pk %}"><i class="bi bi-music-note-beamed"></i></a>
+  </div>
+  <div>
+    <i class="bi bi-chat-right-text-fill"></i>
+  </div>
+  <div>
+    <i class="bi bi-heart-fill"></i>
+  </div>
+</div>
+<hr>
+<div class="d-flex justify-content-center">
+  {% if user.profile_music_id %}
+    <div class="d-flex flex-column align-items-center">
+      <img class="w-75" src="https://i.ytimg.com/vi/{{ user.profile_music_id }}/hqdefault.jpg" alt="">
+      <div class="text-center my-1">
+        <span>{{ user.profile_music_title }} - </span>
+        <span>{{ user.profile_music_channel }}</span>
+      </div>
+    </div>
+  {% else %}
+    <p>프로필 뮤직이 없습니다...</p>
+  {% endif %}
+</div>
+
 <hr>
 <a href="{% url 'accounts:index' %}">뒤로가기</a>
 

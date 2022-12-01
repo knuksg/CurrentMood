@@ -43,7 +43,9 @@ INSTALLED_APPS = [
     "main",
     # third-party
     "imagekit",
+    "googlemaps",
     # basic
+    "widget_tweaks",
     "django_bootstrap5",
     "django_extensions",
     "django.contrib.admin",

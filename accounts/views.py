@@ -3,6 +3,7 @@ from .models import User
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib import messages
+from django.db.models import Count
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -29,7 +30,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
-            return redirect("accounts:index")
+            return redirect("accounts:login")
     else:
         form = CustomUserCreationForm()
 
@@ -42,7 +43,7 @@ def login(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect(request.GET.get("next") or "accounts:index")
+            return redirect(request.GET.get("next") or "articles:private")
     else:
         form = AuthenticationForm()
 
@@ -53,7 +54,7 @@ def login(request):
 @login_required
 def logout(request):
     auth_logout(request)
-    return redirect("accounts:index")
+    return redirect("articles:private")
 
 
 @login_required
@@ -98,7 +99,7 @@ def delete(request):
     request.user.delete()
     auth_logout(request)
 
-    return redirect("accounts:index")
+    return redirect("articles:private")
 
 
 @login_required
@@ -114,7 +115,7 @@ def follow(request, pk):
 
         return redirect("accounts:detail", pk)
     else:
-        return redirect("base:base")
+        return redirect("main:base")
 
 
 @login_required
@@ -140,9 +141,9 @@ def followerlist(request, pk):
 
 
 @login_required
-def my_followlist(request, pk):
+def my_followlist(request):
 
-    user = get_user_model().objects.get(pk=pk)
+    user = get_user_model().objects.get(pk=request.user.pk)
 
     context = {
         "user": user,
@@ -151,9 +152,9 @@ def my_followlist(request, pk):
 
 
 @login_required
-def my_followerlist(request, pk):
+def my_followerlist(request):
 
-    user = get_user_model().objects.get(pk=pk)
+    user = get_user_model().objects.get(pk=request.user.pk)
 
     context = {
         "user": user,
@@ -180,3 +181,27 @@ def password(request):
         "form": form,
     }
     return render(request, "accounts/password.html", context)
+
+
+def popular(request):
+
+    users = User.objects.annotate(follower=Count("followings")).order_by("follower")
+
+    context = {
+        "users": users,
+    }
+
+    return render(request, "accounts/popular.html", context)
+
+
+def profile_music(request, pk):
+    user = User.objects.get(pk=pk)
+    if request.method == 'POST':
+        id = request.POST.get('id', '')
+        title = request.POST.get('title', '')
+        channel = request.POST.get('channel', '')
+        user.profile_music_id=id
+        user.profile_music_title=title
+        user.profile_music_channel=channel
+        user.save(update_fields=['profile_music_id', 'profile_music_title', 'profile_music_channel'])
+    return render(request, "accounts/profile_music.html")

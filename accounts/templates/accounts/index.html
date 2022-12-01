@@ -1,4 +1,5 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block body %}
 
@@ -15,10 +16,18 @@
     {% endif %}
   </div>
   <hr>
+  <a href="{% url 'articles:index' %}">글쓰기</a>
+  <a href="{% url 'accounts:popular' %}">인기유저(팔로워순)</a>
+  <hr>
   <div>
-    {% for user in users %}
     <p>
-      {{ user.pk }}  |  {{ user.username }}  |  
+     {% for user in users %}
+      {% if user.user_img %}
+        <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:40px;">
+      {% else %}
+        <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:40px;">
+      {% endif %}
+      {{ user.pk }}  |  {{ user.username }}  |  팔로우 : {{ user.followings.count }} |  팔로워 : {{ user.followers.count }}  |
       <a href="{% url 'accounts:detail' user.pk %}">회원보기</a>
     </p>
     {% endfor %}

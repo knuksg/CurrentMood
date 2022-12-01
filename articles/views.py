@@ -10,6 +10,10 @@ import os
 import pprint
 
 # Create your views here.
+def private(request):
+    return render(request, "articles/private.html")
+
+
 def index(request):
     articles = Article.objects.all().order_by("-pk")
     context = {
@@ -22,7 +26,9 @@ def create(request):
     if request.method == "POST":
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            article = form.save(commit=False)
+            article.user = request.user
+            article.save()
             return redirect("articles:index")
     else:
         form = ArticleForm()
@@ -118,3 +124,7 @@ def public(request):
         "place": place,
     }
     return render(request, "articles/public.html", context)
+
+
+def test(request):
+    return render(request, "articles/test.html")
