@@ -8,6 +8,12 @@ body,
   color : white;
 }
 
-.private-slide {
-  width: 30vw;
+* {
+  box-sizing: border-box;
+}
+
+.box img {
+  object-fit: cover;
+  padding: 1rem;
+  width: 100%;
 }
