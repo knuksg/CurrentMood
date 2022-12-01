@@ -114,3 +114,7 @@ def public(request):
         "place": place,
     }
     return render(request, "articles/public.html", context)
+
+
+def test(request):
+    return render(request, "articles/test.html")
