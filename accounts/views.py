@@ -3,6 +3,7 @@ from .models import User
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib import messages
+from django.db.models import Count
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -140,9 +141,9 @@ def followerlist(request, pk):
 
 
 @login_required
-def my_followlist(request, pk):
+def my_followlist(request):
 
-    user = get_user_model().objects.get(pk=pk)
+    user = get_user_model().objects.get(pk=request.user.pk)
 
     context = {
         "user": user,
@@ -151,9 +152,9 @@ def my_followlist(request, pk):
 
 
 @login_required
-def my_followerlist(request, pk):
+def my_followerlist(request):
 
-    user = get_user_model().objects.get(pk=pk)
+    user = get_user_model().objects.get(pk=request.user.pk)
 
     context = {
         "user": user,
@@ -180,3 +181,18 @@ def password(request):
         "form": form,
     }
     return render(request, "accounts/password.html", context)
+
+
+def popular(request):
+
+    users = User.objects.annotate(follower=Count("followings")).order_by("follower")
+
+    context = {
+        "users": users,
+    }
+
+    return render(request, "accounts/popular.html", context)
+
+
+def my_sharedmusiclist(request):
+    return render(request, "accounts/my_sharedmusiclist.html")

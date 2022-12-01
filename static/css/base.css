@@ -1,14 +1,12 @@
 /* html {
   background-color : rgb(20, 20, 20);
 } */
-
 * {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
 }
-
-nav {
+.nav {
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -20,19 +18,26 @@ nav {
   background-color: #000000;
   font-family: "Poppins", sans-serif;
 }
-
-.logo {
+.location {
+  display: block;
+  font-size: 1rem;
+  color: #ffffff;
+}
+.location>img {
+  width: 1rem;
+  height: 1rem;
+}
+.nav__logo>a {
   color: rgb(226, 226, 226);
   text-transform: uppercase;
   /* 각 글자 2px씩 간격을 줌*/
   letter-spacing: 2px;
   font-size: 18px;
+  text-decoration: none;
 }
-
-.logo>i {
+.nav__logo>i {
   color : #ea0aee;
 }
-
 .nav-links {
   width: 30%;
   display: flex;
@@ -41,11 +46,9 @@ nav {
   margin-bottom: 0;
   padding: 0;
 }
-
 .nav-links li {
   list-style: none;
 }
-
 .nav-links a {
   color: rgb(226, 226, 226);
   text-decoration: none;
@@ -53,12 +56,10 @@ nav {
   font-weight: bold;
   font-size: 14px;
 }
-
 .burger {
   display: none;
   cursor: pointer;
 }
-
 .burger div {
   width: 25px;
   height: 3px;
@@ -77,6 +78,18 @@ nav {
   body {
     overflow-x: hidden;
   }
+  .nav__logo {
+    display: none;
+  }
+  .location {
+    display: block;
+    font-size: 1rem;
+    color: #ffffff;
+  }
+  .location>img {
+    width: 1rem;
+    height: 1rem;
+  }
   .nav-links {
     position: absolute;
     top: 8vh;
@@ -94,11 +107,9 @@ nav {
   .burger {
     display: block;
   }
-
   .nav-active {
     transform: translateX(0%);
   }
-
   @keyframes navLinkFade {
     from {
       opacity: 0;
@@ -110,15 +121,12 @@ nav {
     }
   }
 }
-
 .toggle .line1 {
   transform: rotate(-45deg) translate(-5px, 6px);
 }
-
 .toggle .line2 {
   opacity: 0;
 }
-
 .toggle .line3 {
   transform: rotate(45deg) translate(-5px, -6px);
 }

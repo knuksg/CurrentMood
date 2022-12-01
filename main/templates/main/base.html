@@ -13,22 +13,29 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <link rel="stylesheet" href="{% static 'css/articles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
     {% block head %}{% endblock head %}
   </head>
 
   <body>
     <!-- nav -->
     <header>
-      <nav>
-        <div class="logo">
-          <i class="bi bi-music-note-beamed"></i>
-          Current Mood
+      <nav class="nav">
+        <div class="nav__logo">
+            <i class="bi bi-music-note-beamed"></i>
+            <a href="{% url 'articles:private' %}">
+              Current Mood
+            </a>
+        </div>
+        <div class="location">
+            <img src="{% static 'image/locationupdate.jpg' %}" alt="locationicon">
+            블루보틀 역삼 카페
         </div>
         <ul class="nav-links">
-          <li><a href="#">홈</a></li>
+          <li><a href="{% url 'articles:private' %}">홈</a></li>
+          <li><a href="{% url 'accounts:login' %}">로그인</a></li>
           <li><a href="#">보관함</a></li>
           <li><a href="#">계정 설정</a></li>
-          <li><a href="#">로그인</a></li>
         </ul>
         <div class="burger">
           <div class="line1"></div>
