@@ -10,3 +10,6 @@ def test(request):
 
 def test2(request):
     return render(request, "main/test2.html")
+
+def test3(request):
+    return render(request, "main/test3.html")
