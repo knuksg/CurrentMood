@@ -141,9 +141,9 @@ def followerlist(request, pk):
 
 
 @login_required
-def my_followlist(request, pk):
+def my_followlist(request):
 
-    user = get_user_model().objects.get(pk=pk)
+    user = get_user_model().objects.get(pk=request.user.pk)
 
     context = {
         "user": user,
@@ -152,9 +152,9 @@ def my_followlist(request, pk):
 
 
 @login_required
-def my_followerlist(request, pk):
+def my_followerlist(request):
 
-    user = get_user_model().objects.get(pk=pk)
+    user = get_user_model().objects.get(pk=request.user.pk)
 
     context = {
         "user": user,
@@ -192,3 +192,7 @@ def popular(request):
     }
 
     return render(request, "accounts/popular.html", context)
+
+
+def my_sharedmusiclist(request):
+    return render(request, "accounts/my_sharedmusiclist.html")
