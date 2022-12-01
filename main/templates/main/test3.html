@@ -1,0 +1,323 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css">
+
+<!-- 1. 템플릿에 플레이어 불러오기 -->
+<div class="d-flex">
+  <div style="width: 640px;">
+    <div id="player" class="d-none"></div>
+    <div class="d-flex flex-column align-items-center">
+      <div id="now-playing-img"></div>
+      <h3>현재 재생 중인 곡</h3>
+      <p id="now-playing-title">재생 중인 곡이 없습니다.</p>
+      <div class="d-flex flex-column justify-content-center align-items-center my-3">
+        <div class="d-flex gap-3">
+          <div id="current-time">0:00</div>
+          <input id="progress-bar" type="range" value="0">
+          <div id="duration">0:00</div>
+        </div>
+        <div>
+          <button class="button" id="previous"><i class="bi bi-arrow-left"></i></button>
+          <button class="button" id="video-button"><i class="bi bi-play-fill"></i></button>
+          <button class="button" id="next"><i class="bi bi-arrow-right"></i></button>
+        </div>
+      </div>
+    </div>
+    <div>
+      <h3>재생 목록</h3>
+      <div id="play-list" class="play-list">
+        <div id="TgOu00Mf3kI" class="search-item d-flex gap-3">
+          <img src="https://i.ytimg.com/vi/TgOu00Mf3kI/default.jpg" alt="">
+          <div>
+            <h5>[MV] IU(아이유) _ eight(에잇) (Prod.&amp;Feat. SUGA of BTS)</h5>
+            <div class="d-flex gap-3">
+              <p>1theK (원더케이)</p>
+            </div>
+          </div>
+        </div>
+        <div id="D1PvIWdJ8xo" class="search-item d-flex gap-3">
+          <img src="https://i.ytimg.com/vi/D1PvIWdJ8xo/default.jpg" alt="">
+          <div>
+            <h5>[MV] IU(아이유) _ Blueming(블루밍)</h5>
+            <div class="d-flex gap-3">
+              <p>1theK (원더케이)</p>
+            </div>
+          </div>
+        </div>
+        <div id="d9IxdwEFk1c" class="search-item d-flex gap-3">
+          <img src="https://i.ytimg.com/vi/d9IxdwEFk1c/default.jpg" alt="">
+          <div>
+            <h5>[MV] IU(아이유) _ Palette(팔레트) (Feat. G-DRAGON)</h5>
+            <div class="d-flex gap-3">
+              <p>1theK (원더케이)</p>
+            </div>
+          </div>
+        </div>
+        <div id="6GC8JF2FOgA" class="search-item d-flex gap-3">
+          <img src="https://i.ytimg.com/vi/6GC8JF2FOgA/default.jpg" alt="">
+          <div>
+            <h5>[달의 연인 - 보보경심 려 OST Part 2] 로꼬, 펀치 (Loco, Punch) - Say Yes MV</h5>
+            <div class="d-flex gap-3">
+              <p>Stone Music Entertainment</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div>
+    <h3>동영상 검색하기</h3>
+      <form id="search-form" action="">
+        <input id="search-input" type="text">
+        <button type="submit">search</button>
+      </form>
+      <div id="search-list" class="search-list">
+      </div>
+  </div>
+</div>
+
+<!-- CDN axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<script>
+  // 2. iframe api 불러오기
+  var tag = document.createElement('script');
+
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+
+  // 3. 비디오 플레이어 만들기
+
+  // 재생목록 생성
+  var videoIDs = [
+    'TgOu00Mf3kI',
+    'D1PvIWdJ8xo',
+    'd9IxdwEFk1c',
+    '6GC8JF2FOgA'
+  ];
+  var videoTitles = [
+    "에잇",
+    "블루밍",
+    "팔레트",
+    "달의 연인 - 보보경심 려 OST",
+  ]
+
+  // 플레이어 생성
+  var player, currentVideoId = 0;
+  function onYouTubeIframeAPIReady() {
+    player = new YT.Player('player', {
+      height: '360',
+      width: '640',
+      playerVars: {
+        controls: 0,
+      },
+      events: {
+        'onReady': onPlayerReady,
+        'onStateChange': onPlayerStateChange
+      }
+    });
+  }
+
+  // 4. 비디오 플레이어가 준비되었을 때 실행할 함수
+  function onPlayerReady(event) {
+    event.target.loadVideoById(videoIDs[currentVideoId]);
+    const nowPlayingTitle = document.querySelector('#now-playing-title')
+    nowPlayingTitle.innerText = videoTitles[currentVideoId]
+    const nowPlayingImg = document.querySelector('#now-playing-img')
+    nowPlayingImg.innerHTML += `<img src="https://i.ytimg.com/vi/` + videoIDs[currentVideoId] + `/hqdefault.jpg">`
+    console.log(nowPlayingImg.innerHTML)
+
+    videoButton.addEventListener('click', function(event) {
+      if (videoButton.querySelector('.bi').classList.contains("bi-play-fill")) {
+        playVideo()
+      }
+      else {
+        pauseVideo()
+      }
+    })
+
+    player.loadPlaylist( {
+      playlist:videoIDs
+    } );
+
+    var next = document.getElementById("next");
+    next.addEventListener("click", function() {
+      if (currentVideoId < videoIDs.length - 1) {
+        currentVideoId++;
+        player.nextVideo();
+        nowPlaying.innerText = videoTitles[currentVideoId]
+      }
+      else {
+        player.playVideoAt(currentVideoId)
+      }
+    });
+    
+    var pre = document.getElementById("previous");
+    pre.addEventListener("click", function() {
+      if (currentVideoId > 0) {
+        currentVideoId--;
+        player.previousVideo();
+        nowPlaying.innerText = videoTitles[currentVideoId]
+      }
+      else {
+        player.playVideoAt(currentVideoId)
+      }
+    });
+
+    function formatTime(time) {
+      time = Math.round(time)
+  
+      var minutes = Math.floor(time / 60),
+      seconds = time - minutes * 60
+  
+      // seconds에 값을 대입하는데, seconds가 10보다 작으면 0+seconds, 아니면 seconds를 대입함.
+      seconds = seconds < 10 ? '0' + seconds : seconds
+  
+      return minutes + ":" + seconds
+    }
+
+    function updateTimerDisplay() {
+      const currentTime = document.querySelector("#current-time")
+      currentTime.innerText = formatTime(player.getCurrentTime())
+      const duration = document.querySelector("#duration")
+      duration.innerText = formatTime(player.getDuration())
+    }
+
+    const progressBar = document.querySelector("#progress-bar")
+    function updateProgressBar() {
+      progressBar.value = (player.getCurrentTime() / player.getDuration()) * 100
+    }
+
+    updateTimerDisplay()
+    updateProgressBar()
+    
+    time_update_interval = setInterval(function () {
+      updateTimerDisplay();
+      updateProgressBar();
+    }, 1000)
+    
+    progressBar.addEventListener('mouseup', function(e) {
+      var newTime = player.getDuration() * (e.target.value / 100)
+      player.seekTo(newTime)
+    })
+    progressBar.addEventListener('touchend', function(e) {
+      var newTime = player.getDuration() * (e.target.value / 100)
+      player.seekTo(newTime)
+    })
+  
+  }
+  
+  // 5. 플레이어 상태가 바뀌었을 때 실행될 함수
+  var done = false;
+  const videoButton = document.querySelector("#video-button")
+  function onPlayerStateChange(event) {
+    // 버퍼링 중일 때
+    if (event.data==-1) {
+      // 플레이리스트 인덱스를 받아와서 현재 재생 중인 비디오 아이디에 넣는다.
+      currentVideoId = player.getPlaylistIndex()
+      const nowPlayingTitle = document.querySelector('#now-playing-title')
+      nowPlayingTitle.innerText = videoTitles[currentVideoId]
+      const nowPlayingImg = document.querySelector('#now-playing-img')
+      nowPlayingImg.innerHTML = `<img src="https://i.ytimg.com/vi/` + videoIDs[currentVideoId] + `/hqdefault.jpg">`
+    }
+    // 재생 중일 때
+    else if (event.data == YT.PlayerState.PLAYING && !done) {
+      videoButton.innerHTML = '<i class="bi bi-pause-fill"></i>'
+    }
+    // 일시정지 중일 때
+    else if (event.data == YT.PlayerState.PAUSED && !done) {
+      videoButton.innerHTML = '<i class="bi bi-play-fill"></i>'
+    }
+    // 끝났을 때
+    else if (event.data == YT.PlayerState.ENDED) {
+      videoButton.innerHTML = '<i class="bi bi-play-fill"></i>'
+      done = true
+    }
+  }
+  
+  function playVideo() {
+    player.playVideo();
+  }
+  function pauseVideo() {
+    player.pauseVideo();
+  }
+  function stopVideo() {
+    player.stopVideo();
+  }
+
+  const searchForm = document.querySelector("#search-form")
+  searchForm.addEventListener('submit', function(event) {
+    event.preventDefault()
+    const kw = searchForm.querySelector("#search-input").value
+    getSearchList(kw)
+  })
+
+  function getSearchList(kw) {
+    const apiKey = "AIzaSyC6_bB2PiPp_Vtf8cPdnhoQ-hzL4gNVFIE"
+    axios.get('https://www.googleapis.com/youtube/v3/search', {
+      params: {
+        key: apiKey,
+        part: "snippet",
+        order: "viewCount",
+        q: kw,
+        type: "video"
+      }
+    })
+      .then(function (response) {
+        console.log('good', response)
+        const searchList = document.querySelector('#search-list')
+        searchList.innerHTML = ''
+        const searchItems = response.data.items
+        const searchItemsList = []
+        searchItems.forEach((searchItem) => {
+          searchList.innerHTML += `
+          <div id="` + searchItem.id.videoId + `" class="search-item d-flex gap-3">
+            <img src="`+ searchItem.snippet.thumbnails.default.url + `" alt="">
+            <div>
+              <h5>`+ searchItem.snippet.title +`</h5>
+              <div class="d-flex gap-3">
+                <p>`+ searchItem.snippet.channelTitle +`</p>
+              </div>
+            </div>
+          </div>
+          `
+        })
+      })
+  }
+  <!-- dynamic object 접근을 위한 함수 -->
+  function hasClass(elem, className) {
+    return elem.classList.contains(className)
+  }
+
+  document.addEventListener('click', function(e) {
+    <!-- addPlayList -->
+    if (e.target.closest("div.search-list")) {
+      const searchItem = e.target.closest('div.search-item')
+      const playList = document.querySelector("#play-list")
+      playList.append(searchItem)
+      videoIDs.push(searchItem.id)
+      videoTitles.push(searchItem.querySelector('h5').innerText)
+      const searchList = document.querySelector('#search-list')
+      searchList.innerHTML = ''
+      const searchForm = document.querySelector("#search-form")
+      searchForm.reset()
+      player.loadPlaylist( {
+        playlist:videoIDs,
+        index: videoIDs.length - 1
+      } );
+    }
+    if (e.target.closest('div.play-list')) {
+      const playItem = e.target.closest('div.search-item')
+      const playItemId = playItem.id
+      const playItemTitle = playItem.querySelector('h5').innerText
+      const playIndex = Array.from(playItem.parentNode.children).indexOf(playItem)
+      player.playVideoAt(playIndex)
+      console.log(playIndex)
+      const nowPlayingTitle = document.querySelector('#now-playing-title')
+      nowPlayingTitle.innerText = playItemTitle
+      const nowPlayingImg = document.querySelector('#now-playing-img')
+      nowPlayingImg.innerHTML = `<img src="https://i.ytimg.com/vi/` + playItemId + `/hqdefault.jpg">`
+    }
+  })
+</script>
