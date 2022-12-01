@@ -1,0 +1,142 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block body %}
+
+<h1>프로필 뮤직 페이지</h1>
+<hr>
+<h1 class="fw-bold mt-3">  
+  <span>
+    {% if user.user_img %}
+    <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
+    {% else %}
+    <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
+    {% endif %}
+  </span>
+  {{ user.username }}님의 프로필 뮤직
+</h1>
+
+<hr>
+<div>
+  <h3 class='fw-bold'>현재 설정된 프로필 뮤직</h3>
+  <div id="profile_music" class="profile-music">
+    {% if user.profile_music_id %}
+    <div id="{{ user.profile_music_id }}" class="search-item d-flex gap-3">
+      <img src="https://i.ytimg.com/vi/{{ user.profile_music_id }}/default.jpg" alt="">
+      <div>
+        <h5>{{ user.profile_music_title }}</h5>
+        <div class="d-flex gap-3">
+          <p>{{ user.profile_music_channel }}</p>
+        </div>
+      </div>
+    </div>
+    {% else %}
+    <p>프로필 뮤직이 없습니다...</p>
+    {% endif %}
+  </div>
+</div>
+<hr>
+<a href="{% url 'accounts:mypage' %}">뒤로가기</a>
+<hr>
+<div>
+  <h3>프로필 뮤직 검색하기</h3>
+    <form id="search-form" data-user-id={{ user.pk }}>
+      {% csrf_token %}
+      <input id="search-input" type="text">
+      <button type="submit">search</button>
+    </form>
+    <div id="search-list" class="search-list">
+    </div>
+</div>
+
+<!-- CDN axios -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+<!-- 검색 스크립트 -->
+<script>
+  const searchForm = document.querySelector("#search-form")
+  searchForm.addEventListener('submit', function(event) {
+    event.preventDefault()
+    const kw = searchForm.querySelector("#search-input").value
+    getSearchList(kw)
+  })
+
+  function getSearchList(kw) {
+    const apiKey = "AIzaSyC6_bB2PiPp_Vtf8cPdnhoQ-hzL4gNVFIE"
+    axios.get('https://www.googleapis.com/youtube/v3/search', {
+      params: {
+        key: apiKey,
+        part: "snippet",
+        order: "viewCount",
+        q: kw,
+        type: "video"
+      }
+    })
+      .then(function (response) {
+        console.log('good', response)
+        const searchList = document.querySelector('#search-list')
+        searchList.innerHTML = ''
+        const searchItems = response.data.items
+        const searchItemsList = []
+        searchItems.forEach((searchItem) => {
+          searchList.innerHTML += `
+          <div id="` + searchItem.id.videoId + `" class="search-item d-flex gap-3">
+            <img src="`+ searchItem.snippet.thumbnails.default.url + `" alt="">
+            <div>
+              <h5>`+ searchItem.snippet.title +`</h5>
+              <div class="d-flex gap-3">
+                <p>`+ searchItem.snippet.channelTitle +`</p>
+              </div>
+            </div>
+          </div>
+          `
+        })
+      })
+  }
+</script>
+<script>
+  document.addEventListener('click', function(e) {
+    <!-- addPlayList -->
+    if (e.target.closest("div.search-list")) {
+      // 비동기로 프로필 뮤직 바꿔주기
+      const searchItem = e.target.closest('div.search-item')
+      const profileMusic = document.querySelector("#profile_music")
+      profileMusic.innerHTML = ''
+      profileMusic.append(searchItem)
+
+      // 폼에 담아서 뷰로 넘겨주기
+      const profileMusicId = searchItem.id
+      const profileMusicTitle = searchItem.querySelector('h5').innerText
+      const profileMusicChannelTitle = searchItem.querySelector('p').innerText
+      console.log(profileMusicId)
+      console.log(profileMusicTitle)
+      console.log(profileMusicChannelTitle)
+
+      const form = new FormData()
+      form.append('id', profileMusicId)
+      form.append('title', profileMusicTitle)
+      form.append('channel', profileMusicChannelTitle)
+
+      form.forEach((data) => {
+        console.log(data)
+        
+      })
+
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      const userId = document.querySelector("#search-form").dataset.userId
+      console.log(userId)
+      axios.post(`/accounts/mypage/profile_music/${userId}/`, form, {
+        headers: {
+          'X-CSRFToken': csrftoken
+        }
+      })
+
+      // 검색 폼 초기화해주기
+      const searchList = document.querySelector('#search-list')
+      searchList.innerHTML = ''
+      const searchForm = document.querySelector("#search-form")
+      searchForm.reset()
+    }
+  })
+</script>
+{% endblock %}

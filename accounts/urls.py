@@ -15,7 +15,7 @@ urlpatterns = [
     path("mypage/followlist/", views.my_followlist, name="my_followlist"),
     path("mypage/followerlist/", views.my_followerlist, name="my_followerlist"),
     path(
-        "mypage/sharedmusiclist/", views.my_sharedmusiclist, name="my_sharedmusiclist"
+        "mypage/profile_music/<int:pk>/", views.profile_music, name="profile_music"
     ),
     path("<int:pk>/", views.detail, name="detail"),
     path("<int:pk>/update/", views.update, name="update"),
