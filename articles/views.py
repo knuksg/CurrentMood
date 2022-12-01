@@ -25,7 +25,9 @@ def create(request):
     if request.method == "POST":
         form = ArticleForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
+            article = form.save(commit=False)
+            article.user = request.user
+            article.save()
             return redirect("articles:index")
     else:
         form = ArticleForm()

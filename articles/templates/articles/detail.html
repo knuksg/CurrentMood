@@ -2,15 +2,12 @@
 {% load django_bootstrap5 %}
 
 {% block body %}
-  <h5>글 번호:
-    {{ article.pk }}</h5>
-  <h1>제목:
-    {{ article.title }}</h1>
-  <h5>작성자:
-    {{ article.user }}
-    |
-    {{ article.created_at }}</h5>
-  <p>{{ article.content }}</p>
+  <h5>글 번호:  {{ article.pk }}</h5>
+  <h5>작성자: {{ article.user }}  |  {{ article.created_at }}</h5>
+  <p>사연 장소: {{ article.plase}}</p>
+  <p><span>노래 제목: {{ article.song }}</span>  |  <span>가수: {{ article.singer }}</span></p>
+  <h1>사연 제목: {{ article.title }}</h1>
+  <p>사연 내용: {{ article.content }}</p>
 
   {% if article.image %}
     <img src="{{ article.image.url }}" alt="">

@@ -1,0 +1,16 @@
+{% extends 'main/base.html' %}
+
+{% block body %}
+
+  <h1>인기유저 (팔로워순)</h1>
+  <hr>
+  <div>
+    {% for user in users %}
+    <p>
+      {{ user.pk }}  |  {{ user.username }}  |  팔로우 : {{ user.followings.count }} |  <span class="fw-bold">팔로워 : {{ user.followers.count }}</span>  |
+      <a href="{% url 'accounts:detail' user.pk %}">회원보기</a>
+    </p>
+    {% endfor %}
+  </div>
+
+{% endblock %}
