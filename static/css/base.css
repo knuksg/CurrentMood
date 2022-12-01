@@ -1,10 +1,9 @@
-/* html {
-  background-color : rgb(20, 20, 20);
-} */
+@import url('https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.min.css');
 * {
   margin: 0px;
   padding: 0px;
   box-sizing: border-box;
+  font-family: 'NanumSquareRound', sans-serif;
 }
 .nav {
   display: flex;
