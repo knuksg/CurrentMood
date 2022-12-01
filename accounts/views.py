@@ -30,7 +30,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
-            return redirect("accounts:index")
+            return redirect("accounts:login")
     else:
         form = CustomUserCreationForm()
 
@@ -43,7 +43,7 @@ def login(request):
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect(request.GET.get("next") or "accounts:index")
+            return redirect(request.GET.get("next") or "articles:private")
     else:
         form = AuthenticationForm()
 
@@ -54,7 +54,7 @@ def login(request):
 @login_required
 def logout(request):
     auth_logout(request)
-    return redirect("accounts:index")
+    return redirect("articles:private")
 
 
 @login_required
@@ -99,7 +99,7 @@ def delete(request):
     request.user.delete()
     auth_logout(request)
 
-    return redirect("accounts:index")
+    return redirect("articles:private")
 
 
 @login_required
@@ -115,7 +115,7 @@ def follow(request, pk):
 
         return redirect("accounts:detail", pk)
     else:
-        return redirect("base:base")
+        return redirect("main:base")
 
 
 @login_required
