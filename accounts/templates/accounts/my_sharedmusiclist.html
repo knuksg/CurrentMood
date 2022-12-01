@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block body %}
+
+<h1>팔로워리스트 페이지</h1>
+<hr>
+<h1 class="fw-bold mt-3">  
+  <span>
+    {% if user.user_img %}
+    <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
+    {% else %}
+    <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
+    {% endif %}
+  </span>
+  {{ user.username }}님이 공유한 노래 목록
+</h1>
+
+<hr>
+<div>
+  <ul>
+    <li class='fw-bold'>Music list</li>
+      {% for article in user.article_set.all %}
+        <p>
+          <img src="{% static 'image/album.png' %}" style="width:50px;">  |  {{ article.song }}  |  {{ article.singer }}  |  <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+        </p>
+      {% endfor %}
+  </ul>
+</div>
+<hr>
+<a href="{% url 'accounts:mypage' %}">뒤로가기</a>
+
+{% endblock %}

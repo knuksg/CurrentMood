@@ -1,0 +1,9 @@
+html, 
+body, 
+#background { 
+  width: 100vw;
+  min-height: 50vh;
+  background-color: rgb(20, 20, 20);
+  font-family:'Poppins';
+}
+

@@ -1,34 +1,43 @@
 {% extends 'main/base.html' %}
+{% load static %}
 
 {% block body %}
-  <h1>index</h1>
+  <h1>index - 공유한 노래 목록 페이지</h1>
 
-  <table class="table">
+  <table class="table text-center">
     <thead class="table-dark">
       <tr>
         <th>글 번호</th>
-        <th>제목</th>
-        <th>이름</th>
-        <th>작성 일자</th>
+        <th>재킷</th>
+        <th>노래 제목</th>
+        <th>가수 이름</th>
+        <th>사연 제목</th>
+        <th>작성자</th>
       </tr>
     </thead>
     <tbody>
       {% for article in articles %}
         <tr>
           <td>{{ article.pk }}</td>
+          <td><img src="{% static 'image/album.png' %}" style="width:50px;"></td>
+          <td>{{ article.song }}</td>
+          <td>{{ article.singer }}</td>
+          <td><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></td>
           <td>
-            <a href="{% url 'articles:detail' article.pk %}">
-              {{ article.title }}
-            </a>
+            {% if article.user.user_img %}
+            <img class="rounded-circle" src="{{ article.user.user_img.url }}" alt="" style="width:50px;">
+            {% else %}
+            <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:50px;">
+            {% endif %}
+            <a href="{% url 'accounts:detail' article.user.pk %}">{{ article.user }}</a>
           </td>
-          <td>{{ article.user }}</td>
-          <td>{{ article.created_at }}</td>
         </tr>
       {% endfor %}
     </tbody>
   </table>
 
   <button class="btn btn-primary">
-    <a href="{% url 'articles:create' %}" class="text-white text-decoration-none">글 작성</a>
+    <a href="{% url 'articles:create' %}" class="text-white text-decoration-none">사연 작성</a>
   </button>
+
 {% endblock body %}

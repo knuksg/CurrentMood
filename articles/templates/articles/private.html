@@ -1,0 +1,39 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block body %}
+  {% comment %} 플레이어 {% endcomment %}
+  <div class="d-flex justify-content-center">
+    <img src="{% static 'image/album.png' %}" alt="" style="width: 30vh;">
+  </div>
+
+  <hr>
+
+  {% comment %} 박스 {% endcomment %}
+  <div class="private-playButton bg-info p-play">
+    <div class="text-center">
+      <p>재생 버튼</p>
+    </div>
+  </div>
+
+  <hr>
+
+  {% comment %} 캐러셀 {% endcomment %}
+  <div class="private-carousel bg-info">
+    <div class="text-center">
+      <p>이미지 캐러셀</p>
+    </div>
+  </div>
+
+  <hr>
+
+  {% comment %} 댓글 {% endcomment %}
+  <div class="private-comment bg-info fixed-bottom">
+    <div class="text-center">
+      <p>댓글</p>
+    </div>
+  </div>
+
+{% endblock body %}
+
+{% block script %}{% endblock script %}
