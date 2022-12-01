@@ -118,3 +118,15 @@ def public(request):
 
 def test(request):
     return render(request, "articles/test.html")
+
+
+def like(request, pk):
+
+    article = Article.objects.get(pk=pk)
+
+    if request.user in article.like_users.all():
+        article.like_users.remove(request.user)
+    else:
+        article.like_users.add(request.user)
+
+    return redirect("articles:detail", pk)

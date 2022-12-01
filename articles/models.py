@@ -19,6 +19,9 @@ class Article(models.Model):
         format="JPEG",
         options={"quality": 90},
     )
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="like_article"
+    )
 
 
 class Place(models.Model):
