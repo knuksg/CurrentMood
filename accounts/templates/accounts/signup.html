@@ -2,9 +2,10 @@
 {% load django_bootstrap5 %}
 {% load static %}
 
-{% block head %}
+{% block style %}
 <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
-{% endblock head %}
+<link rel="stylesheet" href="{% static 'css/articles.css' %}">
+{% endblock style %}
 
 {% block body %}
 
@@ -15,31 +16,15 @@
 	<form action="" method="POST" class="signupform">
 	{% csrf_token %}
 		<div class="signupform-info">
-			<div class='signupform__namebox'>
-				<div class="signupform__input-name">
 				<input type="text" name="first_name"
-								placeholder="이름">
-				</div>
-				<div class="signupform__input-name">
+								placeholder="이름" class="signupform__input">
 				<input type="text" name="last_name"
-								placeholder="성">
-				</div>
-			</div>
-			<div class="signupform__input">
-				<input type="text" name="username" id="userId" placeholder="아이디">
-			</div>
-			<div class="signupform__input">
-				<input type="password" name="password1" placeholder="비밀번호">
-			</div>
-			<div class="signupform__input">
-				<input type="password" name="password2" placeholder="비밀번호 확인">
-			</div>
-			<div class="signupform__input">
-				<input type="text" name="address" placeholder="주소">
-			</div>
-			<div class="signupform__input">
-				<input type="text" name="email" placeholder="이메일">
-			</div>
+								placeholder="성" class="signupform__input">
+				<input type="text" name="username" id="userId" placeholder="아이디" class="signupform__input">
+				<input type="password" name="password1" placeholder="비밀번호" class="signupform__input">
+				<input type="password" name="password2" placeholder="비밀번호 확인" class="signupform__input">
+				<input type="text" name="address" placeholder="주소" class="signupform__input">
+				<input type="text" name="email" placeholder="이메일" class="signupform__input">
       <div>
 			<button type="submit" class="signupform__button">회원가입</button>
       </div>
