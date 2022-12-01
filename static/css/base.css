@@ -19,8 +19,13 @@
   font-family: "Poppins", sans-serif;
 }
 .location {
-  display: none;
+  display: block;
+  font-size: 1rem;
   color: #ffffff;
+}
+.location>img {
+  width: 1rem;
+  height: 1rem;
 }
 .nav__logo>a {
   color: rgb(226, 226, 226);
@@ -79,6 +84,7 @@
   .location {
     display: block;
     font-size: 1rem;
+    color: #ffffff;
   }
   .location>img {
     width: 1rem;
