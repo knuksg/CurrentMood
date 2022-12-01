@@ -37,18 +37,16 @@
           블루보틀 역삼 카페
         </div>
         <ul class="nav-links">
-          <li>
-            <a href="{% url 'articles:private' %}">홈</a>
-          </li>
-          <li>
-            <a href="{% url 'accounts:login' %}">로그인</a>
-          </li>
-          <li>
-            <a href="#">보관함</a>
-          </li>
-          <li>
-            <a href="#">계정 설정</a>
-          </li>
+
+          <li><a href="{% url 'articles:private' %}">홈</a></li>
+          {% if request.user.is_authenticated %}
+          <li><a href="#">보관함</a></li>
+          <li><a href="{% url 'accounts:mypage' %}">내 정보</a></li>
+          <li><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
+          {% else %}
+          <li><a href="{% url 'accounts:login' %}">로그인</a></li>
+          {% endif %}
+
         </ul>
         <div class="burger">
           <div class="line1"></div>
