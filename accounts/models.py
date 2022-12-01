@@ -23,7 +23,12 @@ class User(AbstractUser):
     followings = models.ManyToManyField(
         "self", symmetrical=False, related_name="followers"
     )
+    profile_music_id = models.CharField(max_length=30, default=None, null=True)
+    profile_music_title = models.CharField(max_length=50, default=None, null=True)
+    profile_music_channel = models.CharField(max_length=30, default=None, null=True)
 
     @property
     def full_name(self):
         return f"{self.last_name}{self.first_name}"
+
+    

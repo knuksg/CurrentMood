@@ -126,7 +126,6 @@
     nowPlayingTitle.innerText = videoTitles[currentVideoId]
     const nowPlayingImg = document.querySelector('#now-playing-img')
     nowPlayingImg.innerHTML += `<img src="https://i.ytimg.com/vi/` + videoIDs[currentVideoId] + `/hqdefault.jpg">`
-    console.log(nowPlayingImg.innerHTML)
 
     videoButton.addEventListener('click', function(event) {
       if (videoButton.querySelector('.bi').classList.contains("bi-play-fill")) {
@@ -313,7 +312,6 @@
       const playItemTitle = playItem.querySelector('h5').innerText
       const playIndex = Array.from(playItem.parentNode.children).indexOf(playItem)
       player.playVideoAt(playIndex)
-      console.log(playIndex)
       const nowPlayingTitle = document.querySelector('#now-playing-title')
       nowPlayingTitle.innerText = playItemTitle
       const nowPlayingImg = document.querySelector('#now-playing-img')
