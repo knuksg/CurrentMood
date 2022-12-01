@@ -15,10 +15,12 @@
     {% endif %}
   </div>
   <hr>
+  <a href="{% url 'accounts:popular' %}">인기유저(팔로워순)</a>
+  <hr>
   <div>
     {% for user in users %}
     <p>
-      {{ user.pk }}  |  {{ user.username }}  |  
+      {{ user.pk }}  |  {{ user.username }}  |  팔로우 : {{ user.followings.count }} |  팔로워 : {{ user.followers.count }}  |
       <a href="{% url 'accounts:detail' user.pk %}">회원보기</a>
     </p>
     {% endfor %}

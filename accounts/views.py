@@ -3,6 +3,7 @@ from .models import User
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib import messages
+from django.db.models import Count
 from django.contrib.auth import update_session_auth_hash
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
@@ -180,3 +181,14 @@ def password(request):
         "form": form,
     }
     return render(request, "accounts/password.html", context)
+
+
+def popular(request):
+
+    users = User.objects.annotate(follower=Count("followings")).order_by("follower")
+
+    context = {
+        "users": users,
+    }
+
+    return render(request, "accounts/popular.html", context)

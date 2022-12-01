@@ -11,6 +11,7 @@ urlpatterns = [
     path("delete/", views.delete, name="delete"),
     path("mypage/", views.mypage, name="mypage"),
     path("password/", views.password, name="password"),
+    path("popular/", views.popular, name="popular"),
     path("<int:pk>/", views.detail, name="detail"),
     path("<int:pk>/update/", views.update, name="update"),
     path("<int:pk>/follow/", views.follow, name="follow"),
