@@ -89,8 +89,11 @@ def location_get(request):
         },
     ).json()
     coords = location["location"]
+
     # geocoding : 결과 중 첫번째 위치를 선정한다.
-    geocoded = geocoding(coords["lat"], coords["lng"])
+    geocoded = geocoding(coords["lat"], coords["lng"])[0]["address_components"][1][
+        "long_name"
+    ]
     # Place 테이블에 geocodinge된 위치 값을 저장한다.
     place_name = Place.objects.create(
         name=geocoded
