@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import *
-from .forms import ArticleForm
+from .forms import ArticleForm, CommentForm
 from django.contrib.auth.decorators import login_required
 
 # 위치 api 구현
@@ -11,7 +11,13 @@ import pprint
 
 # Create your views here.
 def private(request):
-    return render(request, "articles/private.html")
+    articles = Article.objects.filter(song="라일락")
+    comment_form = CommentForm()
+    context = {
+        "articles": articles,
+        "comment_form": comment_form,
+    }
+    return render(request, "articles/private.html", context)
 
 
 def index(request):
@@ -41,10 +47,13 @@ def create(request):
 def detail(request, pk):
     article = Article.objects.get(pk=pk)
     like = Like.objects.all()
+    comment_form = CommentForm()
 
     context = {
         "article": article,
         "like": like,
+        "comments": article.comment_set.all(),
+        "comment_form": comment_form,
     }
     return render(request, "articles/detail.html", context)
 
@@ -152,3 +161,13 @@ def like(request, pk):
         article.like_users.add(request.user)
 
     return redirect("articles:detail", pk)
+
+
+def comment_create(request, pk):
+    article = Article.objects.get(pk=pk)
+    comment_form = CommentForm(request.POST)
+    if comment_form.is_valid():
+        comment = comment_form.save(commit=False)
+        comment.article = article
+        comment.save()
+    return redirect("articles:detail", article.pk)

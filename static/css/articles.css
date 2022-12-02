@@ -37,3 +37,14 @@ body {
   position: fixed;
   right: 0px;
 }
+
+.collapse { 
+}
+
+.hidden {
+  display: none;
+}
+
+.toggleBtn2 {
+  position: absolute;
+}
