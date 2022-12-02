@@ -5,7 +5,7 @@ a {
 a:hover {
 	color: inherit;
 }
-/*회원가입*/
+/* signup */
 .signup {
 	display: flex;
 	justify-content: center;
@@ -54,7 +54,7 @@ a:hover {
 	margin-top: 1em;
 }
 
-/*로그인*/
+/* login */
 .login {
 	display: flex;
 	justify-content: center;
@@ -110,4 +110,31 @@ a:hover {
 	 {
 		width: 70vw;
 	}
+}
+
+/* mypage */
+.container {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	grid-template-rows: 200px;
+	margin: 1em none;
+	align-items: center;
+	text-align: center;
+	font-size: 3vw;
+	border-bottom: 2px solid #b9b5b5;
+}
+.user-info {
+	text-align: start;
+}
+.user-info__follow {
+	display: flex;
+}
+.user-info__follow>div {
+	margin-right: 2rem;
+}
+.mypage-buttons {
+	display: flex;
+	padding: 1em 0;
+	justify-content: space-evenly;
+	font-size: 3vw;
 }
