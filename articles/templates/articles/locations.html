@@ -3,8 +3,12 @@
 <p id="result"></p>
 <p>{{geocoded}} 인근</p>
 <P>{{location}}</P>
-<script>
+<form id="addressSend" action="#" method="GET">
+  <input id="addressSendInput" type="hidden" name="addressHtml" value="">
+  <button type="submit">submit</button>
+</form>
 
+<script>
 var options = {
   enableHighAccuracy: true,
   timeout: 5000,
@@ -14,8 +18,10 @@ var options = {
 function success(pos) {
   var crd = pos.coords;
   const result = document.querySelector('#result')
-  // result.innerHTML= [crd.latitude,crd.longitude]
-  result.innerHTML = ['32.1232','128.2342']
+  result.innerHTML= [crd.latitude,crd.longitude]
+  // 1. form.setAttribute를 사용할 수 있다.
+  // 2. axios를 사용해 데이터를 보내준다.
+  const usrCrd = [crd.latitude,crd.longitude]
 }
 
 function error(err) {
@@ -24,5 +30,18 @@ function error(err) {
 
 navigator.geolocation.getCurrentPosition(success,error)
 
+
+axios({
+  url: '{http://127.0.0.1:8000/locations}',
+  method: 'get', 
+  data: { 
+    userLoc:userLoc
+  }
+})
+.then(console.log('location getted'));
+
+
 </script>
+<!-- axios 사용 -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 {% endblock body %}

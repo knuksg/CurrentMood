@@ -2,30 +2,73 @@
 {% load static %}
 
 {% block body %}
-  <div class="your-class">
-    <div>your content</div>
-    <div>your content</div>
-    <div>your content</div>
-  </div>
+    <div class="mainSlide">
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+    </div>
 {% endblock body %}
 
 {% block script %}
   <script>
-    $(document).ready(function(){
-      $('.your-class').slick({
-        setting-name: setting-value
+    $(function(){
+      $('.mainSlide').slick({
+        dots: false,
+        infinite: false,
+        speed: 800,
+        slidesToShow: 6,
+        slidesToScroll: 6,
+        prevArrow : "<div class='slick-prev carousel-control-prev' style='position: absolute; left: .2rem; z-index: 2;'><h1><</h1></div>",
+        nextArrow : "<div class='slick-next carousel-control-next' style='position: absolute; right: .2rem; z-index: 2;'><h1>></h1></div>",        
+        responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 5,
+              slidesToScroll: 5,
+            }
+          },
+          {
+            breakpoint: 860,
+            settings: {
+              slidesToShow: 4,
+              slidesToScroll: 4
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2
+            }
+          }
+          // You can unslick at a given breakpoint now by adding:
+          // settings: "unslick"
+          // instead of a settings object
+        ]
       });
-    });
-  </script>
-  <script>
-    $('.slider-for').slick({slidesToShow: 1, slidesToScroll: 1, arrows: false, fade: true, asNavFor: '.slider-nav'});
-    $('.slider-nav').slick({
-      slidesToShow: 3,
-      slidesToScroll: 1,
-      asNavFor: '.slider-for',
-      dots: true,
-      centerMode: true,
-      focusOnSelect: true
     });
   </script>
 {% endblock script %}

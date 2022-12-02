@@ -1,0 +1,81 @@
+/*회원가입*/
+.signup {
+	display: flex;
+	justify-content: center;
+	margin-top: 1em;
+	font-size: 2em;
+}
+.signupform {
+	display: flex;
+	justify-content: center;
+}
+.signupform__namebox {
+  display: flex;
+  flex-direction: column;
+}
+.signupform__input-name {
+	background-color: #ffff;
+	padding: 0.9rem 0.7rem;
+	margin: 0.5rem 0;
+	width: 100%;
+	border-radius: 0.5rem;
+	border: 1px solid #0000;
+}
+.signupform-info {
+	display : flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 60px;
+}
+.signupform__input {
+	background-color: #ffff;
+	padding: 0.5rem 0.4rem;
+	margin: 0.5rem 0;
+	width: 100%;
+	border-radius: 0.5rem;
+	border: 1px solid #0000;
+}
+.signupform__button {
+	background-color: #75037F;
+	color: #ffff;
+	border: none;
+	width: 12rem;
+	padding: 1em ;
+	border-radius: 2rem;
+	margin-top: 1em;
+}
+/*로그인*/
+.login {
+	display: flex;
+	justify-content: center;
+	margin-top: 1em;
+	font-size: 2em;
+}
+.loginform {
+	display: flex;
+	justify-content: center;
+}
+
+.loginform-info {
+	display : flex;
+	flex-direction: column;
+	align-items: center;
+	margin-bottom: 60px;
+}
+.loginform__input {
+	background-color: #ffff;
+	padding: 0.5rem 0.4rem;
+	margin: 0.5rem 0;
+	width: 100%;
+	border-radius: 0.5rem;
+	border: 1px solid #0000;
+}
+.loginform__button {
+	background-color: #75037F;
+	color: #ffff;
+	border: none;
+	width: 12rem;
+	padding: 1em ;
+	border-radius: 2rem;
+	margin-top: 1em;
+}

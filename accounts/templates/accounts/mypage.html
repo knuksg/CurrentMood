@@ -40,7 +40,7 @@
 <hr>
 <div class="d-flex justify-content-evenly fs-1">
   <div>
-    <i class="bi bi-music-note-beamed"></i>
+    <a href="{% url 'accounts:profile_music' user.pk %}"><i class="bi bi-music-note-beamed"></i></a>
   </div>
   <div>
     <a href="{% url 'accounts:my_sharedmusiclist' %}"><i class="bi bi-chat-right-text-fill"></i></a>
@@ -49,6 +49,22 @@
     <a href="{% url 'accounts:my_likedmusiclist' %}"><i class="bi bi-heart-fill"></i></a>
   </div>
 </div>
+<hr>
+
+<div class="d-flex justify-content-center">
+  {% if user.profile_music_id %}
+    <div class="d-flex flex-column align-items-center">
+      <img class="w-75" src="https://i.ytimg.com/vi/{{ user.profile_music_id }}/hqdefault.jpg" alt="">
+      <div class="text-center my-1">
+        <span>{{ user.profile_music_title }} - </span>
+        <span>{{ user.profile_music_channel }}</span>
+      </div>
+    </div>
+  {% else %}
+    <p>프로필 뮤직이 없습니다...</p>
+  {% endif %}
+</div>
+
 <hr>
 <a href="{% url 'accounts:index' %}">뒤로가기</a>
 

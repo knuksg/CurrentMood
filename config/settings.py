@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "imagekit",
     "googlemaps",
     # basic
+    "widget_tweaks",
     "django_bootstrap5",
     "django_extensions",
     "django.contrib.admin",

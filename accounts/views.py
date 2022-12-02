@@ -195,6 +195,7 @@ def popular(request):
     return render(request, "accounts/popular.html", context)
 
 
+
 def my_sharedmusiclist(request):
     return render(request, "accounts/my_sharedmusiclist.html")
 
@@ -203,3 +204,15 @@ def my_likedmusiclist(request):
 
 
     return render(request, "accounts/my_likedmusiclist.html")
+    
+def profile_music(request, pk):
+    user = User.objects.get(pk=pk)
+    if request.method == 'POST':
+        id = request.POST.get('id', '')
+        title = request.POST.get('title', '')
+        channel = request.POST.get('channel', '')
+        user.profile_music_id=id
+        user.profile_music_title=title
+        user.profile_music_channel=channel
+        user.save(update_fields=['profile_music_id', 'profile_music_title', 'profile_music_channel'])
+    return render(request, "accounts/profile_music.html")

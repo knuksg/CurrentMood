@@ -1,9 +1,39 @@
 html, 
-body, 
-#background { 
+body { 
   width: 100vw;
   min-height: 50vh;
   background-color: rgb(20, 20, 20);
   font-family:'Poppins';
   color : white;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.player {
+  display: flex;
+  justify-content: center;
+  position: relative;
+}
+
+.player img {
+  width: 30vh;
+}
+
+.player--write {
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1.5rem;
+}
+
+.box img {
+  object-fit: cover;
+  padding: 1rem;
+  width: 100%;
+}
+
+.icon {
+  position: fixed;
+  right: 0px;
 }
