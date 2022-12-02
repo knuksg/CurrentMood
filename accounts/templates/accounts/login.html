@@ -15,10 +15,15 @@
 	<form action="" method="POST" class="loginform">
 	{% csrf_token %}
 		<div class="loginform-info">
-			<input type="text" name="username" id="userId" placeholder="아이디" class="loginform__input">
-			<input type="password" name="password" placeholder="비밀번호" class="loginform__input">
+			아이디
+			<input type="text" name="username" id="userId" class="loginform__input">
+			비밀번호
+			<input type="password" name="password" class="loginform__input">
 			<div>
 				<button type="submit" class="loginform__button">로그인</button>
+			</div>
+			<div>
+				<button type="submit" class="loginform__button-signup"><a href="{% url 'accounts:signup' %}">회원가입</a></button>
 			</div>
 		</div>
 	</form>
