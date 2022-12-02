@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .models import Article, Place
-from .forms import ArticleForm
+from .models import *
+from .forms import ArticleForm, CommentForm
 from django.contrib.auth.decorators import login_required
 
 # 위치 api 구현
@@ -13,7 +13,13 @@ import json
 
 # Create your views here.
 def private(request):
-    return render(request, "articles/private.html")
+    articles = Article.objects.filter(song="라일락")
+    comment_form = CommentForm()
+    context = {
+        "articles": articles,
+        "comment_form": comment_form,
+    }
+    return render(request, "articles/private.html", context)
 
 
 def index(request):
@@ -24,6 +30,7 @@ def index(request):
     return render(request, "articles/index.html", context)
 
 
+@login_required
 def create(request):
     if request.method == "POST":
         form = ArticleForm(request.POST, request.FILES)
@@ -40,19 +47,27 @@ def create(request):
     return render(request, "articles/create.html", context)
 
 
+@login_required
 def detail(request, pk):
     article = Article.objects.get(pk=pk)
+    like = Like.objects.all()
+    comment_form = CommentForm()
     context = {
         "article": article,
+        "like": like,
+        "comments": article.comment_set.all(),
+        "comment_form": comment_form,
     }
     return render(request, "articles/detail.html", context)
 
 
+@login_required
 def delete(request, pk):
     Article.objects.get(pk=pk).delete()
     return redirect("articles:index")
 
 
+@login_required
 def update(request, pk):
     article = Article.objects.get(pk=pk)
     if request.method == "POST":
@@ -124,3 +139,26 @@ def public(request):
 
 def test(request):
     return render(request, "articles/test.html")
+
+
+@login_required
+def like(request, pk):
+
+    article = Article.objects.get(pk=pk)
+
+    if request.user in article.like_users.all():
+        article.like_users.remove(request.user)
+    else:
+        article.like_users.add(request.user)
+
+    return redirect("articles:detail", pk)
+
+
+def comment_create(request, pk):
+    article = Article.objects.get(pk=pk)
+    comment_form = CommentForm(request.POST)
+    if comment_form.is_valid():
+        comment = comment_form.save(commit=False)
+        comment.article = article
+        comment.save()
+    return redirect("articles:detail", article.pk)

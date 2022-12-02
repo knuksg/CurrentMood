@@ -1,8 +1,15 @@
-/*회원가입*/
+a {
+	color: inherit;
+	text-decoration: none;
+}
+a:hover {
+	color: inherit;
+}
+/* signup */
 .signup {
 	display: flex;
 	justify-content: center;
-	margin-top: 1em;
+	margin-top: 2.5em;
 	font-size: 2em;
 }
 .signupform {
@@ -23,14 +30,16 @@
 }
 .signupform-info {
 	display : flex;
+	width: 22rem;
 	flex-direction: column;
-	align-items: center;
+	align-items: start;
 	margin-bottom: 60px;
+	color: #ffff;
 }
 .signupform__input {
 	background-color: #ffff;
 	padding: 0.5rem 0.4rem;
-	margin: 0.5rem 0;
+	margin: 0.3rem 0 1.5rem 0;
 	width: 100%;
 	border-radius: 0.5rem;
 	border: 1px solid #0000;
@@ -39,16 +48,17 @@
 	background-color: #75037F;
 	color: #ffff;
 	border: none;
-	width: 12rem;
+	width: 22rem;
 	padding: 1em ;
 	border-radius: 2rem;
 	margin-top: 1em;
 }
-/*로그인*/
+
+/* login */
 .login {
 	display: flex;
 	justify-content: center;
-	margin-top: 1em;
+	margin-top: 2.5em;
 	font-size: 2em;
 }
 .loginform {
@@ -58,14 +68,16 @@
 
 .loginform-info {
 	display : flex;
+	width: 22rem;
 	flex-direction: column;
-	align-items: center;
+	align-items: start;
 	margin-bottom: 60px;
+	color: #ffff;
 }
 .loginform__input {
 	background-color: #ffff;
 	padding: 0.5rem 0.4rem;
-	margin: 0.5rem 0;
+	margin: 0.3rem 0 1.5rem 0;
 	width: 100%;
 	border-radius: 0.5rem;
 	border: 1px solid #0000;
@@ -74,8 +86,55 @@
 	background-color: #75037F;
 	color: #ffff;
 	border: none;
-	width: 12rem;
+	width: 22rem;
 	padding: 1em ;
 	border-radius: 2rem;
 	margin-top: 1em;
+}
+.loginform__button-signup {
+	background-color: #848085;
+	color: #ffff;
+	border: none;
+	width: 22rem;
+	padding: 1em ;
+	border-radius: 2rem;
+	margin-top: 1em;
+}
+
+@media screen and (max-width: 503px) {
+	.signupform-info,
+	.signupform__button,
+	.loginform-info,
+	.loginform__button,
+	.loginform__button-signup
+	 {
+		width: 70vw;
+	}
+}
+
+/* mypage */
+.container {
+	display: grid;
+	grid-template-columns: 1fr 2fr;
+	grid-template-rows: 200px;
+	margin: 1em none;
+	align-items: center;
+	text-align: center;
+	font-size: 3vw;
+	border-bottom: 2px solid #b9b5b5;
+}
+.user-info {
+	text-align: start;
+}
+.user-info__follow {
+	display: flex;
+}
+.user-info__follow>div {
+	margin-right: 2rem;
+}
+.mypage-buttons {
+	display: flex;
+	padding: 1em 0;
+	justify-content: space-evenly;
+	font-size: 3vw;
 }

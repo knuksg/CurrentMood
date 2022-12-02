@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import User
+from articles import models
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib import messages
@@ -194,14 +195,39 @@ def popular(request):
     return render(request, "accounts/popular.html", context)
 
 
+@login_required
+def my_sharedmusiclist(request):
+
+    return render(request, "accounts/my_sharedmusiclist.html")
+
+
+@login_required
+def my_likedmusiclist(request):
+
+    articles = request.user.like_article.all()
+    articles = articles.order_by("-pk")
+
+    context = {
+        "articles": articles,
+    }
+
+    return render(request, "accounts/my_likedmusiclist.html", context)
+
+
 def profile_music(request, pk):
     user = User.objects.get(pk=pk)
-    if request.method == 'POST':
-        id = request.POST.get('id', '')
-        title = request.POST.get('title', '')
-        channel = request.POST.get('channel', '')
-        user.profile_music_id=id
-        user.profile_music_title=title
-        user.profile_music_channel=channel
-        user.save(update_fields=['profile_music_id', 'profile_music_title', 'profile_music_channel'])
+    if request.method == "POST":
+        id = request.POST.get("id", "")
+        title = request.POST.get("title", "")
+        channel = request.POST.get("channel", "")
+        user.profile_music_id = id
+        user.profile_music_title = title
+        user.profile_music_channel = channel
+        user.save(
+            update_fields=[
+                "profile_music_id",
+                "profile_music_title",
+                "profile_music_channel",
+            ]
+        )
     return render(request, "accounts/profile_music.html")
