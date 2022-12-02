@@ -1,0 +1,2 @@
+def recommend():
+    return places
