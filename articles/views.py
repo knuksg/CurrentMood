@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from .models import Article, Place
+from .models import *
 from .forms import ArticleForm
 from django.contrib.auth.decorators import login_required
 
@@ -39,8 +39,11 @@ def create(request):
 
 def detail(request, pk):
     article = Article.objects.get(pk=pk)
+    like = Like.objects.all()
+
     context = {
         "article": article,
+        "like": like,
     }
     return render(request, "articles/detail.html", context)
 
@@ -123,6 +126,15 @@ def test(request):
 def like(request, pk):
 
     article = Article.objects.get(pk=pk)
+    # like = Like.objects.get(user=request.user)
+    # likesong = like.likesong_set.all()
+
+    # for song in likesong:
+    #     if article == song.article:
+    #         song.delete()
+    #         break
+    # else:
+    #     Likesong.objects.create(like=like, article=article)
 
     if request.user in article.like_users.all():
         article.like_users.remove(request.user)

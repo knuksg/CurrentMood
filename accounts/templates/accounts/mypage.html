@@ -40,23 +40,15 @@
 <hr>
 <div class="d-flex justify-content-evenly fs-1">
   <div>
-    <a href="{% url 'accounts:my_sharedmusiclist' %}"><i class="bi bi-music-note-beamed"></i></a>
+    <i class="bi bi-music-note-beamed"></i>
   </div>
   <div>
-    <i class="bi bi-chat-right-text-fill"></i>
+    <a href="{% url 'accounts:my_sharedmusiclist' %}"><i class="bi bi-chat-right-text-fill"></i></a>
   </div>
   <div>
-    <i class="bi bi-heart-fill"></i>
+    <a href="{% url 'accounts:my_likedmusiclist' %}"><i class="bi bi-heart-fill"></i></a>
   </div>
 </div>
-<hr>
-{% for article in user.article_set.all %}
-<p>
-  {{ forloop.counter }}
-  <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
-</p>
-{% endfor %}
-
 <hr>
 <a href="{% url 'accounts:index' %}">뒤로가기</a>
 
