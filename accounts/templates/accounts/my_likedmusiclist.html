@@ -20,10 +20,10 @@
 <div>
   <ul>
     <li class='fw-bold'>LIKE♥</li>
-      {{ article.like_users.all }}
-        <p>
-          
-        </p>
+    {% for article in articles %}
+      <p><img src="{% static 'image/album.png' %}" style="width:50px;">  {{ article.song  }}  {{ article.singer }} {{ article.title }}</p>
+    {% endfor %}
+
   </ul>
 </div>
 <hr>

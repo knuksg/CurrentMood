@@ -1,11 +1,63 @@
 {% extends 'main/base.html' %}
+{% load django_bootstrap5 %}
 {% load static %}
 
-{% block body %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+<link rel="stylesheet" href="{% static 'css/articles.css' %}">
+{% endblock style %}
 
-<h1>내 정보 페이지</h1>
+{% block body %}
+<div class="container">
+  <div>
+    {% if user.user_img %}
+    <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
+    {% else %}
+    <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
+    {% endif %}
+    <p class="fs-5 mt-1"><a href="{% url 'accounts:update' user.pk %}">정보수정</a></p>
+  </div>
+  <div class="user-info">
+    <p>{{ user.username }}</p>
+    <div class="user-info__follow">
+      <div><a href="{% url 'accounts:my_followlist' %}">팔로우</a> : {{ user.followings.count }}
+      </div> 
+      <div><a href="{% url 'accounts:my_followerlist' %}">팔로워</a> : {{ user.followers.count }}
+      </div>
+    </div>
+  </div>
+</div>
+<div class="mypage-buttons">
+  <div>
+    <a href="{% url 'accounts:profile_music' user.pk %}"><i class="bi bi-music-note-beamed"></i></a>
+  </div>
+  |
+  <div>
+    <a href="{% url 'accounts:my_sharedmusiclist' %}"><i class="bi bi-chat-right-text-fill"></i></a>
+  </div>
+  |
+  <div>
+    <a href="{% url 'accounts:my_likedmusiclist' %}"><i class="bi bi-heart-fill"></i></a>
+  </div>
+</div>
+<div class="d-flex justify-content-center">
+  {% if user.profile_music_id %}
+    <div class="d-flex flex-column align-items-center">
+      <img class="w-75" src="https://i.ytimg.com/vi/{{ user.profile_music_id }}/hqdefault.jpg" alt="">
+      <div class="text-center my-1">
+        <span>{{ user.profile_music_title }} - </span>
+        <span>{{ user.profile_music_channel }}</span>
+      </div>
+    </div>
+  {% else %}
+    <p>프로필 뮤직이 없습니다...</p>
+  {% endif %}
+</div>
+
 <hr>
-<div class='d-flex'>
+<a href="{% url 'accounts:index' %}">뒤로가기</a>
+
+{% comment %} <div class='d-flex'>
   <div>
     {% if user.user_img %}
     <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
@@ -32,40 +84,6 @@
       <p><a href="{% url 'accounts:my_followlist' %}">팔로우</a> : {{ user.followings.count }} | <a href="{% url 'accounts:my_followerlist' %}">팔로워</a> : {{ user.followers.count }}</p>
     </div>
   </div>
-</div>
-<p>이름 : {{ user.full_name }}</p>
-<p>거주지 : {{ user.address }}</p>
-<p>이메일 : {{ user.email }}</p>
-<a href="{% url 'accounts:update' user.pk %}">정보수정</a>
-<hr>
-<div class="d-flex justify-content-evenly fs-1">
-  <div>
-    <a href="{% url 'accounts:profile_music' user.pk %}"><i class="bi bi-music-note-beamed"></i></a>
-  </div>
-  <div>
-    <a href="{% url 'accounts:my_sharedmusiclist' %}"><i class="bi bi-chat-right-text-fill"></i></a>
-  </div>
-  <div>
-    <a href="{% url 'accounts:my_likedmusiclist' %}"><i class="bi bi-heart-fill"></i></a>
-  </div>
-</div>
-<hr>
-
-<div class="d-flex justify-content-center">
-  {% if user.profile_music_id %}
-    <div class="d-flex flex-column align-items-center">
-      <img class="w-75" src="https://i.ytimg.com/vi/{{ user.profile_music_id }}/hqdefault.jpg" alt="">
-      <div class="text-center my-1">
-        <span>{{ user.profile_music_title }} - </span>
-        <span>{{ user.profile_music_channel }}</span>
-      </div>
-    </div>
-  {% else %}
-    <p>프로필 뮤직이 없습니다...</p>
-  {% endif %}
-</div>
-
-<hr>
-<a href="{% url 'accounts:index' %}">뒤로가기</a>
+</div> {% endcomment %}
 
 {% endblock %}

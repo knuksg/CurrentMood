@@ -28,6 +28,7 @@ def index(request):
     return render(request, "articles/index.html", context)
 
 
+@login_required
 def create(request):
     if request.method == "POST":
         form = ArticleForm(request.POST, request.FILES)
@@ -44,11 +45,11 @@ def create(request):
     return render(request, "articles/create.html", context)
 
 
+@login_required
 def detail(request, pk):
     article = Article.objects.get(pk=pk)
     like = Like.objects.all()
     comment_form = CommentForm()
-
     context = {
         "article": article,
         "like": like,
@@ -58,11 +59,13 @@ def detail(request, pk):
     return render(request, "articles/detail.html", context)
 
 
+@login_required
 def delete(request, pk):
     Article.objects.get(pk=pk).delete()
     return redirect("articles:index")
 
 
+@login_required
 def update(request, pk):
     article = Article.objects.get(pk=pk)
     if request.method == "POST":
@@ -142,18 +145,10 @@ def test(request):
     return render(request, "articles/test.html")
 
 
+@login_required
 def like(request, pk):
 
     article = Article.objects.get(pk=pk)
-    # like = Like.objects.get(user=request.user)
-    # likesong = like.likesong_set.all()
-
-    # for song in likesong:
-    #     if article == song.article:
-    #         song.delete()
-    #         break
-    # else:
-    #     Likesong.objects.create(like=like, article=article)
 
     if request.user in article.like_users.all():
         article.like_users.remove(request.user)
