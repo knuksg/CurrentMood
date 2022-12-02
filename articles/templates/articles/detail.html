@@ -19,8 +19,8 @@
     {% else %}
       <a href="{% url 'articles:like' article.pk %}" class="btn btn-outline-danger btn-sm">♥ {{ article.like_users.count }} </a>
     {% endif %}
-  </div>  
-  {{ like }}
+  </div>
+
 
   <!-- 버튼 -->
   <div class="mt-3">
