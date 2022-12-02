@@ -14,4 +14,5 @@ urlpatterns = [
     path("locations", views.location_get, name="locations"),
     path("public/", views.public, name="public"),
     path("test/", views.test, name="test"),
+    path("<int:pk>/comments/", views.comment_create, name="comment_create"),
 ]

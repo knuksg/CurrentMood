@@ -1,5 +1,6 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% load django_bootstrap5 %}
 
 {% block body %}
   {% comment %} 플레이어 {% endcomment %}
@@ -15,16 +16,37 @@
   <hr>
 
   {% comment %} 박스 {% endcomment %}
-  <div class="private-playButton bg-info p-play">
+  <div class="playButton bg-info p-play">
     <div class="text-center">
       <p>재생 버튼</p>
     </div>
   </div>
 
-  <hr>
+  <div class="toggleBox">
+
+    <div class="toggleBtn1" data-bs-toggle="collapse" data-bs-target=".collapseExample">
+      토글1
+    </div>
+
+    <div class="toggleBtn2 hidden" data-bs-toggle="collapse" data-bs-target=".collapseExample">
+      <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+    </div>
+
+    <div class="collapse collapseExample" style="z-index: 3;">
+      <div>
+        {% for article in articles %}
+          {{ article.user.id }}
+          {{ article.song }}
+          {{ article.content }}
+          <hr>
+        {% endfor %}  
+      </div>
+    </div>
+  </div>
+
 
   {% comment %} 캐러셀 {% endcomment %}
-  <div class="private-carousel bg-info">
+  <div class="carousel bg-info">
     <div class="mainSlide">
       <div class="box">
         <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
@@ -50,17 +72,46 @@
     </div>
   </div>
 
-  <hr>
-
   {% comment %} 댓글 {% endcomment %}
-  <div class="private-comment bg-info fixed-bottom">
+  {% comment %} <div class="private-comment bg-info fixed-bottom">
     <div class="text-center">
       <p>댓글</p>
     </div>
   </div>
+   {% endcomment %}
+
 {% endblock body %}
 
 {% block script %}
+  <!-- CDN axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const toggleBtn = document.querySelector('.toggleBtn1');
+    toggleBtn.addEventListener('click', function(e){
+      axios({
+        method: 'get',
+        url: '/articles/index',
+        data : new
+      })
+    })
+  </script>
+
+  <script>
+    let toggleBtn1 = document.querySelector('.toggleBtn1')
+    toggleBtn1.addEventListener("click", function(){
+      document.querySelector('.carousel').classList.toggle("hidden");
+      toggleBtn1.classList.toggle("hidden");
+      toggleBtn2.classList.toggle("hidden");
+    });
+  </script>
+  <script>
+    let toggleBtn2 = document.querySelector('.toggleBtn2')
+    toggleBtn2.addEventListener("click", function(){
+      document.querySelector('.carousel').classList.toggle("hidden");
+      document.querySelector('.toggleBtn1').classList.toggle("hidden");
+      toggleBtn2.classList.toggle("hidden");
+    });
+  </script>
   <script>
     $(function(){
       $('.mainSlide').slick({
