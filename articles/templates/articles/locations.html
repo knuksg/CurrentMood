@@ -2,46 +2,44 @@
 {% block body %}
 <p id="result"></p>
 <p>{{geocoded}} 인근</p>
-<P>{{location}}</P>
-<form id="addressSend" action="#" method="GET">
-  <input id="addressSendInput" type="hidden" name="addressHtml" value="">
-  <button type="submit">submit</button>
-</form>
-
 <script>
+
+var csrf_token = $('[name=csrfmiddlewaretoken]').val();
 var options = {
-  enableHighAccuracy: true,
-  timeout: 5000,
+  enableHighAccuracy: false,
+  timeout: 10000,
   maximumAge: 0
 };
 
 function success(pos) {
   var crd = pos.coords;
   const result = document.querySelector('#result')
-  result.innerHTML= [crd.latitude,crd.longitude]
   // 1. form.setAttribute를 사용할 수 있다.
   // 2. axios를 사용해 데이터를 보내준다.
-  const usrCrd = [crd.latitude,crd.longitude]
+  // 3. xmlHttpRequest를 사용한다.
+  
+  // const usrCrd = [crd.latitude,crd.longitude]
+  // result.innerHTML= [crd.latitude,crd.longitude]
+  const usrCrd = [33.23434,126.34232] // 임시위치
+  result.innerHTML = [usrCrd[0],usrCrd[1]] // 화면에 위치 표시
+  // 요청전송
+  const request = new XMLHttpRequest;
+  request.open('POST',`http://127.0.0.1:8000/locations/`)
+  // request.send() GET 방식
+  request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  request.send(`userLocation=${usrCrd}`)
+  request.onreadystatechange=function(event){
+    console.log('activated')
+  }
 }
 
 function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 }
 
-navigator.geolocation.getCurrentPosition(success,error)
-
-
-axios({
-  url: '{http://127.0.0.1:8000/locations}',
-  method: 'get', 
-  data: { 
-    userLoc:userLoc
-  }
-})
-.then(console.log('location getted'));
-
+navigator.geolocation.getCurrentPosition(success,error,options)
 
 </script>
 <!-- axios 사용 -->
-<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 {% endblock body %}

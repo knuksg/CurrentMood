@@ -26,6 +26,7 @@ class Article(models.Model):
 
 class Place(models.Model):
     name = models.TextField()
+    # user를 foreignKey로 가져와야한다.
 
 
 class Like(models.Model):
