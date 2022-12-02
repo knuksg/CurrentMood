@@ -43,13 +43,14 @@
     <a href="{% url 'accounts:profile_music' user.pk %}"><i class="bi bi-music-note-beamed"></i></a>
   </div>
   <div>
-    <i class="bi bi-chat-right-text-fill"></i>
+    <a href="{% url 'accounts:my_sharedmusiclist' %}"><i class="bi bi-chat-right-text-fill"></i></a>
   </div>
   <div>
-    <i class="bi bi-heart-fill"></i>
+    <a href="{% url 'accounts:my_likedmusiclist' %}"><i class="bi bi-heart-fill"></i></a>
   </div>
 </div>
 <hr>
+
 <div class="d-flex justify-content-center">
   {% if user.profile_music_id %}
     <div class="d-flex flex-column align-items-center">

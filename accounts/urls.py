@@ -17,6 +17,7 @@ urlpatterns = [
     path(
         "mypage/profile_music/<int:pk>/", views.profile_music, name="profile_music"
     ),
+    path("mypage/likedmusiclist/", views.my_likedmusiclist, name="my_likedmusiclist"),
     path("<int:pk>/", views.detail, name="detail"),
     path("<int:pk>/update/", views.update, name="update"),
     path("<int:pk>/follow/", views.follow, name="follow"),
