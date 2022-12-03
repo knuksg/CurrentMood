@@ -10,6 +10,7 @@ from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
+from main.models import Song
 
 # Create your views here.
 
@@ -216,18 +217,17 @@ def my_likedmusiclist(request):
 
 def profile_music(request, pk):
     user = User.objects.get(pk=pk)
-    if request.method == "POST":
-        id = request.POST.get("id", "")
-        title = request.POST.get("title", "")
-        channel = request.POST.get("channel", "")
-        user.profile_music_id = id
-        user.profile_music_title = title
-        user.profile_music_channel = channel
-        user.save(
-            update_fields=[
-                "profile_music_id",
-                "profile_music_title",
-                "profile_music_channel",
-            ]
-        )
+    if request.method == 'POST':
+        vidid = request.POST.get('vidid', '')
+        title = request.POST.get('title', '')
+        channel = request.POST.get('channel', '')
+
+        try:
+            song = Song.objects.get(vidid=vidid)
+            user.profile_music = song
+            user.save(update_fields=['profile_music'])
+        except:
+            song = Song.objects.create(vidid=vidid, title=title, channel=channel)
+            user.profile_music = song
+            user.save(update_fields=['profile_music'])
     return render(request, "accounts/profile_music.html")
