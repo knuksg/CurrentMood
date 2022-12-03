@@ -20,13 +20,13 @@
 <div>
   <h3 class='fw-bold'>현재 설정된 프로필 뮤직</h3>
   <div id="profile_music" class="profile-music">
-    {% if user.profile_music_id %}
-    <div id="{{ user.profile_music_id }}" class="search-item d-flex gap-3">
-      <img src="https://i.ytimg.com/vi/{{ user.profile_music_id }}/default.jpg" alt="">
+    {% if user.profile_music.vidid %}
+    <div id="{{ user.profile_music.vidid }}" class="search-item d-flex gap-3">
+      <img src="https://i.ytimg.com/vi/{{ user.profile_music.vidid }}/default.jpg" alt="">
       <div>
-        <h5>{{ user.profile_music_title }}</h5>
+        <h5>{{ user.profile_music.title }}</h5>
         <div class="d-flex gap-3">
-          <p>{{ user.profile_music_channel }}</p>
+          <p>{{ user.profile_music.channel }}</p>
         </div>
       </div>
     </div>

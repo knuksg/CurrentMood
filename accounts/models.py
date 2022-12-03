@@ -23,7 +23,7 @@ class User(AbstractUser):
     followings = models.ManyToManyField(
         "self", symmetrical=False, related_name="followers"
     )
-    profile_music = models.ForeignKey('main.Song', on_delete=models.CASCADE, default=None)
+    profile_music = models.ForeignKey('main.Song', on_delete=models.CASCADE, default=None, null=True)
 
     @property
     def full_name(self):
