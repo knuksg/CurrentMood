@@ -1,43 +1,50 @@
 @import url('https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.min.css');
+:root {
+  --text-color: #dddddd;
+  --background-color: #0e0e0e00;
+}
 * {
-  margin: 0px;
-  padding: 0px;
   box-sizing: border-box;
   font-family: 'NanumSquareRound', sans-serif;
+  list-style: none;
 }
-.nav {
+a {
+  text-decoration: none;
+  color: inherit;
+}
+a:hover {
+	color: inherit;
+}
+.navbar {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  /* 요소의 최소 너비 지정, height 속성 무시
-    vh단위는 브라우저 안쪽 높이(window.innerHeight)을 기준으로
-    설정된다. 하지만 태블릿이나, 모바일의 경우에는 뷰 포트에 따라
-    맞춰짐*/
-  min-height: 8vh;
-  background-color: #000000;
-  font-family: "Poppins", sans-serif;
+  padding: 8px 12px;
+  background-color: var(--background-color);
+}
+.navbar a {
+  text-decoration: none;
 }
 .location {
   display: block;
   font-size: 1rem;
-  color: #ffffff;
+  color: var(--text-color);
 }
-.location>img {
+.location img {
   width: 1rem;
   height: 1rem;
 }
-.nav__logo>a {
-  color: rgb(226, 226, 226);
+.navbar__logo {
+  color: var(--text-color);
   text-transform: uppercase;
   /* 각 글자 2px씩 간격을 줌*/
   letter-spacing: 2px;
-  font-size: 18px;
-  text-decoration: none;
+  font-size: 1rem;
 }
-.nav__logo>i {
+.navbar__logo i {
   color : #ea0aee;
 }
-.nav-links {
+.navbar__links {
   width: 30%;
   display: flex;
   justify-content: space-evenly;
@@ -45,87 +52,51 @@
   margin-bottom: 0;
   padding: 0;
 }
-.nav-links li {
-  list-style: none;
-}
-.nav-links a {
-  color: rgb(226, 226, 226);
-  text-decoration: none;
+.navbar__links li {
+  color: var(--text-color);
   letter-spacing: 3px;
   font-weight: bold;
   font-size: 14px;
+  padding: 8px 12px;
 }
-.burger {
+.navbar__links li:hover {
+  color: #ffff;
+}
+.navbar__togleBtn {
   display: none;
-  cursor: pointer;
-}
-.burger div {
-  width: 25px;
-  height: 3px;
-  background-color: #ffffff;
-  margin: 5px;
-  transition: all 0.3s ease;
 }
 
-/* @media screen and (max-width: 1024px) {
-  .nav-links {
-    width: 60%;
-  }
-} */
-
-@media screen and (max-width: 1024px) {
-  body {
-    overflow-x: hidden;
-  }
-  .nav__logo {
-    display: none;
-  }
-  .location {
-    display: block;
-    font-size: 1rem;
-    color: #ffffff;
-  }
-  .location>img {
-    width: 1rem;
-    height: 1rem;
-  }
-  .nav-links {
-    position: absolute;
-    top: 8vh;
-    right: 0;
-    height: 92vh;
-    background-color: #000000;
-    flex-direction: column;
-    align-items: center;
-    width: 50%;
-    transform: translateX(100%);
-  }
-  .nav-links li {
-    opacity: 0;
-  }
-  .burger {
-    display: block;
-  }
-  .nav-active {
-    transform: translateX(0%);
-  }
-  @keyframes navLinkFade {
-    from {
-      opacity: 0;
-      transform: translateX(5px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
+@media screen and (max-width: 950px) {
+.navbar {
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 8px 12px;
 }
-.toggle .line1 {
-  transform: rotate(-45deg) translate(-5px, 6px);
+.navbar__logo {
+  display: none;
 }
-.toggle .line2 {
-  opacity: 0;
+.navbar__top {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 5vw;
 }
-.toggle .line3 {
-  transform: rotate(45deg) translate(-5px, -6px);
+.navbar__links {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.navbar__links li {
+  width: 100%;
+  text-align: center;
+}
+.navbar__togleBtn {
+  display: block;
+  color: var(--text-color);
+  font-size: 20px;
+}
+.navbar__links.active {
+  display: flex;
+}
 }

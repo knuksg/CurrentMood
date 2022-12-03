@@ -33,6 +33,39 @@ class Migration(migrations.Migration):
                 ('singer', models.CharField(max_length=30)),
                 ('created_at', models.DateTimeField(auto_now_add=True)),
                 ('image', imagekit.models.fields.ProcessedImageField(blank=True, upload_to='images/')),
+                ('like_users', models.ManyToManyField(related_name='like_article', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Like',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Place',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('name', models.TextField()),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Likesong',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('article', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='articles.article')),
+                ('like', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='articles.like')),
+            ],
+        ),
+        migrations.CreateModel(
+            name='Comment',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('content', models.TextField()),
+                ('created_at', models.DateTimeField(auto_now_add=True)),
+                ('article', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='articles.article')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
