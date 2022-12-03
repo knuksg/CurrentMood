@@ -1,39 +1,169 @@
 {% extends 'main/base.html' %}
 {% load static %}
+{% load django_bootstrap5 %}
 
 {% block body %}
   {% comment %} 플레이어 {% endcomment %}
-  <div class="d-flex justify-content-center">
-    <img src="{% static 'image/album.png' %}" alt="" style="width: 30vh;">
+  <div class="player">
+    <img src="{% static 'image/album.png' %}">
+    <div class="player--write">
+      <a href="{% url 'articles:index' %}">
+        <h3><i class="bi bi-pencil-square"></i></h3>
+      </a>
+    </div>
   </div>
 
   <hr>
 
   {% comment %} 박스 {% endcomment %}
-  <div class="private-playButton bg-info p-play">
+  <div class="playButton bg-info p-play">
     <div class="text-center">
       <p>재생 버튼</p>
     </div>
   </div>
 
-  <hr>
+  <div class="toggleBox">
 
-  {% comment %} 캐러셀 {% endcomment %}
-  <div class="private-carousel bg-info">
-    <div class="text-center">
-      <p>이미지 캐러셀</p>
+    <div class="toggleBtn1" data-bs-toggle="collapse" data-bs-target=".collapseExample">
+      토글1
+    </div>
+
+    <div class="toggleBtn2 hidden" data-bs-toggle="collapse" data-bs-target=".collapseExample">
+      <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
+    </div>
+
+    <div class="collapse collapseExample" style="z-index: 3;">
+      <div>
+        {% for article in articles %}
+          {{ article.user.id }}
+          {{ article.song }}
+          {{ article.content }}
+          <hr>
+        {% endfor %}  
+      </div>
     </div>
   </div>
 
-  <hr>
+
+  {% comment %} 캐러셀 {% endcomment %}
+  <div class="carousel bg-info">
+    <div class="mainSlide">
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+      <div class="box">
+        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+      </div>
+    </div>
+  </div>
 
   {% comment %} 댓글 {% endcomment %}
-  <div class="private-comment bg-info fixed-bottom">
+  {% comment %} <div class="private-comment bg-info fixed-bottom">
     <div class="text-center">
       <p>댓글</p>
     </div>
   </div>
+   {% endcomment %}
 
 {% endblock body %}
 
-{% block script %}{% endblock script %}
+{% block script %}
+  <!-- CDN axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const toggleBtn = document.querySelector('.toggleBtn1');
+    toggleBtn.addEventListener('click', function(e){
+      axios({
+        method: 'get',
+        url: '/articles/index',
+        data : new
+      })
+    })
+  </script>
+
+  <script>
+    let toggleBtn1 = document.querySelector('.toggleBtn1')
+    toggleBtn1.addEventListener("click", function(){
+      document.querySelector('.carousel').classList.toggle("hidden");
+      toggleBtn1.classList.toggle("hidden");
+      toggleBtn2.classList.toggle("hidden");
+    });
+  </script>
+  <script>
+    let toggleBtn2 = document.querySelector('.toggleBtn2')
+    toggleBtn2.addEventListener("click", function(){
+      document.querySelector('.carousel').classList.toggle("hidden");
+      document.querySelector('.toggleBtn1').classList.toggle("hidden");
+      toggleBtn2.classList.toggle("hidden");
+    });
+  </script>
+  <script>
+    $(function(){
+      $('.mainSlide').slick({
+        dots: false,
+        infinite: false,
+        speed: 800,
+        slidesToShow: 7,
+        slidesToScroll: 7,
+        infinite: true,
+        prevArrow : "<div class='slick-prev carousel-control-prev' style='position: absolute; left: .2rem; z-index: 2;'><h1><</h1></div>",
+        nextArrow : "<div class='slick-next carousel-control-next' style='position: absolute; right: .2rem; z-index: 2;'><h1>></h1></div>",        
+        responsive: [
+          {
+            breakpoint: 1440,
+            settings: {
+              slidesToShow: 6,
+              slidesToScroll: 6,
+            }
+          },
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 5,
+              slidesToScroll: 5,
+            }
+          },
+          {
+            breakpoint: 860,
+            settings: {
+              slidesToShow: 4,
+              slidesToScroll: 4
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2
+            }
+          }
+          // You can unslick at a given breakpoint now by adding:
+          // settings: "unslick"
+          // instead of a settings object
+        ]
+      });
+    });
+  </script>
+{% endblock script %}

@@ -1,16 +1,25 @@
 from django.shortcuts import render, redirect
-from .models import Article, Place
-from .forms import ArticleForm
+from .models import *
+from .forms import ArticleForm, CommentForm
 from django.contrib.auth.decorators import login_required
 
 # 위치 api 구현
 from .gmap import geocoding
+from .place_choose import choose_location
 import requests
 import os
+import pprint
+import json
 
 # Create your views here.
 def private(request):
-    return render(request, "articles/private.html")
+    articles = Article.objects.filter(song="라일락")
+    comment_form = CommentForm()
+    context = {
+        "articles": articles,
+        "comment_form": comment_form,
+    }
+    return render(request, "articles/private.html", context)
 
 
 def index(request):
@@ -21,6 +30,7 @@ def index(request):
     return render(request, "articles/index.html", context)
 
 
+@login_required
 def create(request):
     if request.method == "POST":
         form = ArticleForm(request.POST, request.FILES)
@@ -37,19 +47,27 @@ def create(request):
     return render(request, "articles/create.html", context)
 
 
+@login_required
 def detail(request, pk):
     article = Article.objects.get(pk=pk)
+    like = Like.objects.all()
+    comment_form = CommentForm()
     context = {
         "article": article,
+        "like": like,
+        "comments": article.comment_set.all(),
+        "comment_form": comment_form,
     }
     return render(request, "articles/detail.html", context)
 
 
+@login_required
 def delete(request, pk):
     Article.objects.get(pk=pk).delete()
     return redirect("articles:index")
 
 
+@login_required
 def update(request, pk):
     article = Article.objects.get(pk=pk)
     if request.method == "POST":
@@ -67,6 +85,7 @@ def update(request, pk):
 
 
 def location_get(request):
+    print(request.POST.get("userLocation"))
     # 위치 정보 가져오기 : google geolocation api 요청
     # mac wifi주소를 가져올 수 없는 경우, web geolocation api 정확도가 더 높다.
     gmap_api_key = os.getenv("gmap_api")
@@ -95,12 +114,14 @@ def location_get(request):
         },
     ).json()
     coords = location["location"]
-    # geocoding : 결과 중 첫번째 위치를 선정한다.
-    geocoded = geocoding(coords["lat"], coords["lng"])
-    # Place 테이블에 geocodinge된 위치 값을 저장한다.
-    place_name = Place.objects.create(
-        name=geocoded
-    )  # table articles_place has no column named name
+    # user가 없는 경우 : 먼 거리의 장소를 보여준다.
+    user_loc = choose_location(coords["lat"], coords["lng"])["user_loc"]
+    geocoded = choose_location(coords["lat"], coords["lng"])["geocoded"]
+    # Place 테이블에 geocoding된 위치 값을 저장한다.
+    for i in user_loc:
+        place_location = Place.objects.create(name=i)
+    # user가 있는 경우
+    ###
     context = {
         "geocoded": geocoded,
     }
@@ -118,3 +139,26 @@ def public(request):
 
 def test(request):
     return render(request, "articles/test.html")
+
+
+@login_required
+def like(request, pk):
+
+    article = Article.objects.get(pk=pk)
+
+    if request.user in article.like_users.all():
+        article.like_users.remove(request.user)
+    else:
+        article.like_users.add(request.user)
+
+    return redirect("articles:detail", pk)
+
+
+def comment_create(request, pk):
+    article = Article.objects.get(pk=pk)
+    comment_form = CommentForm(request.POST)
+    if comment_form.is_valid():
+        comment = comment_form.save(commit=False)
+        comment.article = article
+        comment.save()
+    return redirect("articles:detail", article.pk)

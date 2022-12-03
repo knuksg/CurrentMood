@@ -1,7 +1,7 @@
+// 네비게이션 햄버거
 const burger = document.querySelector(".burger");
 const nav = document.querySelector(".nav-links");
 const navlinks = document.querySelectorAll(".nav-links li");
-
 
 const navAnimation = () => {
   navlinks.forEach((link, index) => {
@@ -31,10 +31,6 @@ const navSlide = () => {
   burger.addEventListener("click", handleNav);
 };
 
-
-
-
-
 const setNavTransition = (width) => {
   if (width > 768) {
     nav.style.transition = "";
@@ -48,9 +44,6 @@ const handleResize = () => {
   setNavTransition(width);
 };
 
-
-
-
 const init = () => {
   // Toggle Nav
   window.addEventListener("resize", handleResize);
@@ -58,3 +51,6 @@ const init = () => {
 };
 
 init();
+
+
+// 마이페이지 라디오버튼

@@ -6,7 +6,10 @@ class ArticleForm(forms.ModelForm):
     class Meta:
         model = Article
         fields = "__all__"
-        exclude = ("user",)
+        exclude = (
+            "user",
+            "like_users",
+        )
         labels = {
             "title": "사연 제목",
             "content": "사연 내용",
@@ -15,3 +18,35 @@ class ArticleForm(forms.ModelForm):
             "singer": "가수",
             "image": "이미지",
         }
+
+
+# articles/forms.py
+
+from django import forms
+from .models import Article, Comment
+
+
+class ArticleForm(forms.ModelForm):
+    class Meta:
+        model = Article
+        fields = "__all__"
+        labels = {
+            "title": "제목",
+            "content": "내용",
+            "image": "이미지",
+        }
+
+
+class CommentForm(forms.ModelForm):
+    content = forms.CharField(
+        label="",
+        widget=forms.TextInput(
+            attrs={
+                "placeholder": "댓글을 남겨주세요.",
+            }
+        ),
+    )
+
+    class Meta:
+        model = Comment
+        fields = ["content"]

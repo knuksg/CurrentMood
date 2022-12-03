@@ -1,11 +1,121 @@
 {% extends 'main/base.html' %}
+{% load django_bootstrap5 %}
 {% load static %}
 
-{% block body %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+<link rel="stylesheet" href="{% static 'css/articles.css' %}">
+{% endblock style %}
 
-<h1>내 정보 페이지</h1>
+{% block body %}
+<div class="container">
+  <div>
+    {% if user.user_img %}
+    <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
+    {% else %}
+    <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
+    {% endif %}
+    <p class="fs-5 mt-1"><a href="{% url 'accounts:update' user.pk %}">정보수정</a></p>
+  </div>
+  <div class="user-info">
+    <p>{{ user.username }}</p>
+    <div class="user-info__follow">
+      <div><a href="{% url 'accounts:my_followlist' %}">팔로우</a> : {{ user.followings.count }}
+      </div> 
+      <div><a href="{% url 'accounts:my_followerlist' %}">팔로워</a> : {{ user.followers.count }}
+      </div>
+    </div>
+  </div>
+</div>
+<form class="form_radio_btn" id="radioform">
+  <div>
+    <input id="radio1" type="radio" name="menu" value="" checked>
+    <label for="radio1"><i class="bi bi-music-note-beamed"></i></label>
+  </div>
+  |
+  <div>
+    <input id="radio2" type="radio" name="menu" value="">
+    <label for="radio2"><i class="bi bi-chat-right-text-fill"></i></label>
+  </div>
+  |
+  <div>
+   <input id="radio3" type="radio" name="menu" value="">
+   <label for="radio3"><i class="bi bi-heart-fill"></i></label>
+  </div>
+</form>
+
+
+<div class="card-big-box" id="cab1">
+  {% if user.profile_music_id %}
+    <div class="d-flex flex-column align-items-center">
+      <img class="w-75" src="https://i.ytimg.com/vi/{{ user.profile_music_id }}/hqdefault.jpg" alt="">
+      <div class="text-center my-1">
+        <span>{{ user.profile_music_title }} - </span>
+        <span>{{ user.profile_music_channel }}</span>
+      </div>
+    </div>
+  {% else %}
+    <p>프로필 뮤직이 없습니다...</p>
+  {% endif %}
+</div>
+
+
+<div class="card-big-box" id="cab2" style="display: none;">
+  <ul>
+    <li class='fw-bold'>Music list</li>
+      {% for article in user.article_set.all %}
+        <p>
+          <img src="{% static 'image/album.png' %}" style="width:50px;">  |  {{ article.song }}  |  {{ article.singer }}  |  <a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a>
+        </p>
+      {% endfor %}
+  </ul>
+</div>
+
 <hr>
-<div class='d-flex'>
+<a href="{% url 'accounts:index' %}">뒤로가기</a>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+document.getElementById('radioform').addEventListener("click",  function() {
+  var check_id = Array.from(radioform).find(radio => radio.checked).getAttribute('id').replace('radio', '');
+  console.log(check_id)
+  var radios = document.getElementsByName('menu');
+  for (var i=1; i<=radios.length; i++)
+  {
+      // 체크된 라디오가 현재 인덱스의 id와 같다면
+      // -> show
+      if (check_id === String(i)) {
+      document.querySelector('#cab'+String(i)).setAttribute('style', 'display: block')
+      }
+      // 다르다면
+      // -> hide
+      else {
+      document.querySelector('#cab'+String(i)).setAttribute('style', 'display: none')
+      }
+  }
+  })
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{% comment %} <div class='d-flex'>
   <div>
     {% if user.user_img %}
     <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
@@ -32,39 +142,6 @@
       <p><a href="{% url 'accounts:my_followlist' %}">팔로우</a> : {{ user.followings.count }} | <a href="{% url 'accounts:my_followerlist' %}">팔로워</a> : {{ user.followers.count }}</p>
     </div>
   </div>
-</div>
-<p>이름 : {{ user.full_name }}</p>
-<p>거주지 : {{ user.address }}</p>
-<p>이메일 : {{ user.email }}</p>
-<a href="{% url 'accounts:update' user.pk %}">정보수정</a>
-<hr>
-<div class="d-flex justify-content-evenly fs-1">
-  <div>
-    <a href="{% url 'accounts:profile_music' user.pk %}"><i class="bi bi-music-note-beamed"></i></a>
-  </div>
-  <div>
-    <i class="bi bi-chat-right-text-fill"></i>
-  </div>
-  <div>
-    <i class="bi bi-heart-fill"></i>
-  </div>
-</div>
-<hr>
-<div class="d-flex justify-content-center">
-  {% if user.profile_music_id %}
-    <div class="d-flex flex-column align-items-center">
-      <img class="w-75" src="https://i.ytimg.com/vi/{{ user.profile_music_id }}/hqdefault.jpg" alt="">
-      <div class="text-center my-1">
-        <span>{{ user.profile_music_title }} - </span>
-        <span>{{ user.profile_music_channel }}</span>
-      </div>
-    </div>
-  {% else %}
-    <p>프로필 뮤직이 없습니다...</p>
-  {% endif %}
-</div>
-
-<hr>
-<a href="{% url 'accounts:index' %}">뒤로가기</a>
+</div> {% endcomment %}
 
 {% endblock %}

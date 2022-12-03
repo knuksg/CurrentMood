@@ -19,7 +19,26 @@ class Article(models.Model):
         format="JPEG",
         options={"quality": 90},
     )
+    like_users = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name="like_article"
+    )
 
 
 class Place(models.Model):
     name = models.TextField()
+    # user를 foreignKey로 가져와야한다.
+
+
+class Like(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+
+
+class Likesong(models.Model):
+    like = models.ForeignKey(Like, on_delete=models.CASCADE)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)
+
+
+class Comment(models.Model):
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    article = models.ForeignKey(Article, on_delete=models.CASCADE)

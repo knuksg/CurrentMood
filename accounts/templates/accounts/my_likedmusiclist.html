@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block body %}
+
+<h1>좋아요리스트 페이지</h1>
+<hr>
+<h1 class="fw-bold mt-3">  
+  <span>
+    {% if user.user_img %}
+    <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
+    {% else %}
+    <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
+    {% endif %}
+  </span>
+  {{ user.username }}님이 좋아요한 노래들
+</h1>
+
+<hr>
+<div>
+  <ul>
+    <li class='fw-bold'>LIKE♥</li>
+    {% for article in articles %}
+      <p><img src="{% static 'image/album.png' %}" style="width:50px;">  {{ article.song  }}  {{ article.singer }} {{ article.title }}</p>
+    {% endfor %}
+
+  </ul>
+</div>
+<hr>
+<a href="{% url 'accounts:mypage' %}">뒤로가기</a>
+
+{% endblock %}

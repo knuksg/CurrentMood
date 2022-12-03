@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from .models import User
+from articles import models
 from .forms import CustomUserCreationForm, CustomUserChangeForm
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib import messages
@@ -193,6 +194,25 @@ def popular(request):
     }
 
     return render(request, "accounts/popular.html", context)
+
+
+@login_required
+def my_sharedmusiclist(request):
+
+    return render(request, "accounts/my_sharedmusiclist.html")
+
+
+@login_required
+def my_likedmusiclist(request):
+
+    articles = request.user.like_article.all()
+    articles = articles.order_by("-pk")
+
+    context = {
+        "articles": articles,
+    }
+
+    return render(request, "accounts/my_likedmusiclist.html", context)
 
 
 def profile_music(request, pk):
