@@ -46,17 +46,18 @@
 
 
 <div class="card-big-box" id="cab1">
-  {% if user.profile_music_id %}
-    <div class="d-flex flex-column align-items-center">
-      <img class="w-75" src="https://i.ytimg.com/vi/{{ user.profile_music_id }}/hqdefault.jpg" alt="">
-      <div class="text-center my-1">
-        <span>{{ user.profile_music_title }} - </span>
-        <span>{{ user.profile_music_channel }}</span>
-      </div>
+  <div class="d-flex flex-column align-items-center">
+  {% if user.profile_music %}
+    <img class="w-75" src="https://i.ytimg.com/vi/{{ user.profile_music.vidid }}/hqdefault.jpg" alt="">
+    <div class="text-center my-1">
+      <span>{{ user.profile_music.title }} - </span>
+      <span>{{ user.profile_music.channel }}</span>
     </div>
   {% else %}
     <p>프로필 뮤직이 없습니다...</p>
   {% endif %}
+    <a href="{% url 'accounts:profile_music' user.pk %}">프로필 뮤직 수정하기</a>
+  </div>
 </div>
 
 
