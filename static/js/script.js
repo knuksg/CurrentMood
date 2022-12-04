@@ -1,9 +1,13 @@
 // 네비게이션 햄버거
 const toggleBtn = document.querySelector('.navbar__togleBtn');
 const links = document.querySelector('.navbar__links');
+const close_ = document.querySelector('.navbar__togleBtn--close');
+const open_ = document.querySelector('.navbar__togleBtn--open');
 
 toggleBtn.addEventListener('click', () => {
     links.classList.toggle('active');
+    close_.classList.toggle('active');
+    open_.classList.toggle('active');
 });
 
 // 마이페이지 라디오버튼

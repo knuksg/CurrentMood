@@ -36,33 +36,30 @@
 
         <div class="navbar__top">
           <div class="location">
-            <img src="{% static 'image/locationupdate.jpg' %}" alt="locationicon">
+            <i class="bi bi-geo-alt"></i>
             블루보틀 역삼 카페
           </div>
           <div class="navbar__togleBtn">
-            <a href="#">
+            <a href="#" class="navbar__togleBtn--open">
               <i class="fa-sharp fa-solid fa-bars"></i>
             </a>
+            <a href="#" class="navbar__togleBtn--close">
+              <i class="fa-sharp fa-solid fa-xmark"></i>
+            </a>
           </div>
-        </div>
-      
-
-        
+        </div>    
 
         <ul class="navbar__links">
-          <li><a href="{% url 'articles:private' %}">홈</a></li>
+          <li><a href="{% url 'articles:private' %}"><i class="fa-sharp fa-solid fa-house"></i> 홈</a></li>
           {% if request.user.is_authenticated %}
-          <li><a href="#">보관함</a></li>
-          <li><a href="{% url 'accounts:mypage' %}">내 정보</a></li>
-          <li><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
+          <li><a href="#"><i class="bi bi-music-note-list"></i> 보관함</a></li>
+          <li><a href="{% url 'accounts:mypage' %}"><i class="fa-solid fa-user"></i> 내 정보</a></li>
+          <li class="navbar-logout"><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
           {% else %}
           <li><a href="{% url 'accounts:login' %}">로그인</a></li>
           <li><a href="{% url 'accounts:signup' %}">회원가입</a></li>
           {% endif %}
         </ul>
-
-        
-        
       </nav>
     </header>
 
