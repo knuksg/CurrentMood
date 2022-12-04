@@ -1,10 +1,3 @@
-/* a {
-	color: inherit;
-	text-decoration: none;
-}
-a:hover {
-	color: inherit;
-} */
 /* signup */
 .signup {
 	display: flex;
@@ -21,7 +14,7 @@ a:hover {
   flex-direction: column;
 }
 .signupform__input-name {
-	background-color: #ffff;
+	background-color: var(--inputbg-color);
 	padding: 0.9rem 0.7rem;
 	margin: 0.5rem 0;
 	width: 100%;
@@ -34,10 +27,10 @@ a:hover {
 	flex-direction: column;
 	align-items: start;
 	margin-bottom: 60px;
-	color: #ffff;
+	color: var(--text-color);
 }
 .signupform__input {
-	background-color: #ffff;
+	background-color: var(--inputbg-color);
 	padding: 0.5rem 0.4rem;
 	margin: 0.3rem 0 1.5rem 0;
 	width: 100%;
@@ -46,7 +39,7 @@ a:hover {
 }
 .signupform__button {
 	background-color: #75037F;
-	color: #ffff;
+	color: var(--text-color);
 	border: none;
 	width: 22rem;
 	padding: 1em ;
@@ -60,6 +53,7 @@ a:hover {
 	justify-content: center;
 	margin-top: 2.5em;
 	font-size: 2em;
+	color: var(--text-color);
 }
 .loginform {
 	display: flex;
@@ -72,10 +66,10 @@ a:hover {
 	flex-direction: column;
 	align-items: start;
 	margin-bottom: 60px;
-	color: #ffff;
+	color: var(--text-color);
 }
 .loginform__input {
-	background-color: #ffff;
+	background-color: var(--inputbg-color);
 	padding: 0.5rem 0.4rem;
 	margin: 0.3rem 0 1.5rem 0;
 	width: 100%;
@@ -84,7 +78,7 @@ a:hover {
 }
 .loginform__button {
 	background-color: #75037F;
-	color: #ffff;
+	color: var(--text-color);
 	border: none;
 	width: 22rem;
 	padding: 1em ;
@@ -93,7 +87,7 @@ a:hover {
 }
 .loginform__button-signup {
 	background-color: #848085;
-	color: #ffff;
+	color: var(--text-color);
 	border: none;
 	width: 22rem;
 	padding: 1em ;
