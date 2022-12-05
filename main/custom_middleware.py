@@ -1,3 +1,5 @@
+import json
+
 class CustomMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
@@ -13,6 +15,6 @@ class CustomMiddleware:
         # Code to be executed for each request/response after
         # the view is called.
 
-        print(response.content)
+        print(response)
 
         return response
