@@ -121,10 +121,17 @@
         function onPlayerReady(event) {
           const index = window.sessionStorage.index
           const time = window.sessionStorage.time
-          player.loadPlaylist({playlist:videoIDs,
-                    index:index,
-                    startSeconds:time,
-          })
+          if (index > videoIDs.length-1) {
+            player.loadPlaylist({playlist:videoIDs,
+              index:0,
+              startSeconds:0,
+            })
+          } else {
+            player.loadPlaylist({playlist:videoIDs,
+                      index:index,
+                      startSeconds:time,
+            })
+          }
           videoButton.addEventListener('click', function(event) {
             if (videoButton.querySelector('.bi').classList.contains("bi-play-fill")) {
               playVideo()
@@ -179,7 +186,6 @@
           
           time_update_interval = setInterval(function () {
             updateTimerDisplay();
-            console.log(videoIDs[player.getPlaylistIndex()])
           }, 1000)
 
           session_update_interval = setInterval(function () {
@@ -220,6 +226,20 @@
         function stopVideo() {
           player.stopVideo();
         }
+      </script>
+      <script>
+        document.addEventListener('click', function(e) {
+          <!-- addPlayList -->
+          // 프로필 뮤직 재생
+          if (e.target.closest("div.profile-music")) {
+            const profileMusic = e.target.closest("div.profile-music").querySelector('div.search-item')
+            videoIDs.push(profileMusic.id)
+            player.loadPlaylist( {
+              playlist:videoIDs,
+              index: videoIDs.length - 1
+            } );
+          }
+        })
       </script>
     </footer>
 
