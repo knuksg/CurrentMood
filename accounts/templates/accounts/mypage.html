@@ -8,14 +8,14 @@
 {% endblock style %}
 
 {% block body %}
-<div class="container">
-  <div>
+<div class="userprofile">
+  <div class="userprofile-img">
     {% if user.user_img %}
     <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
     {% else %}
     <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
     {% endif %}
-    <p class="fs-5 mt-1"><a href="{% url 'accounts:update' user.pk %}">정보수정</a></p>
+    <p><a href="{% url 'accounts:update' user.pk %}">프로필 수정</a></p>
   </div>
   <div class="user-info">
     <p>{{ user.username }}</p>
