@@ -137,11 +137,18 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
 
-DEBUG = os.getenv("DEBUG") == "False"
+DEBUG = os.getenv("DEBUG") == "True"
 
 if DEBUG:
     MEDIA_ROOT = BASE_DIR / "images"
     MEDIA_URL = "/media/"
+
+    DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
+    }
+}
 
 else:
     DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
@@ -155,6 +162,7 @@ else:
         AWS_STORAGE_BUCKET_NAME,
         AWS_REGION,
     )
+    
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.postgresql",
