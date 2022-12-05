@@ -99,15 +99,10 @@
           'd9IxdwEFk1c',
           '6GC8JF2FOgA'
         ];
-        var videoTitles = [
-          "에잇",
-          "블루밍",
-          "팔레트",
-          "달의 연인 - 보보경심 려 OST",
-        ]
 
         // 플레이어 생성
         var player, currentVideoId = 0;
+        const time = window.sessionStorage.time
         function onYouTubeIframeAPIReady() {
           player = new YT.Player('player', {
             height: '360',
@@ -126,17 +121,10 @@
         function onPlayerReady(event) {
           const index = window.sessionStorage.index
           const time = window.sessionStorage.time
-          
-          console.log(index)
-          console.log(time)
-          if (index && time) {
-            player.loadPlaylist({list:videoIDs,
-              index:index,
-              startSeconds:time,})
-            console.log('eeeee')
-          } else {
-            player.playVideoAt(0)
-          }
+          player.loadPlaylist({playlist:videoIDs,
+                    index:index,
+                    startSeconds:time,
+          })
           videoButton.addEventListener('click', function(event) {
             if (videoButton.querySelector('.bi').classList.contains("bi-play-fill")) {
               playVideo()
@@ -146,16 +134,11 @@
             }
           })
 
-          player.loadPlaylist( {
-            playlist:videoIDs
-          } );
-
           var next = document.getElementById("next");
           next.addEventListener("click", function() {
             if (currentVideoId < videoIDs.length - 1) {
               currentVideoId++;
               player.nextVideo();
-              nowPlaying.innerText = videoTitles[currentVideoId]
             }
             else {
               player.playVideoAt(currentVideoId)
@@ -167,7 +150,6 @@
             if (currentVideoId > 0) {
               currentVideoId--;
               player.previousVideo();
-              nowPlaying.innerText = videoTitles[currentVideoId]
             }
             else {
               player.playVideoAt(currentVideoId)
@@ -197,12 +179,12 @@
           
           time_update_interval = setInterval(function () {
             updateTimerDisplay();
-            const session = window.sessionStorage
-            session.setItem('index', player.getPlaylistIndex())
-            session.setItem('time', player.getCurrentTime())
-            console.log(session.index, 'session')
-            console.log(session.time, 'session')
           }, 1000)
+
+          session_update_interval = setInterval(function () {
+            window.sessionStorage.setItem('index', player.getPlaylistIndex())
+            window.sessionStorage.setItem('time', player.getCurrentTime())
+          }, 1)
         }
   
         // 5. 플레이어 상태가 바뀌었을 때 실행될 함수
