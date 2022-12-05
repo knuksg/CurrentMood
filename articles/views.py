@@ -3,6 +3,8 @@ from .models import *
 from .forms import ArticleForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from main.models import Song
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import JsonResponse
 
 # 위치 api 구현
 from .gmap import geocoding
@@ -65,7 +67,7 @@ def create(request):
 
 @login_required
 def detail(request, pk):
-    article = Article.objects.get(pk=pk)
+    article = get_object_or_404(Article, pk=pk)
     like = Like.objects.all()
     comment_form = CommentForm()
     context = {
@@ -149,10 +151,15 @@ def like(request, pk):
 
 
 def comment_create(request, pk):
-    article = Article.objects.get(pk=pk)
+    article = get_object_or_404(Article, pk=pk)
     comment_form = CommentForm(request.POST)
     if comment_form.is_valid():
         comment = comment_form.save(commit=False)
         comment.article = article
+        comment.user = request.user
         comment.save()
-    return redirect("articles:detail", article.pk)
+    context = {
+        "content": comment.content,
+        "username": comment.user.username,
+    }
+    return JsonResponse(context)
