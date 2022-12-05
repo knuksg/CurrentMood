@@ -10,7 +10,6 @@ def choose_location(lat, lng):
             if j == "formatted_address":
                 # print("".join(k.split(",")[0:2]))
                 user_loc.append("".join(k.split(",")[0:2]))
-    print(user_loc)
     return {
         "user_loc": user_loc,
         "geocoded": geocoded,
