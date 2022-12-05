@@ -124,9 +124,19 @@
 
         // 4. 비디오 플레이어가 준비되었을 때 실행할 함수
         function onPlayerReady(event) {
-          const playTime = window.sessionStorage
-          playTime.setItem('time', player.getCurrentTime())
-          event.target.loadVideoById(videoIDs[currentVideoId]);
+          const index = window.sessionStorage.index
+          const time = window.sessionStorage.time
+          
+          console.log(index)
+          console.log(time)
+          if (index && time) {
+            player.loadPlaylist({list:videoIDs,
+              index:index,
+              startSeconds:time,})
+            console.log('eeeee')
+          } else {
+            player.playVideoAt(0)
+          }
           videoButton.addEventListener('click', function(event) {
             if (videoButton.querySelector('.bi').classList.contains("bi-play-fill")) {
               playVideo()
@@ -187,6 +197,11 @@
           
           time_update_interval = setInterval(function () {
             updateTimerDisplay();
+            const session = window.sessionStorage
+            session.setItem('index', player.getPlaylistIndex())
+            session.setItem('time', player.getCurrentTime())
+            console.log(session.index, 'session')
+            console.log(session.time, 'session')
           }, 1000)
         }
   
