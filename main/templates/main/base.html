@@ -84,7 +84,7 @@
       </div>
       <script>
         // 2. iframe api 불러오기
-        var tag = document.createElement('script');
+        {% comment %} var tag = document.createElement('script'); {% endcomment %}
 
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];

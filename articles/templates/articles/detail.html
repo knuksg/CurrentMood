@@ -34,15 +34,48 @@
   <hr class="my-3">
 
   {% comment %} 댓글 {% endcomment %}
-  <form action="{% url 'articles:comment_create' article.pk %}" method="POST">
+  {% if request.user.is_authenticated %}
+  <form id="comment-form" data-article-id="{{ article.pk }}">
     {% csrf_token %}
-    {% bootstrap_form comment_form layout='inline'%}
-    {% bootstrap_button button_type="submit" content="등록" button_class="btn-primary" %}
+    {% bootstrap_form comment_form %}
+    {% bootstrap_button button_type="submit" content="OK" %}
   </form>
+  {% endif %}
   <hr>
-  {% for comment in comments %}
-    <p>{{ comment.content }}</p>
-    <hr>
-  {% endfor %}
-
+  <div id="comments">
+    {% for comment in comments %}
+      <p>{{ comment.content }}</p>
+      <hr>
+    {% endfor %}
+  </div>
 {% endblock body %}
+
+{% block script %}
+<script>
+  // 댓글!
+  // (1) 댓글 폼
+  const commentForm = document.querySelector('#comment-form')
+  // (2) 제출하면, 함수 실행시킬래 
+  // csrf 
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  commentForm.addEventListener('submit', function(event) {
+    event.preventDefault();
+    axios({
+      method: 'post',
+      url: `/${event.target.dataset.articleId}/comments/`,
+      headers: {'X-CSRFToken': csrftoken},
+      data: new FormData(commentForm) // 폼에 있는 정보를 data로 넘겨줄 수 있도록 변환
+    })
+    .then(response => {
+      console.log(response.data)
+      // 댓글을 추가하는 로직
+      const comments = document.querySelector('#comments')
+      const p = document.createElement('p')
+      p.innerText = `${response.data.username} | ${response.data.content}`
+      const hr = document.createElement('hr')
+      comments.append(p, hr) 
+      commentForm.reset()
+    })
+  })
+</script>
+{% endblock script %}
