@@ -2,13 +2,25 @@ import googlemaps
 from datetime import datetime
 import os
 
-
-def geocoding(lat, lng):
+# 좌표값 -> 주소값
+def reverse_geocoding(lat, lng):
     gmaps = googlemaps.Client(key=os.getenv("gmap_api"))
     # Look up an address with reverse geocoding
     reverse_geocode_result = gmaps.reverse_geocode((lat, lng))
     return reverse_geocode_result
 
 
-def geolocation():
-    return none
+# 주소 반환 값 parsing
+def parsing_geocoded(lat, lng):
+    geocoded = reverse_geocoding(lat, lng)
+    user_loc = []
+    for i in range(len(geocoded)):
+        geocoded_locations = geocoded[i]  # 장소 객체들
+        for j, k in geocoded_locations.items():
+            if j == "formatted_address":
+                # print("".join(k.split(",")[0:2]))
+                user_loc.append("".join(k.split(",")[0:2]))
+    return {
+        "user_loc": user_loc,
+        "geocoded": geocoded,
+    }
