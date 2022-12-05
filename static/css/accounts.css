@@ -162,16 +162,36 @@
 	align-items: center;
 	background-color: #2f2e2f;
 	list-style: none;
-	margin: 0;
+	margin: 8px 0px;
 	border-radius: 1em;
+	font-size: 1.5rem;
+	padding: 0;
 }
 .box-img {
 	width: 50px;
 	border-radius: 3px;
 }
-.box__menu>li {
+.box__menu li {
 	padding: 8px 30px;
+	width: 100%;
 }
+.box__menu li:hover {
+	color: #ffffff;
+}
+.profile-music img {
+	width: 50vw;
+	height: auto;
+	margin-bottom: 10px;
+}
+.profile-music {
+	margin-bottom: 20px;
+}
+.profile-music-create {
+	margin-top: 15px;
+	width: 100%;
+	text-align: end;
+}
+/* 반응형 */
 @media screen and (max-width: 950px) {
 	.userprofile-img {
 		font-size: 1vw;
@@ -185,7 +205,22 @@
 	.form_radio_btn {
 		font-size: 4vw;
 	}
+	.box__menu {
+		font-size: 2vw;
+	}
+	.box__menu li {
+		padding: 8px 10px;
+	}
 }
+@media screen and (max-width: 500px) {
+	.user-info__follow {
+		flex-direction: column;
+	}
+	.user-info__follow div {
+		margin-bottom: 5px;
+	}
+}
+
 /* .form_radio_btn label {
   display: block;
   border-radius: 10px;

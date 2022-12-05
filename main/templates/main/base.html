@@ -52,8 +52,8 @@
         <ul class="navbar__links">
           <li><a href="{% url 'articles:private' %}"><i class="fa-sharp fa-solid fa-house"></i> 홈</a></li>
           {% if request.user.is_authenticated %}
-          <li><a href="#"><i class="bi bi-music-note-list"></i> 보관함</a></li>
           <li><a href="{% url 'accounts:mypage' %}"><i class="fa-solid fa-user"></i> 내 정보</a></li>
+          <li><a href="#"><i class="bi bi-music-note-list"></i> 보관함</a></li>
           <li class="navbar-logout"><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
           {% else %}
           <li><a href="{% url 'accounts:login' %}">로그인</a></li>
