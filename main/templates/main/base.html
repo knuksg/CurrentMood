@@ -93,12 +93,13 @@
         // 3. 비디오 플레이어 만들기
 
         // 재생목록 생성
-        var videoIDs = [
-          'TgOu00Mf3kI',
-          'D1PvIWdJ8xo',
-          'd9IxdwEFk1c',
-          '6GC8JF2FOgA'
-        ];
+        var videoIDs = JSON.parse(window.sessionStorage.getItem('videoIDs'))
+        if (videoIDs) {
+          console.log(videoIDs)
+        } else {
+          window.sessionStorage.setItem('videoIDs', JSON.stringify(['is-rjsfoYtY']))
+          console.log(videoIDs)
+        }
 
         // 플레이어 생성
         var player, currentVideoId = 0;
@@ -121,10 +122,17 @@
         function onPlayerReady(event) {
           const index = window.sessionStorage.index
           const time = window.sessionStorage.time
-          player.loadPlaylist({playlist:videoIDs,
-                    index:index,
-                    startSeconds:time,
-          })
+          if (index > videoIDs.length-1) {
+            player.loadPlaylist({playlist:videoIDs,
+              index:0,
+              startSeconds:0,
+            })
+          } else {
+            player.loadPlaylist({playlist:videoIDs,
+                      index:index,
+                      startSeconds:time,
+            })
+          }
           videoButton.addEventListener('click', function(event) {
             if (videoButton.querySelector('.bi').classList.contains("bi-play-fill")) {
               playVideo()
@@ -179,7 +187,6 @@
           
           time_update_interval = setInterval(function () {
             updateTimerDisplay();
-            console.log(videoIDs[player.getPlaylistIndex()])
           }, 1000)
 
           session_update_interval = setInterval(function () {
@@ -220,6 +227,26 @@
         function stopVideo() {
           player.stopVideo();
         }
+      </script>
+      <script>
+        document.addEventListener('click', function(e) {
+          <!-- addPlayList -->
+          // 프로필 뮤직 재생
+          if (e.target.closest("div.profile-music")) {
+            const profileMusic = e.target.closest("div.profile-music").querySelector('div.search-item')
+            console.log(videoIDs)
+            videoIDs.push(profileMusic.id)
+            console.log(videoIDs)
+            window.sessionStorage.setItem('videoIDs', JSON.stringify(videoIDs))
+            console.log(window.sessionStorage.getItem('videoIDs'))
+            console.log('before')
+            player.loadPlaylist( {
+              playlist:videoIDs,
+              index: videoIDs.length - 1
+            } );
+            console.log('after')
+          }
+        })
       </script>
     </footer>
 

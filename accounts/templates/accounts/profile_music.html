@@ -2,53 +2,55 @@
 {% load static %}
 
 {% block body %}
-
-<h1>프로필 뮤직 페이지</h1>
-<hr>
-<h1 class="fw-bold mt-3">  
-  <span>
-    {% if user.user_img %}
-    <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
-    {% else %}
-    <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
-    {% endif %}
-  </span>
-  {{ user.username }}님의 프로필 뮤직
-</h1>
-
-<hr>
-<div>
-  <h3 class='fw-bold'>현재 설정된 프로필 뮤직</h3>
-  <div id="profile_music" class="profile-music">
-    {% if user.profile_music.vidid %}
-    <div id="{{ user.profile_music.vidid }}" class="search-item d-flex gap-3">
-      <img src="https://i.ytimg.com/vi/{{ user.profile_music.vidid }}/default.jpg" alt="">
-      <div>
-        <h5>{{ user.profile_music.title }}</h5>
-        <div class="d-flex gap-3">
-          <p>{{ user.profile_music.channel }}</p>
+<div class="container">
+  <h1>프로필 뮤직 페이지</h1>
+  <hr>
+  <h1 class="fw-bold mt-3">  
+    <span>
+      {% if user.user_img %}
+      <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
+      {% else %}
+      <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
+      {% endif %}
+    </span>
+    {{ user.username }}님의 프로필 뮤직
+  </h1>
+  <hr>
+  <div>
+    <h3 class='fw-bold'>현재 설정된 프로필 뮤직</h3>
+    <div id="profile_music" class="profile-music">
+      {% if user.profile_music.vidid %}
+      <div id="{{ user.profile_music.vidid }}" class="search-item d-flex gap-3">
+        <img src="https://i.ytimg.com/vi/{{ user.profile_music.vidid }}/default.jpg" alt="">
+        <div>
+          <h5>{{ user.profile_music.title }}</h5>
+          <div class="d-flex gap-3">
+            <p>{{ user.profile_music.channel }}</p>
+          </div>
+        </div>
+        <div>
+          <i class="bi bi-play-circle fs-1"></i>
         </div>
       </div>
+      {% else %}
+      <p>프로필 뮤직이 없습니다...</p>
+      {% endif %}
     </div>
-    {% else %}
-    <p>프로필 뮤직이 없습니다...</p>
-    {% endif %}
+  </div>
+  <hr>
+  <a href="{% url 'accounts:mypage' %}">뒤로가기</a>
+  <hr>
+  <div>
+    <h3>프로필 뮤직 검색하기</h3>
+      <form id="search-form" data-user-id={{ user.pk }}>
+        {% csrf_token %}
+        <input id="search-input" type="text">
+        <button type="submit">search</button>
+      </form>
+      <div id="search-list" class="search-list">
+      </div>
   </div>
 </div>
-<hr>
-<a href="{% url 'accounts:mypage' %}">뒤로가기</a>
-<hr>
-<div>
-  <h3>프로필 뮤직 검색하기</h3>
-    <form id="search-form" data-user-id={{ user.pk }}>
-      {% csrf_token %}
-      <input id="search-input" type="text">
-      <button type="submit">search</button>
-    </form>
-    <div id="search-list" class="search-list">
-    </div>
-</div>
-
 <!-- CDN axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -69,7 +71,9 @@
         part: "snippet",
         order: "viewCount",
         q: kw,
-        type: "video"
+        type: "video",
+        videoEmbeddable: "true",
+        videoSyndicated: "true",
       }
     })
       .then(function (response) {
@@ -87,6 +91,9 @@
               <div class="d-flex gap-3">
                 <p>`+ searchItem.snippet.channelTitle +`</p>
               </div>
+            </div>
+            <div>
+              <i class="bi bi-play-circle fs-1"></i>
             </div>
           </div>
           `
@@ -108,9 +115,6 @@
       const profileMusicId = searchItem.id
       const profileMusicTitle = searchItem.querySelector('h5').innerText
       const profileMusicChannelTitle = searchItem.querySelector('p').innerText
-      console.log(profileMusicId)
-      console.log(profileMusicTitle)
-      console.log(profileMusicChannelTitle)
 
       const form = new FormData()
       form.append('vidid', profileMusicId)
