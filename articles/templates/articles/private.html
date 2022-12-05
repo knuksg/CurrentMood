@@ -28,19 +28,22 @@
       토글1
     </div>
 
-    <div class="toggleBtn2 hidden" data-bs-toggle="collapse" data-bs-target=".collapseExample">
-      <button type="button" class="btn-close btn-close-white" aria-label="Close"></button>
-    </div>
-
     <div class="collapse collapseExample" style="z-index: 3;">
-      <div>
-        {% for article in articles %}
-          {{ article.user.id }}
-          {{ article.song }}
-          {{ article.content }}
-          <hr>
-        {% endfor %}  
-      </div>
+      {% for article in articles %}
+      <a href="{% url 'articles:detail' article.pk %}">
+        <div class="row d-flex">
+          <div class="col-1 d-flex flex-column mt-2">
+            <img src="{{ user.user_img.url }}" alt="" style="width: 3rem;">
+            {{ article.user.username }}
+          </div>
+          <div class="col-11 text-center">
+            {{ article.song }}
+            {{ article.content }}
+          </div>
+        </div>
+      </a>
+      <hr>
+      {% endfor %}  
     </div>
   </div>
 
@@ -85,33 +88,6 @@
 {% block script %}
   <!-- CDN axios -->
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script>
-    const toggleBtn = document.querySelector('.toggleBtn1');
-    toggleBtn.addEventListener('click', function(e){
-      axios({
-        method: 'get',
-        url: '/articles/index',
-        data : new
-      })
-    })
-  </script>
-
-  <script>
-    let toggleBtn1 = document.querySelector('.toggleBtn1')
-    toggleBtn1.addEventListener("click", function(){
-      document.querySelector('.carousel').classList.toggle("hidden");
-      toggleBtn1.classList.toggle("hidden");
-      toggleBtn2.classList.toggle("hidden");
-    });
-  </script>
-  <script>
-    let toggleBtn2 = document.querySelector('.toggleBtn2')
-    toggleBtn2.addEventListener("click", function(){
-      document.querySelector('.carousel').classList.toggle("hidden");
-      document.querySelector('.toggleBtn1').classList.toggle("hidden");
-      toggleBtn2.classList.toggle("hidden");
-    });
-  </script>
   <script>
     $(function(){
       $('.mainSlide').slick({

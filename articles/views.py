@@ -13,7 +13,7 @@ import json
 
 # Create your views here.
 def private(request):
-    articles = Article.objects.filter(song="라일락")
+    articles = Article.objects.filter(place="블루보틀")
     comment_form = CommentForm()
     context = {
         "articles": articles,
