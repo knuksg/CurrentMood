@@ -116,10 +116,12 @@
       form.append('vidid', profileMusicId)
       form.append('title', profileMusicTitle)
       form.append('channel', profileMusicChannelTitle)
+      form.append('hqdefault', `https://i.ytimg.com/vi/${profileMusicId}/hqdefault.jpg`)
+      form.append('default', `https://i.ytimg.com/vi/${profileMusicId}/default.jpg`)
+      form.append('mqdefault', `https://i.ytimg.com/vi/${profileMusicId}/mqdefault.jpg`)
 
       form.forEach((data) => {
         console.log(data)
-        
       })
 
       const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
