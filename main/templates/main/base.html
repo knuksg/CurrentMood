@@ -238,17 +238,23 @@
           // 프로필 뮤직 재생
           if (e.target.closest("div.profile-music")) {
             const profileMusic = e.target.closest("div.profile-music").querySelector('div.search-item')
-            console.log(videoIDs)
             videoIDs.push(profileMusic.id)
-            console.log(videoIDs)
             window.sessionStorage.setItem('videoIDs', JSON.stringify(videoIDs))
-            console.log(window.sessionStorage.getItem('videoIDs'))
-            console.log('before')
             player.loadPlaylist( {
               playlist:videoIDs,
               index: videoIDs.length - 1
             } );
-            console.log('after')
+          }
+          // 아티클 뮤직 재생
+          if (e.target.closest("div.article-music")) {
+            console.log('test')
+            const articleMusic = e.target.closest("div.article-music").querySelector('div.music-vidid')
+            videoIDs.push(articleMusic.id)
+            window.sessionStorage.setItem('videoIDs', JSON.stringify(videoIDs))
+            player.loadPlaylist( {
+              playlist:videoIDs,
+              index: videoIDs.length - 1
+            } );
           }
         })
       </script>
