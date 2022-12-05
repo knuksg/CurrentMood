@@ -1,0 +1,23 @@
+<script>
+const usrCrd = [33.23434,126.34232] // 임시위치
+// 1. form.setAttribute를 사용할 수 있다.
+// 2. axios를 사용해 데이터를 보내준다.
+// 3. xmlHttpRequest를 사용한다.
+
+// 요청전송
+// const request = new XMLHttpRequest;
+// GET 방식
+// request.open('GET',`http://127.0.0.1:8000/locations/`)
+// request.send()
+
+// POST 방식
+// request.open('POST',`http://127.0.0.1:8000/locations/`)
+// cookie에서 csrftoken을 가져온다.
+// let csrftoken = document.cookie['csrftoken'];
+// request.setRequestHeader("X-CSRFToken", csrftoken); 
+// request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+// request.send(`userLocation=${usrCrd}`)
+// request.onreadystatechange=function(event){
+//   console.log('activated')
+// }
+</script>

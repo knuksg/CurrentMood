@@ -1,45 +1,43 @@
 {% extends 'main/base.html' %}
 {% block body %}
+
+<form id="locationForm"action="" method="POST">
+  {% csrf_token %}
+  <input id="locationInput" type="hidden" name="userLocation" value="">
+  <button id="locationButton" type="submit" style="padding: 5px 10px 5px 10px;">⌖</button>
+</form>
+
 <p id="result"></p>
-<p>{{geocoded}} 인근</p>
+<p>{{user_position}} 인근</p>
+
 <script>
+function locationGet(){
+  var options = {
+    enableHighAccuracy: false,
+    timeout: 10000,
+    maximumAge: 0
+  };
 
-var csrf_token = $('[name=csrfmiddlewaretoken]').val();
-var options = {
-  enableHighAccuracy: false,
-  timeout: 10000,
-  maximumAge: 0
-};
+  function success(pos) {
+    var crd = pos.coords;
+    const result = document.querySelector('#result')
+    const usrCrd = [47.23434,142.34232] // 임시위치
+    result.innerHTML = [usrCrd[0],usrCrd[1]] // 화면에 위치 표시
+    // const usrCrd = [crd.latitude,crd.longitude]
+    // result.innerHTML= [crd.latitude,crd.longitude]
 
-function success(pos) {
-  var crd = pos.coords;
-  const result = document.querySelector('#result')
-  // 1. form.setAttribute를 사용할 수 있다.
-  // 2. axios를 사용해 데이터를 보내준다.
-  // 3. xmlHttpRequest를 사용한다.
-  
-  // const usrCrd = [crd.latitude,crd.longitude]
-  // result.innerHTML= [crd.latitude,crd.longitude]
-  const usrCrd = [33.23434,126.34232] // 임시위치
-  result.innerHTML = [usrCrd[0],usrCrd[1]] // 화면에 위치 표시
-  // 요청전송
-  const request = new XMLHttpRequest;
-  request.open('POST',`http://127.0.0.1:8000/locations/`)
-  // request.send() GET 방식
-  request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  request.send(`userLocation=${usrCrd}`)
-  request.onreadystatechange=function(event){
-    console.log('activated')
+    const reqForm = document.querySelector("#locationForm")
+    reqForm.userLocation.value = usrCrd
   }
+
+  function error(err) {
+    console.warn(`ERROR(${err.code}): ${err.message}`);
+  }
+
+  navigator.geolocation.getCurrentPosition(success,error,options)
+
+  reqForm.submit()
 }
-
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-}
-
-navigator.geolocation.getCurrentPosition(success,error,options)
-
+locationGet()
 </script>
-<!-- axios 사용 -->
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
 {% endblock body %}
