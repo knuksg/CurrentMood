@@ -7,8 +7,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 
 # 위치 api 구현
-from .gmap import geocoding
-from .place_choose import choose_location
+from .gmap import reverse_geocoding, parsing_geocoded
 import requests
 import os
 import pprint
@@ -109,8 +108,7 @@ def location_get(request):
     if request.method == "POST":
         user_coords = request.POST.get("userLocation").split(",")
         coords = user_coords
-        user_loc = choose_location(coords[0], coords[1])["user_loc"]
-        geocoded = choose_location(coords[0], coords[1])["geocoded"]
+        user_loc = parsing_geocoded(coords[0], coords[1])["user_loc"]
     else:
         user_loc = ["somewhere"]
     # Place 테이블에 geocoding된 위치 값을 저장한다.
@@ -120,6 +118,7 @@ def location_get(request):
     ###
     context = {
         "user_position": user_loc[0],
+        "key": gmap_api_key,
     }
     return render(request, "articles/locations.html", context)
 

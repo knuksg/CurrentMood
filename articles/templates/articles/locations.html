@@ -1,7 +1,8 @@
 {% extends 'main/base.html' %}
+{% load static %}
 {% block body %}
 
-<form id="locationForm"action="" method="POST">
+<form id="locationForm" action="" method="POST">
   {% csrf_token %}
   <input id="locationInput" type="hidden" name="userLocation" value="">
   <button id="locationButton" type="submit" style="padding: 5px 10px 5px 10px;">⌖</button>
@@ -9,35 +10,40 @@
 
 <p id="result"></p>
 <p>{{user_position}} 인근</p>
+<p id="markerCoords"></p>
+<!-- 지도 -->
+<div id="map" style="width:500px;height:500px;"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key={{key}}&region=KR&callback=initMap&v=weekly" defer></script>
 
 <script>
-function locationGet(){
-  var options = {
-    enableHighAccuracy: false,
-    timeout: 10000,
-    maximumAge: 0
-  };
+// web geolocation으로 좌표값 가져오기 
+var options = {
+  enableHighAccuracy: false,
+  timeout: 10000,
+  maximumAge: 0
+};
 
-  function success(pos) {
-    var crd = pos.coords;
-    const result = document.querySelector('#result')
-    const usrCrd = [47.23434,142.34232] // 임시위치
-    result.innerHTML = [usrCrd[0],usrCrd[1]] // 화면에 위치 표시
-    // const usrCrd = [crd.latitude,crd.longitude]
-    // result.innerHTML= [crd.latitude,crd.longitude]
-
-    const reqForm = document.querySelector("#locationForm")
-    reqForm.userLocation.value = usrCrd
-  }
-
-  function error(err) {
-    console.warn(`ERROR(${err.code}): ${err.message}`);
-  }
-
-  navigator.geolocation.getCurrentPosition(success,error,options)
-
-  reqForm.submit()
+function success(pos) {
+  var crd = pos.coords;
+  const result = document.querySelector('#result')
+  const usrCrd = [38.23434,142.34232] // 임시좌표
+  result.innerHTML = [usrCrd[0],usrCrd[1]] // 화면에 좌표 표시
+  // const usrCrd = [crd.latitude,crd.longitude]
+  // result.innerHTML= [crd.latitude,crd.longitude]
+  localStorage.setItem('crds',usrCrd)
+  const reqForm = document.querySelector("#locationForm")
+  reqForm.userLocation.value = usrCrd
 }
-locationGet()
+
+function error(err) {
+  console.warn(`ERROR(${err.code}): ${err.message}`);
+}
+
+navigator.geolocation.getCurrentPosition(success,error,options)
+
+// 지도 가져오기
+
 </script>
+
+
 {% endblock body %}

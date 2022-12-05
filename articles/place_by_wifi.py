@@ -1,7 +1,3 @@
-def recommend():
-    return places
-
-
 # # mac wifi주소를 가져올 수 없는 경우, web geolocation api 정확도가 더 높다.
 #     # 예시 위치
 #     location = requests.post(
