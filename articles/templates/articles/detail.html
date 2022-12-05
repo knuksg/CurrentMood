@@ -8,9 +8,13 @@
   <p><span>노래 제목: {{ article.song.title }}</span>  |  <span>가수: {{ article.song.channel }}</span></p>
   <h1>사연 제목: {{ article.title }}</h1>
   <p>사연 내용: {{ article.content }}</p>
-
-  
-  <img src="{{ article.song.hqdefault }}" alt="">
+  <div class="d-inline-block">
+    <div id="article-music" class="article-music position-relative d-flex justify-content-center">
+      <div id="{{ article.song.vidid }}" class="music-vidid d-none">이 태그를 지우지 마세요.</div>
+      <img src="{{ article.song.hqdefault }}" alt="">
+      <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
+    </div>
+  </div>
   <!-- 좋아요 -->
   <div>
     {% if request.user in article.like_users.all %}
