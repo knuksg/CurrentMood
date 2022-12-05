@@ -4,14 +4,13 @@
 {% block body %}
   <h5>글 번호:  {{ article.pk }}</h5>
   <h5>작성자: {{ article.user }}  |  {{ article.created_at }}</h5>
-  <p>사연 장소: {{ article.plase}}</p>
-  <p><span>노래 제목: {{ article.song }}</span>  |  <span>가수: {{ article.singer }}</span></p>
+  <p>사연 장소: {{ article.place }}</p>
+  <p><span>노래 제목: {{ article.song.title }}</span>  |  <span>가수: {{ article.song.channel }}</span></p>
   <h1>사연 제목: {{ article.title }}</h1>
   <p>사연 내용: {{ article.content }}</p>
 
-  {% if article.image %}
-    <img src="{{ article.image.url }}" alt="">
-  {% endif %}
+  
+  <img src="{{ article.song.hqdefault }}" alt="">
   <!-- 좋아요 -->
   <div>
     {% if request.user in article.like_users.all %}
