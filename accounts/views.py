@@ -221,13 +221,15 @@ def profile_music(request, pk):
         vidid = request.POST.get('vidid', '')
         title = request.POST.get('title', '')
         channel = request.POST.get('channel', '')
-
+        hqdefault = request.POST.get('hqdefault', '')
+        default = request.POST.get('default', '')
+        mqdefault = request.POST.get('mqdefault', '')
         try:
             song = Song.objects.get(vidid=vidid)
             user.profile_music = song
             user.save(update_fields=['profile_music'])
         except:
-            song = Song.objects.create(vidid=vidid, title=title, channel=channel)
+            song = Song.objects.create(vidid=vidid, title=title, channel=channel, hqdefault=hqdefault, default=default, mqdefault=mqdefault)
             user.profile_music = song
             user.save(update_fields=['profile_music'])
     return render(request, "accounts/profile_music.html")

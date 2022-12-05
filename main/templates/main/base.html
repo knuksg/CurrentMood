@@ -179,6 +179,7 @@
           
           time_update_interval = setInterval(function () {
             updateTimerDisplay();
+            console.log(videoIDs[player.getPlaylistIndex()])
           }, 1000)
 
           session_update_interval = setInterval(function () {
