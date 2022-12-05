@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .models import *
 from .forms import ArticleForm, CommentForm
 from django.contrib.auth.decorators import login_required
+from main.models import Song
 
 # 위치 api 구현
 from .gmap import geocoding
@@ -33,12 +34,27 @@ def index(request):
 @login_required
 def create(request):
     if request.method == "POST":
-        form = ArticleForm(request.POST, request.FILES)
-        if form.is_valid():
-            article = form.save(commit=False)
-            article.user = request.user
-            article.save()
-            return redirect("articles:index")
+        place = request.POST.get('place', '')
+        title = request.POST.get('title', '')
+        content = request.POST.get('content', '')
+        vidid = request.POST.get('vidid', '')
+        vidtitle = request.POST.get('vidtitle', '')
+        channel = request.POST.get('channel', '')
+        hqdefault = request.POST.get('hqdefault', '')
+        default = request.POST.get('default', '')
+        mqdefault = request.POST.get('mqdefault', '')
+        try:
+            song = Song.objects.get(vidid=vidid)
+        except:
+            song = Song.objects.create(vidid=vidid, title=vidtitle, channel=channel, hqdefault=hqdefault, default=default, mqdefault=mqdefault)
+        Article.objects.create(
+            user = request.user,
+            place = place,
+            title = title,
+            content = content,
+            song = song,
+        )
+        return redirect("articles:index")
     else:
         form = ArticleForm()
     context = {
