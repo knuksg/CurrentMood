@@ -2,8 +2,8 @@
 {% load static %}
 
 {% block body %}
+<div class="container">
   <h1>index - 공유한 노래 목록 페이지</h1>
-
   <table class="table text-center">
     <thead class="table-dark">
       <tr>
@@ -15,13 +15,13 @@
         <th>작성자</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody class="text-white">
       {% for article in articles %}
         <tr>
           <td>{{ article.pk }}</td>
-          <td><img src="{% static 'image/album.png' %}" style="width:50px;"></td>
-          <td>{{ article.song }}</td>
-          <td>{{ article.singer }}</td>
+          <td><img src="{{ article.song.default }}" style="width:50px;"></td>
+          <td>{{ article.song.title }}</td>
+          <td>{{ article.song.channel }}</td>
           <td><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></td>
           <td>
             {% if article.user.user_img %}
@@ -37,5 +37,6 @@
   </table>
 
   <a href="{% url 'articles:create' %}" class="text-white text-decoration-none"><button class="btn btn-primary">사연 작성</button></a>
+</div>
 
 {% endblock body %}
