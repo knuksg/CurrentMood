@@ -46,29 +46,44 @@
 
 
 <div class="card-big-box" id="cab1">
-  {% if user.profile_music_id %}
-    <div>
-      <img src="https://i.ytimg.com/vi/{{ user.profile_music_id }}/hqdefault.jpg" alt="profile_music">
+  <div id="profile_music" class="profile-music">
+    {% if user.profile_music.vidid %}
+    <div id="{{ user.profile_music.vidid }}">
+      <img src="https://i.ytimg.com/vi/{{ user.profile_music.vidid }}/default.jpg" alt="">
       <div>
-        {{ user.profile_music_title }} - {{ user.profile_music_channel }}
+        {{ user.profile_music.title }} - {{ user.profile_music.channel }}
       </div>
     </div>
-  {% else %}
+    {% else %}
     <p>프로필 뮤직이 없습니다...</p>
-  {% endif %}
-  <a href="{% url 'accounts:profile_music' user.pk %}">프로필 뮤직 설정하기</a>
+    {% endif %}
+  </div>
+  <div class="profile-music-create">
+  <a href="{% url 'accounts:profile_music' user.pk %}"><i class="fa-solid fa-pen"></i></a>
+  </div>
 </div>
 
 
 <div class="card-big-box" id="cab2" style="display: none;">
-  <ul class="box__menu">
   {% for article in user.article_set.all %}
+  <ul class="box__menu">
       <li><img class="box-img" src="{% static 'image/album.png' %}"></li>
       <li><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></li>  
       <li>{{ article.song }}</li>  
       <li>{{ article.singer }}</li> 
-  {% endfor %}
   </ul>
+  {% endfor %}
+</div>
+
+<div class="card-big-box" id="cab3" style="display: none;">
+  {% for article in user.like_article.all %}
+  <ul class="box__menu">
+    <li><img src="{% static 'image/album.png' %}" style="width:50px;"></li>
+    <li>{{ article.title }}</li>
+    <li>{{ article.song  }}</li>
+    <li>{{ article.singer }}</li>
+  </ul>
+  {% endfor %}
 </div>
 
 <hr>
