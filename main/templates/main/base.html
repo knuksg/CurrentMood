@@ -265,7 +265,7 @@
       <script>
         document.addEventListener('click', function(e) {
           <!-- addPlayList -->
-          // 프로필 뮤직 재생
+          // 프로필 뮤직(선택창) 재생
           if (e.target.closest("div.profile-music")) {
             const profileMusic = e.target.closest("div.profile-music").querySelector('div.search-item')
             videoIDs.push(profileMusic.id)
@@ -273,8 +273,25 @@
             const profileTitle = profileMusic.querySelector('div.music_title').innerText
             videoTitles.push(profileTitle)
             window.sessionStorage.setItem('videoTitles', JSON.stringify(videoTitles))
-            const profileChannel = profileMusic.querySelector('div.music_music').innerText
+            const profileChannel = profileMusic.querySelector('div.music_channel').innerText
             videoChannels.push(profileChannel)
+            window.sessionStorage.setItem('videoChannels', JSON.stringify(videoChannels))
+
+            player.loadPlaylist( {
+              playlist:videoIDs,
+              index: videoIDs.length - 1
+            } );
+          }
+          // 프로필 뮤직 재생
+          if (e.target.closest("div.my-music")) {
+            const myMusic = e.target.closest("div.my-music").querySelector('div.vid')
+            videoIDs.push(myMusic.id)
+            window.sessionStorage.setItem('videoIDs', JSON.stringify(videoIDs))
+            const myTitle = myMusic.querySelector('div.title').innerText
+            videoTitles.push(myTitle)
+            window.sessionStorage.setItem('videoTitles', JSON.stringify(videoTitles))
+            const myChannel = myMusic.querySelector('div.channel').innerText
+            videoChannels.push(myChannel)
             window.sessionStorage.setItem('videoChannels', JSON.stringify(videoChannels))
 
             player.loadPlaylist( {
