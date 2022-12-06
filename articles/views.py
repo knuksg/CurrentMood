@@ -203,3 +203,10 @@ def comment_create(request, pk):
         "username": comment.user.username,
     }
     return JsonResponse(context)
+
+def song(request, video_id):
+    song = Song.objects.get(vidid=video_id)
+    context = {
+        "song": song,
+    }
+    return render(request, "articles/song.html", context)

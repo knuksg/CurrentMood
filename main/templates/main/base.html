@@ -81,9 +81,11 @@
       </div>
       <!-- 하단 플레이어 -->
       <div class="bottom_player fixed-bottom">
-        <hr class="mb-0">
-        <div class="w-100 d-flex justify-content-center align-items-center bg-black">
-          <img id="now-playing-sm" class="col-2" src="" alt="">
+        <hr class="my-0">
+        <div class="d-flex justify-content-center align-items-center bg-black">
+          <a href="{% url 'articles:song' video_id='zYoYoBtLqOY' %}">
+            <img id="now-playing-sm" class="col-2" src="" alt="">
+          </a>
           <div class="col-6 mx-3">
             <p id="now-playing-title" class="m-0">재생 중인 곡이 없습니다</p>
             <p id="now-playing-channel" class="m-0 opacity-75"></p>
@@ -209,7 +211,9 @@
             nowPlayingTitle.innerText = videoTitles[currentVideoId]
             const nowPlayingChannel = document.querySelector('#now-playing-channel')
             nowPlayingChannel.innerText = videoChannels[currentVideoId]
-            
+            const nowPlayingLink = document.querySelector('.bottom_player').querySelector('a')
+            var link ="{% url 'articles:song' 12345 %}".replace(/12345/, video_id=videoIDs[currentVideoId]);
+            nowPlayingLink.href = link
           }
 
           updateNowPlayingDisplay()
@@ -382,7 +386,7 @@
         bottomPlayer.addEventListener('touchend', (e) => {
           endY = e.pageY
           console.log(endY)
-          if (isMouseDown && (endY - startY) > 5) {
+          if (isMouseDown && (endY - startY) > 0) {
             slideDown(bottomPlayer, duration=400)
           }
 

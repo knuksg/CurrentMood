@@ -15,4 +15,5 @@ urlpatterns = [
     path("public/", views.public, name="public"),
     path("test/", views.test, name="test"),
     path("<int:pk>/comments/", views.comment_create, name="comment_create"),
+    path("song/<slug:video_id>/", views.song, name="song"),
 ]
