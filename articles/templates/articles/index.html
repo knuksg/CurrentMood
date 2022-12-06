@@ -3,39 +3,93 @@
 
 {% block body %}
 <div class="container">
-  <h1>index - 공유한 노래 목록 페이지</h1>
-  <table class="table text-center">
-    <thead class="table-dark">
-      <tr>
-        <th>글 번호</th>
-        <th>재킷</th>
-        <th>노래 제목</th>
-        <th>가수 이름</th>
-        <th>사연 제목</th>
-        <th>작성자</th>
-      </tr>
-    </thead>
-    <tbody class="text-white">
-      {% for article in articles %}
-        <tr>
-          <td>{{ article.pk }}</td>
-          <td><img src="{{ article.song.default }}" style="width:50px;"></td>
-          <td>{{ article.song.title }}</td>
-          <td>{{ article.song.channel }}</td>
-          <td><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></td>
-          <td>
-            {% if article.user.user_img %}
-            <img class="rounded-circle" src="{{ article.user.user_img.url }}" alt="" style="width:50px;">
-            {% else %}
-            <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:50px;">
-            {% endif %}
-            <a href="{% url 'accounts:detail' article.user.pk %}">{{ article.user }}</a>
-          </td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
+  <h1>현재 위치 기반 공유된 글들 - 임시(서울) - 지역 수정 뷰에서 가능</h1>
+  <!-- 사연 수 기준 1위 곡 -->
+  <div>
+    {% if song_list %}
+    <div id="{{ song_list.0.vidid }}" class="article-music">
+      <div class="position-relative">
+        <img src="{{ song_list.0.hqdefault }}" alt="">
+        <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
+      </div>
+      <div>
+        {{ song_list.0.title }} - {{ song_list.0.channel }}
+      </div>
+    </div>
+    {% else %}
+    <p>공유된 글이 없습니다.</p>
+    {% endif %}
+  </div>
+  <!-- 캐러셀형 보기 -->
+  <div>
+    {% if carousel_list %}
+    <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
+      <ol class="carousel-indicators">
+        <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active" aria-current="true" aria-label="First slide"></li>
+        {% for carousel in carousel_list %}
+        <li data-bs-target="#carouselId" data-bs-slide-to="{{ forloop.counter }}" aria-label="Second slide"></li>
+        {% endfor %}
+      </ol>
+      <div class="carousel-inner" role="listbox">
+        <div class="carousel-item active">
+          <div id="{{ song_list.0.vidid }}" class="article-music">
+            <div class="position-relative">
+              <img src="{{ song_list.0.hqdefault }}" class="w-100 d-block" alt="">
+              <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
+            </div>
+            <div class="d-none">
+              {{ song_list.0.title }} - {{ song_list.0.channel }}
+            </div>
+          </div>
+        </div>
+        {% for carousel in carousel_list %}
+        <div class="carousel-item">
+          <div id="{{ carousel.vidid }}" class="article-music">
+            <div class="position-relative">
+              <img src="{{ carousel.hqdefault }}" class="w-100 d-block" alt="">
+              <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
+            </div>
+            <div class="d-none">
+              {{ carousel.title }} - {{ carousel.channel }}
+            </div>
+          </div>
+        </div>
+  
+  
+        {% endfor %}
+      </div>
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+    {% endif %}
+  </div>
+  <!-- 리스트형 보기 -->
+  
+  <!-- 가장 최근 댓글 -->
+  <div class="my-3">
+    {% if articles %}
+    <div class="d-flex gap-3">
+      <div class="d-flex flex-column justify-content-center align-content-center">
+        {% if articles.0.user.user_img %}
+        <img class="rounded-circle" src="{{ articles.0.user.user_img }}" style="width:50px;">
+        {% else %}
+        <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:50px;">
+        {% endif %}
+        <p>{{ articles.0.user }}</p>
+      </div>
+      <div>
+        <p>{{ articles.0.title }}</p>
+        <p>{{ articles.0.content }}</p>
+      </div>
+    </div>
+    {% endif %}
+  </div>
   <a href="{% url 'articles:create' %}" class="text-white text-decoration-none"><button class="btn btn-primary">사연 작성</button></a>
 </div>
 
