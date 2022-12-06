@@ -137,9 +137,9 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
 
-DEBUG = os.getenv("DEBUG") == "True"
+# DEBUG = os.getenv("DEBUG") == "True"
 
-# DEBUG = False
+DEBUG = False
 
 if DEBUG:
     MEDIA_ROOT = BASE_DIR / "images"
