@@ -139,20 +139,24 @@ def update(request, pk):
 
 
 def location_get(request):
+    print(request.POST.get("userLocation"))
+    print(request.POST.get("markerLocation"))
     # 위치 정보 가져오기 : google geolocation api 요청
     gmap_api_key = os.getenv("gmap_api")
-    print(request.POST.get("userLocation"))
+    user_location = request.POST.get("userLocation")
+    marker_location = request.POST.get("markerLocation")
     if request.method == "POST":
-        user_coords = request.POST.get("userLocation").split(",")
-        coords = user_coords
-        user_loc = parsing_geocoded(coords[0], coords[1])["user_loc"]
-    else:
-        user_loc = ["somewhere"]
+        if user_location:
+            user_coords = user_location.split(",")
+            user_loc = parsing_geocoded(user_coords[0], user_coords[1])["loc"]
+            user_place = Place.objects.create(name=user_loc[0])
+        else:
+            user_loc = ["somewhere"]
+        if marker_location:
+            marker_coords = marker_location.split(",")
+            marker_loc = parsing_geocoded(marker_coords[0], marker_coords[1])["loc"]
+            marker_place = Place.objects.create(name=marker_loc[0])
     # Place 테이블에 geocoding된 위치 값을 저장한다.
-    for i in user_loc:
-        place_location = Place.objects.create(name=i)
-    # user가 있는 경우
-    ###
     context = {
         "user_position": user_loc[0],
         "key": gmap_api_key,

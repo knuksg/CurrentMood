@@ -2,12 +2,11 @@
 {% load static %}
 {% block body %}
 
-<form id="locationForm" action="" method="POST">
+<button id="sync">+</button>
+<form action="" method="POST">
   {% csrf_token %}
-  <input id="locationInput" type="hidden" name="userLocation" value="">
-  <button id="locationButton" type="submit" style="padding: 5px 10px 5px 10px;">⌖</button>
+  <input id="exampleInput" type="text" value="" name="exampleInput" style="width:300px;">
 </form>
-
 <p id="result"></p>
 <p>{{user_position}} 인근</p>
 <p id="markerCoords"></p>
@@ -16,7 +15,28 @@
 <script src="https://maps.googleapis.com/maps/api/js?key={{key}}&region=KR&callback=initMap&v=weekly" defer></script>
 
 <script>
-// web geolocation으로 좌표값 가져오기 
+// csrftoken 생성
+function getCookie(name) {
+  var cookieValue = null;
+  if (document.cookie && document.cookie !== '') {
+      var cookies = document.cookie.split(';');
+      for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          // Does this cookie string begin with the name we want?
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+              break;
+          }
+      }
+  }
+  return cookieValue;
+}
+
+var csrftoken = getCookie('csrftoken');
+
+
+
+// web geolocation으로 좌표값 가져오기
 var options = {
   enableHighAccuracy: false,
   timeout: 10000,
@@ -25,23 +45,45 @@ var options = {
 
 function success(pos) {
   var crd = pos.coords;
+  var usrCrd = [32.3311,126.5811] // 임시좌표
   const result = document.querySelector('#result')
-  const usrCrd = [38.23434,142.34232] // 임시좌표
   result.innerHTML = [usrCrd[0],usrCrd[1]] // 화면에 좌표 표시
   // const usrCrd = [crd.latitude,crd.longitude]
   // result.innerHTML= [crd.latitude,crd.longitude]
+  // 1. form으로 전송하기
+  // const reqForm = document.querySelector("#locationForm")
+  // reqForm.userLocation.value = usrCrd
+  // 2. 다른 방법
   localStorage.setItem('crds',usrCrd)
-  const reqForm = document.querySelector("#locationForm")
-  reqForm.userLocation.value = usrCrd
+  const request = new XMLHttpRequest;
+  request.open('POST',`http://127.0.0.1:8000/locations/`)
+  request.setRequestHeader("X-CSRFToken", csrftoken); 
+  request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+  request.send(`userLocation=${usrCrd}`)
+  request.onreadystatechange=function(event){
+  console.log('location getted')
+}
 }
 
 function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 }
 
-navigator.geolocation.getCurrentPosition(success,error,options)
+navigator.geolocation.watchPosition(success,error,options)
 
-// 지도 가져오기
+const getLocationButton = document.querySelector("sync")
+// function sendLocation(){
+//   localStorage.setItem('crds',usrCrd)
+//   const request = new XMLHttpRequest;
+//   request.open('POST',`http://127.0.0.1:8000/locations/`)
+//   request.setRequestHeader("X-CSRFToken", csrftoken); 
+//   request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+//   request.send(`userLocation=${usrCrd}`)
+//   request.onreadystatechange=function(event){
+//   console.log('location getted')
+// }
+// }
+getLocationButton.addEventListener("click",sendLocation)
 
 </script>
 
