@@ -30,7 +30,10 @@ def private(request):
 
     # 해당 위치 작성 글 가져오기
     articles = Article.objects.filter(place__icontains="서울").order_by("-pk")
-    top_article = Article.objects.filter(place__icontains="서울").order_by("-pk")[0]
+    if articles:
+        top_article = Article.objects.filter(place__icontains="서울").order_by("-pk")[0]
+    else:
+        top_article = ""
 
     context = {
         "comment_form": comment_form,
