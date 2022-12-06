@@ -261,7 +261,7 @@
 }
 
 /* 반응형 */
-@media screen and (max-width: 950px) {
+@media screen and (max-width: 970px) {
 	.userprofile {
 		grid-template-rows: 150px;
 	}
