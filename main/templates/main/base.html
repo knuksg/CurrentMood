@@ -382,16 +382,12 @@
         bottomPlayer.addEventListener('touchend', (e) => {
           endY = e.pageY
           console.log(endY)
-          if (isMouseDown && (endY - startY) > 30) {
+          if (isMouseDown && (endY - startY) > 5) {
             slideDown(bottomPlayer, duration=400)
           }
 
           isMouseDown = false
           bottomPlayer.classList.remove('active')
-        })
-
-        bottomPlayer.addEventListener('mousemove', (e) => {
-
         })
 
         let slideDown = (target, duration=500) => {
