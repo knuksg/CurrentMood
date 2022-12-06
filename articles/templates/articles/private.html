@@ -27,7 +27,6 @@
 
   {% comment %} 캐러셀1 {% endcomment %}
   <div class="private-carousel bg-info text-center">
-    <h3>바로 여기 추천 곡</h3>
     <div class="mainSlide">
       {% for song in song_list %}
       <div class="box">
@@ -41,7 +40,6 @@
   
   {% comment %} 캐러셀2 {% endcomment %}
   <div class="private-carousel bg-info text-center">
-      <h3>추천 플레이리스트</h3>
       <div class="mainSlide">
         {% for song in song_list %}
           <div class="box">
@@ -67,7 +65,7 @@
           {% endif %}
           {{ article.user.username }}
         </div>
-        <div class="col-11 text-center">
+        <div class="col-11 text-center text-truncate">
           {{ article.song }}
           {{ article.content }}
         </div>
@@ -82,21 +80,22 @@
   <!-- 댓글창 : 클릭 전 -->
   <div onclick="openNav()">
     <div class="row d-flex">
-      <div class="col-1 d-flex flex-column mt-2">
+      <div class="col-2 d-flex flex-column mt-2">
+      {% if top_article %}
         {% if top_article.user.user_img %}
           <img src="{{ top_article.user.user_img.url }}" alt="" style="width: 3rem;">
         {% endif %}
         {{ top_article.user.username }}
       </div>
-      <div class="col-11 text-center">
+      <div class="col-10 text-center text-truncate">
         {{ top_article.song }}
         {{ top_article.content }}
+        {% else %}
+        <p> 댓글을 입력해주세요 </p>
+        {% endif %}
       </div>
     </div>
   </div>
-  
-
-  <div></div>
 
 {% endblock body %}
 

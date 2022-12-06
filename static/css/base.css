@@ -136,3 +136,7 @@ a:hover {
   display: none;
 }
 }
+
+.footer {
+  height: 300px;
+}

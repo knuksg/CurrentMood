@@ -19,14 +19,15 @@ class User(AbstractUser):
         format="JPEG",
         options={"quality": 100},
         null=True,
+        default="user_img/default.jpg",
     )
     followings = models.ManyToManyField(
         "self", symmetrical=False, related_name="followers"
     )
-    profile_music = models.ForeignKey('main.Song', on_delete=models.CASCADE, default=None, null=True)
+    profile_music = models.ForeignKey(
+        "main.Song", on_delete=models.CASCADE, default=None, null=True
+    )
 
     @property
     def full_name(self):
         return f"{self.last_name}{self.first_name}"
-
-    
