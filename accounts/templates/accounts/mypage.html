@@ -25,6 +25,17 @@
       <div><a href="{% url 'accounts:my_followerlist' %}">팔로워</a> : {{ user.followers.count }}
       </div>
     </div>
+    <div class="user-info-followbtn">
+      {% if request.user.pk != user.pk%}
+        <a href="{% url 'accounts:follow' user.pk %}">
+        {% if request.user in user.followers.all %}
+          <button class="followbtn">팔로우 취소</button>
+        {% else %}
+          <button class="followbtn">팔로우</button>
+        {% endif %}
+        </a>
+      {% endif %}
+    </div>
   </div>
 </div>
 <form class="form_radio_btn" id="radioform">
