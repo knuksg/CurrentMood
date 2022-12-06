@@ -82,19 +82,19 @@
       <!-- 하단 플레이어 -->
       <div class="bottom_player fixed-bottom">
         <hr class="mb-0">
-        <div class="w-100 d-flex justify-content-center align-items-center">
+        <div class="w-100 d-flex justify-content-center align-items-center bg-black">
           <img id="now-playing-sm" class="col-2" src="" alt="">
-          <div class="col-7 mx-3">
+          <div class="col-6 mx-3">
             <p id="now-playing-title" class="m-0">재생 중인 곡이 없습니다</p>
             <p id="now-playing-channel" class="m-0 opacity-75"></p>
           </div>
-          <div class="col-2">
+          <div class="col-3">
             <i id="previous" class="bi bi-skip-start-fill fs-1"></i>
             <i id="video-button" class="bi bi-play-fill fs-1"></i>
             <i id="next" class="bi bi-skip-end-fill fs-1"></i>
           </div>
         </div>
-        <hr class="mt-0">
+        <hr class="my-0">
       </div>
       <script>
         // 2. iframe api 불러오기
@@ -249,7 +249,6 @@
           else if (event.data == YT.PlayerState.ENDED) {
             videoButton.classList.add("bi-play-fill")
             videoButton.classList.remove("bi-pause-fill")
-            done = true
           }
         }
         function playVideo() {
@@ -267,6 +266,7 @@
           <!-- addPlayList -->
           // 프로필 뮤직(선택창) 재생
           if (e.target.closest("div.profile-music")) {
+            slideUp(bottomPlayer, duration=500)
             const profileMusic = e.target.closest("div.profile-music").querySelector('div.search-item')
             const profileTitle = profileMusic.querySelector('div.music_title').innerText
             const profileChannel = profileMusic.querySelector('div.music_channel').innerText
@@ -302,6 +302,7 @@
 
           // 프로필 뮤직 재생
           if (e.target.closest("div.my-music")) {
+            slideUp(bottomPlayer, duration=500)
             const myMusic = e.target.closest("div.my-music").querySelector('div.vid')
             const myTitle = myMusic.querySelector('div.title').innerText
             const myChannel = myMusic.querySelector('div.channel').innerText
@@ -336,6 +337,105 @@
             } );
           }
         })
+      </script>
+      <script>
+        const bottomPlayer = document.querySelector('.bottom_player')
+        let isMouseDown = false
+        let startY, endY
+
+        bottomPlayer.addEventListener('mousedown', (e) => {
+          isMouseDown = true
+          bottomPlayer.classList.add('active')
+
+          startY = e.pageY
+          console.log(startY)
+        })
+
+        bottomPlayer.addEventListener('mouseleave', (e) => {
+          endY = e.pageY
+          console.log(endY)
+          if (isMouseDown && (endY - startY) > 30) {
+            slideDown(bottomPlayer, duration=400)
+          }
+
+          isMouseDown = false
+          bottomPlayer.classList.remove('active')
+        })
+
+        bottomPlayer.addEventListener('mouseup', (e) => {
+          endY = e.pageY
+          console.log(endY)
+          if (isMouseDown && (endY - startY) > 30) {
+            slideDown(bottomPlayer, duration=400)
+          }
+
+          isMouseDown = false
+          bottomPlayer.classList.remove('active')
+        })
+
+        bottomPlayer.addEventListener('mousemove', (e) => {
+
+        })
+
+        let slideDown = (target, duration=500) => {
+          player.stopVideo()
+          target.style.transitionProperty = 'height, margin, padding';
+          target.style.transitionDuration = duration + 'ms';
+          target.style.boxSizing = 'border-box';
+          target.style.height = target.offsetHeight + 'px';
+          target.offsetHeight;
+          target.style.overflow = 'hidden';
+          target.style.height = 0;
+          target.style.paddingTop = 0;
+          target.style.paddingBottom = 0;
+          target.style.marginTop = 0;
+          target.style.marginBottom = 0;
+          window.setTimeout( () => {
+            target.style.display = 'none';
+            target.style.removeProperty('height');
+            target.style.removeProperty('padding-top');
+            target.style.removeProperty('padding-bottom');
+            target.style.removeProperty('margin-top');
+            target.style.removeProperty('margin-bottom');
+            target.style.removeProperty('overflow');
+            target.style.removeProperty('transition-duration');
+            target.style.removeProperty('transition-property');
+            //alert("!");
+          }, duration);
+        }
+
+        let slideUp = (target, duration=500) => {
+          target.style.removeProperty('display');
+          let display = window.getComputedStyle(target).display;
+      
+          if (display === 'none')
+            display = 'block';
+      
+          target.style.display = display;
+          let height = target.offsetHeight;
+          target.style.overflow = 'hidden';
+          target.style.height = 0;
+          target.style.paddingTop = 0;
+          target.style.paddingBottom = 0;
+          target.style.marginTop = 0;
+          target.style.marginBottom = 0;
+          target.offsetHeight;
+          target.style.boxSizing = 'border-box';
+          target.style.transitionProperty = "height, margin, padding";
+          target.style.transitionDuration = duration + 'ms';
+          target.style.height = height + 'px';
+          target.style.removeProperty('padding-top');
+          target.style.removeProperty('padding-bottom');
+          target.style.removeProperty('margin-top');
+          target.style.removeProperty('margin-bottom');
+          window.setTimeout( () => {
+            target.style.removeProperty('height');
+            target.style.removeProperty('overflow');
+            target.style.removeProperty('transition-duration');
+            target.style.removeProperty('transition-property');
+          }, duration);
+        }
+
       </script>
     </footer>
 
