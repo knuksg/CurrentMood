@@ -57,15 +57,21 @@
 
 
 <div class="card-big-box" id="cab1">
-  <div id="profile_music" class="profile-music">
+  <div id="profile_music" class="my-music">
     {% if user.profile_music.vidid %}
-    <div id="{{ user.profile_music.vidid }}">
+    <div id="{{ user.profile_music.vidid }}" class="vid">
       <div class="position-relative">
         <img src="{{ user.profile_music.hqdefault }}" alt="">
         <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
       </div>
-      <div>
-        {{ user.profile_music.title }} - {{ user.profile_music.channel }}
+      <div class="my-3">
+        <div class="title">
+          {{ user.profile_music.title }}
+        </div>
+        <span> - </span>
+         <div class="channel">
+          {{ user.profile_music.channel }}
+         </div>
       </div>
     </div>
     {% else %}
