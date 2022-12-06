@@ -4,6 +4,10 @@
   --bg-color: #32323249;
   --inputbg-color: #f4f4f4;
 }
+html, 
+body {
+  height: 1500px;
+}
 * {
   box-sizing: border-box;
   font-family: 'NanumSquareRound';
