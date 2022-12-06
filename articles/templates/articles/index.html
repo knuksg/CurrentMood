@@ -5,10 +5,10 @@
 <div class="container">
   <h1>현재 위치 기반 공유된 글들 - 임시(서울) - 지역 수정 뷰에서 가능</h1>
   <!-- 사연 수 기준 1위 곡 -->
-  <div>
+  <div class="my-3">
     {% if song_list %}
     <div id="{{ song_list.0.vidid }}" class="article-music">
-      <div class="position-relative">
+      <div class="position-relative d-flex justify-content-center align-items-center">
         <img src="{{ song_list.0.hqdefault }}" alt="">
         <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
       </div>
