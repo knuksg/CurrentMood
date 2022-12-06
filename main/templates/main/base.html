@@ -237,7 +237,7 @@
           <!-- addPlayList -->
           // 프로필 뮤직 재생
           if (e.target.closest("div.profile-music")) {
-            const profileMusic = e.target.closest("div.profile-music").querySelector('div.search-item')
+            const profileMusic = e.target.closest("div.profile-music").querySelector('div.sear-item')
             videoIDs.push(profileMusic.id)
             window.sessionStorage.setItem('videoIDs', JSON.stringify(videoIDs))
             player.loadPlaylist( {

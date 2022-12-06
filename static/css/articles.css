@@ -11,25 +11,43 @@ body {
   box-sizing: border-box;
 }
 
-.player {
+.private-player {
   display: flex;
   justify-content: center;
   position: relative;
 }
 
-.player img {
+.private-player img {
   width: 30vh;
 }
 
-.player--write {
+.private-player--write {
   position: absolute;
-  bottom: 0.5rem;
-  right: 1.5rem;
+  top: 17.5rem;
+  right: 1rem;
+}
+
+.private-playButton{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 10rem;
+}
+
+.private-playButton__image img {
+  filter: invert(1);
+  width: 2.5rem;
+  margin: 0 2rem;
+}
+
+.mainSlide {
+  height: 300px;
 }
 
 .box img {
   object-fit: cover;
-  padding: 1rem;
+  padding: 0.5rem;
+  margin: 75px;
   width: 100%;
 }
 
@@ -57,7 +75,7 @@ body {
   left: 0;
   background-color: #111; /* Black*/
   overflow-x: hidden; /* Disable horizontal scroll */
-  padding-top: 60px; /* Place content 60px from the top */
+  /* padding-top: 60px; Place content 60px from the top */
   transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
 }
 
@@ -65,7 +83,7 @@ body {
 .sidenav a {
   padding: 8px 8px 8px 32px;
   text-decoration: none;
-  font-size: 25px;
+  font-size: 15px;
   color: #818181;
   display: block;
   transition: 0.3s;
@@ -85,14 +103,30 @@ body {
   margin-left: 50px;
 }
 
-/* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-#main {
-  transition: margin-left .5s;
-  padding: 20px;
-}
-
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
-  .sidenav {padding-top: 15px;}
+  /* .sidenav {padding-top: 15px;} */
   .sidenav a {font-size: 18px;}
+}
+
+.private-comment a {
+  padding: 8px 8px 8px 32px;
+  text-decoration: none;
+  font-size: 15px;
+  color: #818181;
+  display: block;
+  transition: 0.3s;
+}
+
+.private-comment a:hover {
+  color: #f1f1f1;
+}
+
+.sidenav__comment {
+  height: 3rem;
+}
+
+.sidenav__comment > h3 {
+  color: #818181;
+  padding: 1rem;
 }
