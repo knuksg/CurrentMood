@@ -9,20 +9,34 @@ from django.db.models import Count
 
 # 위치 api 구현
 from .gmap import reverse_geocoding, parsing_geocoded
-import requests
 import os
 import pprint
 import json
 
 # Create your views here.
 def private(request):
-    articles = Article.objects.filter(place="블루보틀")
-    top_article = Article.objects.filter(place="블루보틀")[0]
     comment_form = CommentForm()
+
+    # 임시로 서울로 설정함. 현재 위치 받아오게 되면 현재 위치 기준으로 설정하면 됨.
+    song_queryset = (
+        Article.objects.filter(place__icontains="서울")
+        .values("song")
+        .annotate(Count("id"))
+    )
+    song_list = []
+    for song_id in song_queryset:
+        song = Song.objects.get(id=song_id["song"])
+        song_list.append(song)
+
+    # 해당 위치 작성 글 가져오기
+    articles = Article.objects.filter(place__icontains="서울").order_by("-pk")
+    top_article = Article.objects.filter(place__icontains="서울").order_by("-pk")[0]
+
     context = {
-        "articles": articles,
         "comment_form": comment_form,
         "top_article": top_article,
+        "articles": articles,
+        "song_list": song_list,
     }
     return render(request, "articles/private.html", context)
 

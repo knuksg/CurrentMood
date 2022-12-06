@@ -4,59 +4,66 @@
 
 {% block body %}
   {% comment %} 플레이어 {% endcomment %}
-  <div class="player">
+  <div class="private-player">
     <img src="{% static 'image/album.png' %}">
-    <div class="player--write">
-      <a href="{% url 'articles:index' %}">
-        <h3><i class="bi bi-pencil-square"></i></h3>
-      </a>
+  </div>
+
+  {% comment %} 글 작성 버튼 {% endcomment %}
+  <div class="private-player--write">
+    <a href="{% url 'articles:index' %}">
+      <h3><i class="bi bi-pencil-square"></i></h3>
+    </a>
+  </div>
+
+
+  {% comment %} 재생 버튼 {% endcomment %}
+  <div class="private-playButton">
+    <div class="private-playButton__image">
+      <img src="{% static 'image/private_next.png' %}" style="-webkit-transform: scaleX(-1); transform: scaleX(-1);">
+      <img src="{% static 'image/private_play.png' %}">
+      <img src="{% static 'image/private_next.png' %}">
+    </div>
+  </div>
+
+  {% comment %} 캐러셀1 {% endcomment %}
+  <div class="private-carousel bg-info text-center">
+    <h3>바로 여기 추천 곡</h3>
+    <div class="mainSlide">
+      {% for song in song_list %}
+      <div class="box">
+        <img src="{{ song.hqdefault }}">
+      </div>
+      {% endfor %}
     </div>
   </div>
 
   <hr>
-
-  {% comment %} 박스 {% endcomment %}
-  <div class="playButton bg-info p-play">
-    <div class="text-center">
-      <p>재생 버튼</p>
-    </div>
-  </div>
-
-  {% comment %} 캐러셀 {% endcomment %}
-  <div class="carousel bg-info">
-    <div class="mainSlide">
-      <div class="box">
-        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
-      </div>
-      <div class="box">
-        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
-      </div>
-      <div class="box">
-        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
-      </div>
-      <div class="box">
-        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
-      </div>
-      <div class="box">
-        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
-      </div>
-      <div class="box">
-        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
-      </div>
-      <div class="box">
-        <img src="{% static 'image/redvelvet.jpeg' %}" alt="">
+  
+  {% comment %} 캐러셀2 {% endcomment %}
+  <div class="private-carousel bg-info text-center">
+      <h3>추천 플레이리스트</h3>
+      <div class="mainSlide">
+        {% for song in song_list %}
+          <div class="box">
+            <img src="{{ song.hqdefault }}">
+          </div>
+        {% endfor %}
       </div>
     </div>
-  </div>
 
+  <!-- 댓글창 : 클릭 후 열린 창 -->
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <div class="sidenav__comment">
+      <h5>댓글</h5>
+    </div>
+    <hr>
     {% for article in articles %}
     <a href="{% url 'articles:detail' article.pk %}">
       <div class="row d-flex">
         <div class="col-1 d-flex flex-column mt-2">
-          {% if user.user_img %}
-            <img src="{{ user.user_img.url }}" alt="" style="width: 3rem;">
+          {% if article.user.user_img %}
+            <img src="{{ article.user.user_img.url }}" alt="" style="width: 3rem;">
           {% endif %}
           {{ article.user.username }}
         </div>
@@ -72,12 +79,12 @@
 
   <hr>
   
-  <!-- Use any element to open the sidenav -->
-  <div onclick="openNav()" class="bg-info">
+  <!-- 댓글창 : 클릭 전 -->
+  <div onclick="openNav()">
     <div class="row d-flex">
       <div class="col-1 d-flex flex-column mt-2">
-        {% if user.user_img %}
-          <img src="{{ user.user_img.url }}" alt="" style="width: 3rem;">
+        {% if top_article.user.user_img %}
+          <img src="{{ top_article.user.user_img.url }}" alt="" style="width: 3rem;">
         {% endif %}
         {{ top_article.user.username }}
       </div>
@@ -88,6 +95,9 @@
     </div>
   </div>
   
+
+  <div></div>
+
 {% endblock body %}
 
 {% block script %}
@@ -99,8 +109,8 @@
         dots: false,
         infinite: false,
         speed: 800,
-        slidesToShow: 7,
-        slidesToScroll: 7,
+        slidesToShow: 5,
+        slidesToScroll: 5,
         infinite: true,
         prevArrow : "<div class='slick-prev carousel-control-prev' style='position: absolute; left: .2rem;'><h1><</h1></div>",
         nextArrow : "<div class='slick-next carousel-control-next' style='position: absolute; right: .2rem;'><h1>></h1></div>",        
@@ -108,29 +118,29 @@
           {
             breakpoint: 1440,
             settings: {
-              slidesToShow: 6,
-              slidesToScroll: 6,
+              slidesToShow: 4,
+              slidesToScroll: 4,
             }
           },
           {
             breakpoint: 1024,
             settings: {
-              slidesToShow: 5,
-              slidesToScroll: 5,
+              slidesToShow: 3,
+              slidesToScroll: 3,
             }
           },
           {
             breakpoint: 860,
             settings: {
-              slidesToShow: 4,
-              slidesToScroll: 4
+              slidesToShow: 3,
+              slidesToScroll: 3,
             }
           },
           {
             breakpoint: 600,
             settings: {
-              slidesToShow: 3,
-              slidesToScroll: 3
+              slidesToShow: 2,
+              slidesToScroll: 2,
             }
           },
           {
@@ -151,7 +161,7 @@
   <script>
     /* Set the width of the side navigation to 250px */
     function openNav() {
-      document.getElementById("mySidenav").style.height = "62vh";
+      document.getElementById("mySidenav").style.height = "60vh";
     }
 
     /* Set the width of the side navigation to 0 */
