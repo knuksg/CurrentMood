@@ -1,42 +1,58 @@
 {% extends 'main/base.html' %}
+{% load django_bootstrap5 %}
 {% load static %}
 
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+<link rel="stylesheet" href="{% static 'css/articles.css' %}">
+{% endblock style %}
+
 {% block body %}
-<div class="container">
-  <h1>프로필 뮤직 페이지</h1>
-  <hr>
-  <h1 class="fw-bold mt-3">  
-    <span>
+  <div class="userprofile">
+    <div class="userprofile-img">
       {% if user.user_img %}
       <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
       {% else %}
       <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
       {% endif %}
-    </span>
-    {{ user.username }}님의 프로필 뮤직
-  </h1>
-  <hr>
-  <div>
-    <h3 class='fw-bold'>현재 설정된 프로필 뮤직</h3>
-    <div id="profile_music" class="profile-music">
-      {% if user.profile_music.vidid %}
-      <div id="{{ user.profile_music.vidid }}" class="search-item d-flex gap-3">
-        <img src="https://i.ytimg.com/vi/{{ user.profile_music.vidid }}/default.jpg" alt="">
-        <div>
-          <h5>{{ user.profile_music.title }}</h5>
-          <div class="d-flex gap-3">
-            <p>{{ user.profile_music.channel }}</p>
-          </div>
-        </div>
-        <div>
-          <i class="bi bi-play-circle fs-1"></i>
+      <p><a href="{% url 'accounts:update' user.pk %}">프로필 수정</a></p>
+    </div>
+    <div class="user-info">
+      <p>{{ user.username }}</p>
+      <div class="user-info__follow">
+        <div><a href="{% url 'accounts:my_followlist' %}">팔로우</a> : {{ user.followings.count }}
+        </div> 
+        <div><a href="{% url 'accounts:my_followerlist' %}">팔로워</a> : {{ user.followers.count }}
         </div>
       </div>
-      {% else %}
-      <p>프로필 뮤직이 없습니다...</p>
-      {% endif %}
     </div>
   </div>
+
+  
+  <div class="profile-setting-music">
+    <p>현재 설정된 프로필 뮤직</p>
+      <div id="profile_music" class="profile-music">
+        {% if user.profile_music.vidid %}
+        <div id="{{ user.profile_music.vidid }}" class="search-item">
+          <img src="https://i.ytimg.com/vi/{{ user.profile_music.vidid }}/default.jpg" alt="">
+            <div class="music_info">
+              <div class="music_title">
+                {{ user.profile_music.title }}
+              </div>
+              <div class="music_channel">
+                {{ user.profile_music.channel }}
+              </div>
+            </div>
+            <div>
+              <i class="bi bi-play-circle fs-1"></i>
+            </div>
+        </div>
+        {% else %}
+        <p>프로필 뮤직이 없습니다...</p>
+        {% endif %}
+      </div>
+  </div>
+
   <hr>
   <a href="{% url 'accounts:mypage' %}">뒤로가기</a>
   <hr>
