@@ -25,6 +25,17 @@
       <div><a href="{% url 'accounts:my_followerlist' %}">팔로워</a> : {{ user.followers.count }}
       </div>
     </div>
+    <div class="user-info-followbtn">
+      {% if request.user.pk != user.pk%}
+        <a href="{% url 'accounts:follow' user.pk %}">
+        {% if request.user in user.followers.all %}
+          <button class="followbtn">팔로우 취소</button>
+        {% else %}
+          <button class="followbtn">팔로우</button>
+        {% endif %}
+        </a>
+      {% endif %}
+    </div>
   </div>
 </div>
 <form class="form_radio_btn" id="radioform">
@@ -46,15 +57,21 @@
 
 
 <div class="card-big-box" id="cab1">
-  <div id="profile_music" class="profile-music">
+  <div id="profile_music" class="my-music">
     {% if user.profile_music.vidid %}
-    <div id="{{ user.profile_music.vidid }}">
+    <div id="{{ user.profile_music.vidid }}" class="vid">
       <div class="position-relative">
         <img src="{{ user.profile_music.hqdefault }}" alt="">
         <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
       </div>
-      <div>
-        {{ user.profile_music.title }} - {{ user.profile_music.channel }}
+      <div class="my-3">
+        <div class="title">
+          {{ user.profile_music.title }}
+        </div>
+        <span> - </span>
+         <div class="channel">
+          {{ user.profile_music.channel }}
+         </div>
       </div>
     </div>
     {% else %}

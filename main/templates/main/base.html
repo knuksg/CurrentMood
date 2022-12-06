@@ -73,22 +73,32 @@
 
     <footer>
       <div id="player" class="d-none"></div>
-      <div class="d-flex flex-column justify-content-center align-items-center my-3">
-        <!-- 플레이 시간 숨기기 -->
-        <div class="d-none gap-3">
-          <div id="current-time">0:00</div>
-          <input id="progress-bar" type="range" value="0">
-          <div id="duration">0:00</div>
+      <!-- 플레이 시간 숨기기 -->
+      <div class="d-none gap-3">
+        <div id="current-time">0:00</div>
+        <input id="progress-bar" type="range" value="0">
+        <div id="duration">0:00</div>
+      </div>
+      <!-- 하단 플레이어 -->
+      <div class="bottom_player fixed-bottom">
+        <hr class="mb-0">
+        <div class="w-100 d-flex justify-content-center align-items-center">
+          <img id="now-playing-sm" class="col-2" src="" alt="">
+          <div class="col-7 mx-3">
+            <p id="now-playing-title">재생 중인 곡이 없습니다</p>
+            <p id="now-playing-channel"></p>
+          </div>
+          <div class="col-2">
+            <i id="previous" class="bi bi-skip-start-fill fs-1"></i>
+            <i id="video-button" class="bi bi-play-fill fs-1"></i>
+            <i id="next" class="bi bi-skip-end-fill fs-1"></i>
+          </div>
         </div>
-        <div>
-          <button class="button" id="previous"><i class="bi bi-arrow-left"></i></button>
-          <button class="button" id="video-button"><i class="bi bi-play-fill"></i></button>
-          <button class="button" id="next"><i class="bi bi-arrow-right"></i></button>
-        </div>
+        <hr class="mt-0">
       </div>
       <script>
         // 2. iframe api 불러오기
-        {% comment %} var tag = document.createElement('script'); {% endcomment %}
+        var tag = document.createElement('script');
 
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -98,11 +108,14 @@
 
         // 재생목록 생성
         var videoIDs = JSON.parse(window.sessionStorage.getItem('videoIDs'))
+        var videoTitles = JSON.parse(window.sessionStorage.getItem('videoTitles'))
+        var videoChannels = JSON.parse(window.sessionStorage.getItem('videoChannels'))
         if (videoIDs) {
           console.log(videoIDs)
         } else {
           window.sessionStorage.setItem('videoIDs', JSON.stringify(['is-rjsfoYtY']))
-          console.log(videoIDs)
+          window.sessionStorage.setItem('videoTitles', JSON.stringify(["KARA (카라) 'WHEN I MOVE' Official MV"]))
+          window.sessionStorage.setItem('videoChannels', JSON.stringify(["KARA Official"]))
         }
 
         // 플레이어 생성
@@ -138,7 +151,7 @@
             })
           }
           videoButton.addEventListener('click', function(event) {
-            if (videoButton.querySelector('.bi').classList.contains("bi-play-fill")) {
+            if (videoButton.classList.contains("bi-play-fill")) {
               playVideo()
             }
             else {
@@ -188,9 +201,22 @@
           }
 
           updateTimerDisplay()
+
+          function updateNowPlayingDisplay() {
+            const nowPlayingSm = document.querySelector('#now-playing-sm')
+            nowPlayingSm.src = `https://i.ytimg.com/vi/${videoIDs[currentVideoId]}/default.jpg`
+            const nowPlayingTitle = document.querySelector('#now-playing-title')
+            nowPlayingTitle.innerText = videoTitles[currentVideoId]
+            const nowPlayingChannel = document.querySelector('#now-playing-channel')
+            nowPlayingChannel.innerText = videoChannels[currentVideoId]
+            
+          }
+
+          updateNowPlayingDisplay()
           
           time_update_interval = setInterval(function () {
             updateTimerDisplay();
+            updateNowPlayingDisplay();
           }, 1000)
 
           session_update_interval = setInterval(function () {
@@ -202,6 +228,7 @@
         // 5. 플레이어 상태가 바뀌었을 때 실행될 함수
         var done = false;
         const videoButton = document.querySelector("#video-button")
+        console.log(videoButton)
         function onPlayerStateChange(event) {
           // 버퍼링 중일 때
           if (event.data==-1) {
@@ -210,15 +237,18 @@
           }
           // 재생 중일 때
           else if (event.data == YT.PlayerState.PLAYING && !done) {
-            videoButton.innerHTML = '<i class="bi bi-pause-fill"></i>'
+            videoButton.classList.add("bi-pause-fill")
+            videoButton.classList.remove("bi-play-fill")
           }
           // 일시정지 중일 때
           else if (event.data == YT.PlayerState.PAUSED && !done) {
-            videoButton.innerHTML = '<i class="bi bi-play-fill"></i>'
+            videoButton.classList.add("bi-play-fill")
+            videoButton.classList.remove("bi-pause-fill")
           }
           // 끝났을 때
           else if (event.data == YT.PlayerState.ENDED) {
-            videoButton.innerHTML = '<i class="bi bi-play-fill"></i>'
+            videoButton.classList.add("bi-play-fill")
+            videoButton.classList.remove("bi-pause-fill")
             done = true
           }
         }
@@ -235,21 +265,71 @@
       <script>
         document.addEventListener('click', function(e) {
           <!-- addPlayList -->
-          // 프로필 뮤직 재생
+          // 프로필 뮤직(선택창) 재생
           if (e.target.closest("div.profile-music")) {
-            const profileMusic = e.target.closest("div.profile-music").querySelector('div.sear-item')
-            videoIDs.push(profileMusic.id)
+            const profileMusic = e.target.closest("div.profile-music").querySelector('div.search-item')
+            const profileTitle = profileMusic.querySelector('div.music_title').innerText
+            const profileChannel = profileMusic.querySelector('div.music_channel').innerText
+
+            // 플레이리스트에 이미 존재하는 노래인지 판단
+            // 플레이리스트에 존재한다면
+            if (videoIDs.includes(profileMusic.id)) {
+              const idx = videoIDs.indexOf(profileMusic.id)
+              // 가장 마지막 인덱스가 아니라면 기존 인덱스 삭제하고 새로 추가
+              if (idx > -1 && idx < videoIDs.length - 1) {
+                videoIDs.splice(idx, 1)
+                videoIDs.push(profileMusic.id)
+                videoTitles.splice(idx, 1)
+                videoTitles.push(profileTitle)
+                videoChannels.splice(idx, 1)
+                videoChannels.push(profileChannel)
+              }
+            // 플레이리스트에 없다면 추가
+            } else {
+              videoIDs.push(profileMusic.id)
+              videoTitles.push(profileTitle)
+              videoChannels.push(profileChannel)
+            }
             window.sessionStorage.setItem('videoIDs', JSON.stringify(videoIDs))
+            window.sessionStorage.setItem('videoTitles', JSON.stringify(videoTitles))
+            window.sessionStorage.setItem('videoChannels', JSON.stringify(videoChannels))
+
             player.loadPlaylist( {
               playlist:videoIDs,
               index: videoIDs.length - 1
             } );
           }
-          // 아티클 뮤직 재생
-          if (e.target.closest("div.article-music")) {
-            const articleMusic = e.target.closest("div.article-music")
-            videoIDs.push(articleMusic.id)
+
+          // 프로필 뮤직 재생
+          if (e.target.closest("div.my-music")) {
+            const myMusic = e.target.closest("div.my-music").querySelector('div.vid')
+            const myTitle = myMusic.querySelector('div.title').innerText
+            const myChannel = myMusic.querySelector('div.channel').innerText
+
+            // 플레이리스트에 이미 존재하는 노래인지 판단
+            // 플레이리스트에 존재한다면
+            if (videoIDs.includes(myMusic.id)) {
+              const idx = videoIDs.indexOf(myMusic.id)
+              // 가장 마지막 인덱스가 아니라면 기존 인덱스 삭제하고 새로 추가
+              if (idx > -1 && idx < videoIDs.length - 1) {
+                videoIDs.splice(idx, 1)
+                videoIDs.push(myMusic.id)
+                videoTitles.splice(idx, 1)
+                videoTitles.push(myTitle)
+                videoChannels.splice(idx, 1)
+                videoChannels.push(myChannel)
+              }
+            // 플레이리스트에 없다면 추가
+            } else {
+              videoIDs.push(myMusic.id)
+              videoTitles.push(myTitle)
+              videoChannels.push(myChannel)
+            }
+
             window.sessionStorage.setItem('videoIDs', JSON.stringify(videoIDs))
+            window.sessionStorage.setItem('videoTitles', JSON.stringify(videoTitles))
+            window.sessionStorage.setItem('videoChannels', JSON.stringify(videoChannels))
+
             player.loadPlaylist( {
               playlist:videoIDs,
               index: videoIDs.length - 1

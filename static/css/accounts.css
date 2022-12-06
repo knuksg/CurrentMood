@@ -100,8 +100,7 @@
 	.signupform__button,
 	.loginform-info,
 	.loginform__button,
-	.loginform__button-signup
-	 {
+	.loginform__button-signup {
 		width: 70vw;
 	}
 }
@@ -134,7 +133,7 @@
 }
 .user-info__follow {
 	display: flex;
-	margin-top: 5px;
+	margin: 5px 0px;
 }
 .user-info__follow>div {
 	margin-right: 2rem;
@@ -191,8 +190,72 @@
 	width: 100%;
 	text-align: end;
 }
+.user-info-followbtn {
+	border: 0px;
+	font-size: 2vw;
+	;
+}
+/* 프로필뮤직*/
+.profile-setting-music {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	margin: 20px 40px;
+}
+.search-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	height: 120px;
+	padding: 8px 8px;
+	background-color: #5a5a5acf;
+	border-radius: 5px;
+	margin: 5px 0px;
+}
+.search-item img {
+	width: 15vw;
+	height: auto;
+	margin: 0;
+}
+.music_info {
+	display: flex;
+	flex-direction: column;
+	font-size: 1rem;
+}
+.music_title {
+	width: 300px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.music_channel {
+	width: 300px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+#search-form {
+	margin-bottom: 10px;
+}
+.search-btn {
+	display: none;
+}
+.profile_music_search {
+	margin-bottom: 10px;
+}
+.search__input {
+	width: 20rem;
+	border-radius: 5px;
+}
+::placeholder {
+	text-align: center;
+}
+
 /* 반응형 */
 @media screen and (max-width: 950px) {
+	.userprofile {
+		grid-template-rows: 150px;
+	}
 	.userprofile-img {
 		font-size: 1vw;
 	}
@@ -211,6 +274,18 @@
 	.box__menu li {
 		padding: 8px 10px;
 	}
+	.search-item {
+		height: 100px;
+	}
+	.music_info {
+		font-size: 2vw;
+	}
+	.music_title {
+		width: 25vw;
+	}
+	.music_channel {
+		width: 25vw;
+	}
 }
 @media screen and (max-width: 500px) {
 	.user-info__follow {
@@ -218,6 +293,12 @@
 	}
 	.user-info__follow div {
 		margin-bottom: 5px;
+	}
+	.search-item {
+		height: 70px;
+	}
+	.search__input {
+		width: 15rem;
 	}
 }
 
