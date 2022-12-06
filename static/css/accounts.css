@@ -191,8 +191,51 @@
 	width: 100%;
 	text-align: end;
 }
+
+/* 프로필뮤직*/
+.profile-setting-music {
+	display: flex;
+	flex-direction: column;
+	text-align: center;
+	margin: 20px 40px;
+}
+.search-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-evenly;
+	height: 120px;
+	padding: 8px 8px;
+	background-color: #5a5a5acf;
+	border-radius: 5px;
+	margin: 5px 0px;
+}
+.music_info {
+	display: flex;
+	flex-direction: column;
+	font-size: 1rem;
+}
+.music_title {
+	width: 300px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+.music_channel {
+	width: 300px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+
+
+
+
 /* 반응형 */
 @media screen and (max-width: 950px) {
+	.userprofile {
+		grid-template-rows: 150px;
+	}
 	.userprofile-img {
 		font-size: 1vw;
 	}
@@ -210,6 +253,15 @@
 	}
 	.box__menu li {
 		padding: 8px 10px;
+	}
+	.music_info {
+		font-size: 2vw;
+	}
+	.music_title {
+		width: 25vw;
+	}
+	.music_channel {
+		width: 25vw;
 	}
 }
 @media screen and (max-width: 500px) {
