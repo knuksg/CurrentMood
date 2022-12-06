@@ -1,12 +1,16 @@
 @import url('https://cdn.rawgit.com/innks/NanumSquareRound/master/nanumsquareround.min.css');
 :root {
-  --text-color: #e7e7e7;
+  --text-color: #f8f8f8;
   --bg-color: #32323249;
   --inputbg-color: #f4f4f4;
 }
-html, 
+html,
 body {
+  margin: 0;
+  padding: 0;
   height: 1500px;
+  width: 100%;
+  background-color: rgb(20, 20, 20);
 }
 * {
   box-sizing: border-box;
@@ -74,6 +78,15 @@ a:hover {
   color: var(--text-color);
   font-size: 20px;
 }
+footer {
+  z-index: 9;
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+}
+
 /* 반응형 */
 @media screen and (max-width: 950px) {
 .navbar {

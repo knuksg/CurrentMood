@@ -4,7 +4,6 @@
 
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
-<link rel="stylesheet" href="{% static 'css/articles.css' %}">
 {% endblock style %}
 
 {% block body %}
@@ -89,8 +88,8 @@
   <ul class="box__menu">
       <li><img class="box-img" src="{% static 'image/album.png' %}"></li>
       <li><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></li>  
-      <li>{{ article.song }}</li>  
-      <li>{{ article.singer }}</li> 
+      <li class="box__menu--song">{{ article.song }}</li>  
+      {% comment %} <li>{{ article.singer }}</li>  {% endcomment %}
   </ul>
   {% endfor %}
 </div>
@@ -100,8 +99,8 @@
   <ul class="box__menu">
     <li><img src="{% static 'image/album.png' %}" style="width:50px;"></li>
     <li>{{ article.title }}</li>
-    <li>{{ article.song  }}</li>
-    <li>{{ article.singer }}</li>
+    <li class="box__menu--song">{{ article.song }}</li>  
+    {% comment %} <li>{{ article.singer }}</li>  {% endcomment %}
   </ul>
   {% endfor %}
 </div>
