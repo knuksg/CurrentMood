@@ -350,6 +350,13 @@
           startY = e.pageY
           console.log(startY)
         })
+        bottomPlayer.addEventListener('touchstart', (e) => {
+          isMouseDown = true
+          bottomPlayer.classList.add('active')
+
+          startY = e.pageY
+          console.log(startY)
+        })
 
         bottomPlayer.addEventListener('mouseleave', (e) => {
           endY = e.pageY
@@ -363,6 +370,16 @@
         })
 
         bottomPlayer.addEventListener('mouseup', (e) => {
+          endY = e.pageY
+          console.log(endY)
+          if (isMouseDown && (endY - startY) > 30) {
+            slideDown(bottomPlayer, duration=400)
+          }
+
+          isMouseDown = false
+          bottomPlayer.classList.remove('active')
+        })
+        bottomPlayer.addEventListener('touchend', (e) => {
           endY = e.pageY
           console.log(endY)
           if (isMouseDown && (endY - startY) > 30) {
