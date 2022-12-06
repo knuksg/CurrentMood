@@ -164,7 +164,13 @@
 	margin: 8px 0px;
 	border-radius: 1em;
 	font-size: 1.5rem;
-	padding: 0;
+	padding: 0;	
+}
+.box__menu--song {
+	width: 100%;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 .box-img {
 	width: 50px;
@@ -190,10 +196,13 @@
 	width: 100%;
 	text-align: end;
 }
-.user-info-followbtn {
-	border: 0px;
+.followbtn {
 	font-size: 2vw;
-	;
+	border-radius: 10px;
+	background-color: #75037F;
+	color: var(--text-color);
+	padding: 5px 8px;
+	border: 0;
 }
 /* 프로필뮤직*/
 .profile-setting-music {
