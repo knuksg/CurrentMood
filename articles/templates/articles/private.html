@@ -22,32 +22,6 @@
     </div>
   </div>
 
-  <div class="toggleBox">
-
-    <div class="toggleBtn1" data-bs-toggle="collapse" data-bs-target=".collapseExample">
-      토글1
-    </div>
-
-    <div class="collapse collapseExample" style="z-index: 3;">
-      {% for article in articles %}
-      <a href="{% url 'articles:detail' article.pk %}">
-        <div class="row d-flex">
-          <div class="col-1 d-flex flex-column mt-2">
-            <img src="{{ user.user_img.url }}" alt="" style="width: 3rem;">
-            {{ article.user.username }}
-          </div>
-          <div class="col-11 text-center">
-            {{ article.song }}
-            {{ article.content }}
-          </div>
-        </div>
-      </a>
-      <hr>
-      {% endfor %}  
-    </div>
-  </div>
-
-
   {% comment %} 캐러셀 {% endcomment %}
   <div class="carousel bg-info">
     <div class="mainSlide">
@@ -75,14 +49,45 @@
     </div>
   </div>
 
-  {% comment %} 댓글 {% endcomment %}
-  {% comment %} <div class="private-comment bg-info fixed-bottom">
-    <div class="text-center">
-      <p>댓글</p>
+  <div id="mySidenav" class="sidenav">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    {% for article in articles %}
+    <a href="{% url 'articles:detail' article.pk %}">
+      <div class="row d-flex">
+        <div class="col-1 d-flex flex-column mt-2">
+          {% if user.user_img %}
+            <img src="{{ user.user_img.url }}" alt="" style="width: 3rem;">
+          {% endif %}
+          {{ article.user.username }}
+        </div>
+        <div class="col-11 text-center">
+          {{ article.song }}
+          {{ article.content }}
+        </div>
+      </div>
+    </a>
+    <hr>
+    {% endfor %}  
+  </div>
+
+  <hr>
+  
+  <!-- Use any element to open the sidenav -->
+  <div onclick="openNav()" class="bg-info">
+    <div class="row d-flex">
+      <div class="col-1 d-flex flex-column mt-2">
+        {% if user.user_img %}
+          <img src="{{ user.user_img.url }}" alt="" style="width: 3rem;">
+        {% endif %}
+        {{ top_article.user.username }}
+      </div>
+      <div class="col-11 text-center">
+        {{ top_article.song }}
+        {{ top_article.content }}
+      </div>
     </div>
   </div>
-   {% endcomment %}
-
+  
 {% endblock body %}
 
 {% block script %}
@@ -97,8 +102,8 @@
         slidesToShow: 7,
         slidesToScroll: 7,
         infinite: true,
-        prevArrow : "<div class='slick-prev carousel-control-prev' style='position: absolute; left: .2rem; z-index: 2;'><h1><</h1></div>",
-        nextArrow : "<div class='slick-next carousel-control-next' style='position: absolute; right: .2rem; z-index: 2;'><h1>></h1></div>",        
+        prevArrow : "<div class='slick-prev carousel-control-prev' style='position: absolute; left: .2rem;'><h1><</h1></div>",
+        nextArrow : "<div class='slick-next carousel-control-next' style='position: absolute; right: .2rem;'><h1>></h1></div>",        
         responsive: [
           {
             breakpoint: 1440,
@@ -141,5 +146,17 @@
         ]
       });
     });
+  </script>
+
+  <script>
+    /* Set the width of the side navigation to 250px */
+    function openNav() {
+      document.getElementById("mySidenav").style.height = "62vh";
+    }
+
+    /* Set the width of the side navigation to 0 */
+    function closeNav() {
+      document.getElementById("mySidenav").style.height = "0";
+    }
   </script>
 {% endblock script %}

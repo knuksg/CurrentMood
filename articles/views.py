@@ -17,23 +17,29 @@ import json
 # Create your views here.
 def private(request):
     articles = Article.objects.filter(place="블루보틀")
+    top_article = Article.objects.filter(place="블루보틀")[0]
     comment_form = CommentForm()
     context = {
         "articles": articles,
         "comment_form": comment_form,
+        "top_article": top_article,
     }
     return render(request, "articles/private.html", context)
 
 
 def index(request):
     # 임시로 서울로 설정함. 현재 위치 받아오게 되면 현재 위치 기준으로 설정하면 됨.
-    song_queryset = Article.objects.filter(place__icontains="서울").values('song').annotate(Count('id'))
+    song_queryset = (
+        Article.objects.filter(place__icontains="서울")
+        .values("song")
+        .annotate(Count("id"))
+    )
     song_list = []
     for song_id in song_queryset:
-        song = Song.objects.get(id=song_id['song'])
+        song = Song.objects.get(id=song_id["song"])
         song_list.append(song)
     carousel_list = song_list[1:]
-    articles = Article.objects.filter(place__icontains="서울").order_by('-pk')
+    articles = Article.objects.filter(place__icontains="서울").order_by("-pk")
     context = {
         "articles": articles,
         "song_list": song_list,
@@ -45,25 +51,32 @@ def index(request):
 @login_required
 def create(request):
     if request.method == "POST":
-        place = request.POST.get('place', '')
-        title = request.POST.get('title', '')
-        content = request.POST.get('content', '')
-        vidid = request.POST.get('vidid', '')
-        vidtitle = request.POST.get('vidtitle', '')
-        channel = request.POST.get('channel', '')
-        hqdefault = request.POST.get('hqdefault', '')
-        default = request.POST.get('default', '')
-        mqdefault = request.POST.get('mqdefault', '')
+        place = request.POST.get("place", "")
+        title = request.POST.get("title", "")
+        content = request.POST.get("content", "")
+        vidid = request.POST.get("vidid", "")
+        vidtitle = request.POST.get("vidtitle", "")
+        channel = request.POST.get("channel", "")
+        hqdefault = request.POST.get("hqdefault", "")
+        default = request.POST.get("default", "")
+        mqdefault = request.POST.get("mqdefault", "")
         try:
             song = Song.objects.get(vidid=vidid)
         except:
-            song = Song.objects.create(vidid=vidid, title=vidtitle, channel=channel, hqdefault=hqdefault, default=default, mqdefault=mqdefault)
+            song = Song.objects.create(
+                vidid=vidid,
+                title=vidtitle,
+                channel=channel,
+                hqdefault=hqdefault,
+                default=default,
+                mqdefault=mqdefault,
+            )
         Article.objects.create(
-            user = request.user,
-            place = place,
-            title = title,
-            content = content,
-            song = song,
+            user=request.user,
+            place=place,
+            title=title,
+            content=content,
+            song=song,
         )
         return redirect("articles:index")
     else:
