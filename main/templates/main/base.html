@@ -80,7 +80,7 @@
         <div id="duration">0:00</div>
       </div>
       <!-- 하단 플레이어 -->
-      <div class="fixed-bottom">
+      <div class="bottom_player fixed-bottom">
         <hr class="mb-0">
         <div class="w-100 d-flex justify-content-center align-items-center">
           <img id="now-playing-sm" class="col-2" src="" alt="">
@@ -300,31 +300,35 @@
               index: videoIDs.length - 1
             } );
           }
+
           // 프로필 뮤직 재생
           if (e.target.closest("div.my-music")) {
             const myMusic = e.target.closest("div.my-music").querySelector('div.vid')
-            videoIDs.push(myMusic.id)
-            window.sessionStorage.setItem('videoIDs', JSON.stringify(videoIDs))
             const myTitle = myMusic.querySelector('div.title').innerText
-            videoTitles.push(myTitle)
-            window.sessionStorage.setItem('videoTitles', JSON.stringify(videoTitles))
             const myChannel = myMusic.querySelector('div.channel').innerText
-            videoChannels.push(myChannel)
-            window.sessionStorage.setItem('videoChannels', JSON.stringify(videoChannels))
 
-            player.loadPlaylist( {
-              playlist:videoIDs,
-              index: videoIDs.length - 1
-            } );
-          }
-          // 아티클 뮤직 재생
-          if (e.target.closest("div.article-music")) {
-            const articleMusic = e.target.closest("div.article-music")
-            videoIDs.push(articleMusic.id)
+            // 플레이리스트에 이미 존재하는 노래인지 판단
+            // 플레이리스트에 존재한다면
+            if (videoIDs.includes(myMusic.id)) {
+              const idx = videoIDs.indexOf(myMusic.id)
+              // 가장 마지막 인덱스가 아니라면 기존 인덱스 삭제하고 새로 추가
+              if (idx > -1 && idx < videoIDs.length - 1) {
+                videoIDs.splice(idx, 1)
+                videoIDs.push(myMusic.id)
+                videoTitles.splice(idx, 1)
+                videoTitles.push(myTitle)
+                videoChannels.splice(idx, 1)
+                videoChannels.push(myChannel)
+              }
+            // 플레이리스트에 없다면 추가
+            } else {
+              videoIDs.push(myMusic.id)
+              videoTitles.push(myTitle)
+              videoChannels.push(myChannel)
+            }
+
             window.sessionStorage.setItem('videoIDs', JSON.stringify(videoIDs))
-            videoTitles.push(articleMusic.title)
             window.sessionStorage.setItem('videoTitles', JSON.stringify(videoTitles))
-            videoChannels.push(articleMusic.Channel)
             window.sessionStorage.setItem('videoChannels', JSON.stringify(videoChannels))
 
             player.loadPlaylist( {
