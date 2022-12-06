@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from main.models import Song
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
+from django.db.models import Count
 
 # 위치 api 구현
 from .gmap import reverse_geocoding, parsing_geocoded
@@ -25,9 +26,18 @@ def private(request):
 
 
 def index(request):
-    articles = Article.objects.all().order_by("-pk")
+    # 임시로 서울로 설정함. 현재 위치 받아오게 되면 현재 위치 기준으로 설정하면 됨.
+    song_queryset = Article.objects.filter(place__icontains="서울").values('song').annotate(Count('id'))
+    song_list = []
+    for song_id in song_queryset:
+        song = Song.objects.get(id=song_id['song'])
+        song_list.append(song)
+    carousel_list = song_list[1:]
+    articles = Article.objects.filter(place__icontains="서울").order_by('-pk')
     context = {
         "articles": articles,
+        "song_list": song_list,
+        "carousel_list": carousel_list,
     }
     return render(request, "articles/index.html", context)
 

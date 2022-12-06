@@ -247,8 +247,7 @@
           }
           // 아티클 뮤직 재생
           if (e.target.closest("div.article-music")) {
-            console.log('test')
-            const articleMusic = e.target.closest("div.article-music").querySelector('div.music-vidid')
+            const articleMusic = e.target.closest("div.article-music")
             videoIDs.push(articleMusic.id)
             window.sessionStorage.setItem('videoIDs', JSON.stringify(videoIDs))
             player.loadPlaylist( {
