@@ -13,7 +13,7 @@
     <!-- css -->
     <link rel="stylesheet" href="{% static 'css/articles.css' %}">
     <link rel="stylesheet" href="{% static 'css/base.css' %}">
-    <link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
     {% block style %}{% endblock %} 
     <!--fontawesome icon-->
     <script src="https://kit.fontawesome.com/50ae24f515.js" crossorigin="anonymous"></script> 
@@ -72,7 +72,7 @@
         {% block body %}{% endblock body %}
       </section>
       <div class="footer">
-        123
+        footer
       </div>
     </div>
     
@@ -83,7 +83,7 @@
     <footer>
       <div id="player" class="d-none"></div>
       <!-- 플레이 시간 숨기기 -->
-      <div class="d-none gap-3">
+      <div id="bottom-time" class="d-none gap-3">
         <div id="current-time">0:00</div>
         <input id="progress-bar" type="range" value="0">
         <div id="duration">0:00</div>
@@ -92,13 +92,13 @@
       <div class="bottom_player fixed-bottom">
         <hr class="my-0">
         <div class="d-flex justify-content-center align-items-center bg-black">
-          <a href="{% url 'articles:song' video_id='zYoYoBtLqOY' %}">
-            <img id="now-playing-sm" class="col-2" src="" alt="">
+          <a href="{% url 'articles:song' %}" class="col-9 d-flex justify-content-center align-items-center">
+            <img id="now-playing-sm" class="col-3" src="" alt="">
+            <div class="col-9 mx-3">
+              <p id="now-playing-title" class="m-0">재생 중인 곡이 없습니다</p>
+              <p id="now-playing-channel" class="m-0 opacity-75"></p>
+            </div>
           </a>
-          <div class="col-6 mx-3">
-            <p id="now-playing-title" class="m-0">재생 중인 곡이 없습니다</p>
-            <p id="now-playing-channel" class="m-0 opacity-75"></p>
-          </div>
           <div class="col-3">
             <i id="previous" class="bi bi-skip-start-fill fs-1"></i>
             <i id="video-button" class="bi bi-play-fill fs-1"></i>
@@ -213,6 +213,25 @@
 
           updateTimerDisplay()
 
+          const progressBar = document.querySelector("#progress-bar")
+          // 초기 프로그레스바 색상 설정
+
+          function updateProgressBar() {
+            progressBar.value = (player.getCurrentTime() / player.getDuration()) * 100
+            progressBar.style.background = 'linear-gradient(to right, #fff 0%, #fff '+progressBar.value +'%, #6c757d ' + progressBar.value + '%, #6c757d 100%)'
+          }
+      
+          updateProgressBar()
+
+          progressBar.addEventListener('mouseup', function(e) {
+            var newTime = player.getDuration() * (e.target.value / 100)
+            player.seekTo(newTime)
+          })
+          progressBar.addEventListener('touchend', function(e) {
+            var newTime = player.getDuration() * (e.target.value / 100)
+            player.seekTo(newTime)
+          })
+
           function updateNowPlayingDisplay() {
             const nowPlayingSm = document.querySelector('#now-playing-sm')
             nowPlayingSm.src = `https://i.ytimg.com/vi/${videoIDs[currentVideoId]}/default.jpg`
@@ -220,15 +239,22 @@
             nowPlayingTitle.innerText = videoTitles[currentVideoId]
             const nowPlayingChannel = document.querySelector('#now-playing-channel')
             nowPlayingChannel.innerText = videoChannels[currentVideoId]
-            const nowPlayingLink = document.querySelector('.bottom_player').querySelector('a')
-            var link ="{% url 'articles:song' 12345 %}".replace(/12345/, video_id=videoIDs[currentVideoId]);
-            nowPlayingLink.href = link
+            const playlist = document.querySelectorAll('#playlist-item')
+            playlist.forEach((playlistActive) => {
+              const playlistTitle = playlistActive.querySelector('#playlist-title')
+              if (playlistTitle.innerText == videoTitles[currentVideoId]) {
+                playlistActive.classList.add('bg-dark')
+              } else {
+                playlistActive.classList.remove('bg-dark')
+              }
+            })
           }
 
           updateNowPlayingDisplay()
           
           time_update_interval = setInterval(function () {
             updateTimerDisplay();
+            updateProgressBar();
             updateNowPlayingDisplay();
           }, 1000)
 
@@ -262,6 +288,14 @@
           else if (event.data == YT.PlayerState.ENDED) {
             videoButton.classList.add("bi-play-fill")
             videoButton.classList.remove("bi-pause-fill")
+          }
+          if (document.querySelector('#song')) {
+            const song = document.querySelector('#song')
+            const songImg = song.querySelector('img')
+            songImg.src = `https://i.ytimg.com/vi/${videoIDs[currentVideoId]}/hqdefault.jpg`
+            bottomPlayer.classList.add('d-none')
+          } else {
+            bottomPlayer.classList.remove('d-none')
           }
         }
         function playVideo() {
@@ -347,7 +381,23 @@
             player.loadPlaylist( {
               playlist:videoIDs,
               index: videoIDs.length - 1
+            } ); 
+          }
+
+          // 플레이리스트 뮤직 재생
+          if (e.target.closest("div.playlist-item")) {
+            slideUp(bottomPlayer, duration=500)
+            const playlistMusic = e.target.closest("div.playlist-item").querySelector('div.playlist-vidid')
+            const playlistTitle = document.querySelector('p.playlist-title').innerText
+            const playlistChannel = document.querySelector('p.playlist-channel').innerText
+
+            const idx = videoIDs.indexOf(playlistMusic.id)
+            
+            player.loadPlaylist( {
+              playlist:videoIDs,
+              index: idx
             } );
+
           }
         })
       </script>
@@ -467,7 +517,7 @@
 
     <!-- JavaScript Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
-    <script type="text/javascript" src="http://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
     <script defer="defer" src="{% static 'js/script.js' %}"></script>
     {% block script %}{% endblock %}
   </body>

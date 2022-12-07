@@ -11,11 +11,11 @@
 <div class="following">
   <a href="{% url 'accounts:mypage' %}"><i class="fa-solid fa-arrow-left"></i></a>
   <div class="following-count">
-    {% if user.following.count >= 1 %}
-      팔로잉 {{ user.following.count }}명
-    {% else %} 
+    {% if not user.followings.all  %}
       팔로잉 0명
-    {% endif %}
+    {% else %}  
+      팔로잉 {{ user.followings.count }}명
+    {% endif %} 
   </div>
 </div>
 
