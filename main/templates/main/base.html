@@ -58,7 +58,7 @@
           <li><a href="{% url 'articles:private' %}"><i class="fa-sharp fa-solid fa-house"></i> 홈</a></li>
           {% if request.user.is_authenticated %}
           <li><a href="{% url 'accounts:mypage' %}"><i class="fa-solid fa-user"></i> 내 정보</a></li>
-          <li><a href="#"><i class="bi bi-music-note-list"></i> 보관함</a></li>
+          <li><a href="{% url 'accounts:mylist' %}"><i class="bi bi-music-note-list"></i> 보관함</a></li>
           <li class="navbar-logout"><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
           {% else %}
           <li><a href="{% url 'accounts:login' %}">로그인</a></li>
@@ -230,21 +230,35 @@
           })
 
           function updateNowPlayingDisplay() {
+            // bottomPlayer
             const nowPlayingSm = document.querySelector('#now-playing-sm')
             nowPlayingSm.src = `https://i.ytimg.com/vi/${videoIDs[currentVideoId]}/default.jpg`
             const nowPlayingTitle = document.querySelector('#now-playing-title')
             nowPlayingTitle.innerText = videoTitles[currentVideoId]
             const nowPlayingChannel = document.querySelector('#now-playing-channel')
             nowPlayingChannel.innerText = videoChannels[currentVideoId]
-            const playlist = document.querySelectorAll('#playlist-item')
-            playlist.forEach((playlistActive) => {
-              const playlistTitle = playlistActive.querySelector('#playlist-title')
-              if (playlistTitle.innerText == videoTitles[currentVideoId]) {
-                playlistActive.classList.add('bg-dark')
-              } else {
-                playlistActive.classList.remove('bg-dark')
-              }
-            })
+
+            // detailPlayer
+            if (document.querySelector('#song')) {
+              const detailPlayingId = document.querySelector('#detail-playing-id')
+              detailPlayingId.innerText = videoIDs[currentVideoId]
+              const detailPlayingTitle = document.querySelector('#detail-playing-title')
+              detailPlayingTitle.innerText = videoTitles[currentVideoId]
+              const detailPlayingChannel = document.querySelector('#detail-playing-channel')
+              detailPlayingChannel.innerText = videoChannels[currentVideoId]
+              const detailPlayingLink = document.querySelector('#detail-playing-link')
+              var link ="{% url 'articles:song_detail' 12345 %}".replace(/12345/, video_id=videoIDs[currentVideoId]);
+              detailPlayingLink.href = link
+              const playlist = document.querySelectorAll('#playlist-item')
+              playlist.forEach((playlistActive) => {
+                const playlistTitle = playlistActive.querySelector('#playlist-title')
+                if (playlistTitle.innerText == videoTitles[currentVideoId]) {
+                  playlistActive.classList.add('bg-dark')
+                } else {
+                  playlistActive.classList.remove('bg-dark')
+                }
+              })
+            }
           }
 
           updateNowPlayingDisplay()

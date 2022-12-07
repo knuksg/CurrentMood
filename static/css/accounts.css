@@ -357,3 +357,15 @@ ul {
   height: -webkit-fill-available;
   line-height: 45px;
 } */
+
+.mylist-btn {
+	display: flex;
+	justify-content: space-evenly;
+	width: 100%;
+	border: 1px solid white;
+	opacity: 75%;
+	margin-bottom: 8px;
+}
+.mylist-btn a {
+	padding: 0 70px;
+}

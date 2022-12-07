@@ -71,7 +71,6 @@ def index(request):
 def create(request):
     if request.method == "POST":
         place = request.POST.get("place", "")
-        title = request.POST.get("title", "")
         content = request.POST.get("content", "")
         vidid = request.POST.get("vidid", "")
         vidtitle = request.POST.get("vidtitle", "")
@@ -93,7 +92,6 @@ def create(request):
         Article.objects.create(
             user=request.user,
             place=place,
-            title=title,
             content=content,
             song=song,
         )
@@ -215,7 +213,9 @@ def song(request):
 
 def song_detail(request, video_id):
     song = Song.objects.get(vidid=video_id)
+    articles = Article.objects.filter(song=song)
     context = {
         "song": song,
+        "articles": articles,
     }
     return render(request, "articles/song_detail.html", context)
