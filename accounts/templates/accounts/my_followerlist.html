@@ -9,14 +9,13 @@
 {% block body %}
 
 <div class="follower">
-  <div class="backbtn">
   <a href="{% url 'accounts:mypage' %}"><i class="fa-solid fa-arrow-left"></i></a>
   </div>
   <div class="follower-count">
-    {% if user.follower.count >= 1 %}
-      팔로워 {{ user.follower.count }}명
-    {% else %} 
+    {% if not user.followers.all %}
       팔로워 0명
+    {% else %} 
+      팔로워 {{ user.followers.count }}명
     {% endif %}
   </div>
 </div>

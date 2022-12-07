@@ -75,9 +75,7 @@ def update(request, pk):
 
 @login_required
 def detail(request, pk):
-
     user = get_user_model().objects.get(pk=pk)
-
     context = {
         "user": user,
     }
@@ -86,9 +84,7 @@ def detail(request, pk):
 
 @login_required
 def mypage(request):
-
     user = get_user_model().objects.get(pk=request.user.pk)
-
     context = {
         "user": user,
     }

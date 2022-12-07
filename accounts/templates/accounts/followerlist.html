@@ -1,39 +1,71 @@
 {% extends 'main/base.html' %}
+{% load django_bootstrap5 %}
 {% load static %}
 
-{% block body %}
-<div>
-  팔로워리스트 페이지
-</div>
-<hr>
-<h1 class="fw-bold mt-3">  
-  <span>
-    {% if user.user_img %}
-    <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
-    {% else %}
-    <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
-    {% endif %}
-  </span>
-  {{ user.username }}님을 팔로우하는 사람들
-</h1>
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+{% endblock style %}
 
-<hr>
-<div>
+{% block body %}
+<div class="follower">
+  <a href="{% url 'accounts:detail' user.pk %}"><i class="fa-solid fa-arrow-left"></i></a>
+  <div class="follower-count">
+    {% if not user.followers.all %}
+      팔로워 0명
+    {% else %} 
+      팔로워 {{ user.followers.count }}명
+    {% endif %}
+  </div>
+</div>
+
+<div class="follower_list">
   <ul>
-    <li class='fw-bold'>팔로워 리스트</li>
     {% for myfollower in user.followers.all %}
-      {% if myfollower.user_img %}
-        <li class="list-group-item"><img class=" rounded-circle mx-2" src="{{ myfollower.user_img.url }}" style="width:50px;">{{ myfollower.username }}</li>
+      {% if myfolloer.user_img %}
+        <li class="follower_user-info">
+          <a href="{% url 'accounts:detail' myfollower.pk %}">
+            <div>
+            <img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollower.username }}
+            </div>
+          </a>
+          {% if request.user != myfollower %}
+          <div>
+            <i class="fa-solid fa-user-plus"></i>
+          </div>
+          {% else %}
+          <div>
+            <i class="fa-solid fa-check"></i>
+          </div>
+          {% endif %}
+        </li>
       {% else %}
-        <li class="list-group-item"><img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollower.username }}</li>
+        <li class="follower_user-info">
+          <a href="{% url 'accounts:detail' myfollower.pk %}">
+            <div>
+            <img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollower.username }}
+            </div>
+          </a>
+          {% if request.user != myfollower %}
+              <a href="{% url 'accounts:follow' myfollower.pk %}">
+              {% if request.user in myfollower.followers.all %}
+                <i class="fa-solid fa-check"></i>
+              {% else %}
+                <i class="fa-solid fa-user-plus"></i>
+              {% endif %}
+              </a>
+          {% else %}
+            <div>
+              <i class="fa-solid fa-check"></i>
+            </div>
+          {% endif %}
+        </li>
       {% endif %}
     {% endfor %}
     {% if not user.followers.all %}
-      <li class="list-group-item">나를 팔로우 하는 사람이 없습니다.</li>
+      <li class="mt-4 d-flex justify-content-center">팔로우 하는 사람이 없습니다.</li>
     {% endif %}
   </ul>
 </div>
-<hr>
-<a href="{% url 'accounts:detail' user.pk %}">뒤로가기</a>
+
 
 {% endblock %}
