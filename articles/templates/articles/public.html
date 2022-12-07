@@ -1,4 +1,11 @@
 {% extends 'main/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/articles.css' %}">
+{% endblock %} 
+
 {% block body %}
 
 {% comment %} 1등 장소 {% endcomment %}
@@ -6,10 +13,14 @@
     123
 </div>
 
+<hr>
+
 {% comment %} 나머지 장소 + 캐러셀 {% endcomment %}
 <div class="place__recom">
     123
 </div>
+
+<hr>
 
 {% comment %} 인기 유저 + 캐러셀 {% endcomment %}
 <div class="place__bestUser">

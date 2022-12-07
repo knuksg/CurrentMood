@@ -11,6 +11,7 @@ body {
   height: 100%;
   width: 100%;
   background-color: rgb(20, 20, 20);
+  color : white;
 }
 
 #wrap {
@@ -161,10 +162,11 @@ section {
 	padding-bottom: 200px; /* footer의 height값과 동일 */
 }
 
-footer {
+.footer {
 	width: 100%;
 	height: 180px; /* 내용물에 따라 알맞는 값 설정 */
   padding-top: 20px;
 	bottom: 0px;
 	position: absolute;
+  z-index: 0;
 }
