@@ -1,9 +1,42 @@
 {% extends 'main/base.html' %}
+{% load django_bootstrap5 %}
+{% load static %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+{% endblock %}
 {% block body %}
-<div>
-  <img src="{{ song.hqdefault }}" alt="">
+<div class="container">
+  <div id="{{ song.vidid }}" class="search-item">
+    <img src="https://i.ytimg.com/vi/{{ song.vidid }}/default.jpg" alt="">
+      <div class="music_info">
+        <div class="music_title">
+          {{ song.title }}
+        </div>
+        <div class="music_channel">
+          {{ song.channel }}
+        </div>
+      </div>
+      <div>
+        <i class="bi bi-play-circle fs-1"></i>
+      </div>
+  </div>
+  <div>
+    {% for article in articles %}
+    <a href="{% url 'articles:detail' article.pk %}" class="d-flex gap-3">
+      <div>
+        {% if article.user.user_img %}
+        <img class="rounded-circle" src="{{ article.user.user_img.url }}" alt="" style="width:100px;">
+        {% else %}
+        <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
+        {% endif %}
+        <p>{{ article.user }}</p>
+      </div>
+      <div>
+        <p class="mb-1 opacity-75">{{ article.place }}</p>
+        <p>{{ article.content }}</p>
+      </div>
+    </a>
+    {% endfor %}
+  </div>
 </div>
-{{ song.vidid }}
-{{ song.title }}
-{{ song.channel }}
 {% endblock body %}

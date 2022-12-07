@@ -61,7 +61,7 @@
     {% if user.profile_music.vidid %}
     <div id="{{ user.profile_music.vidid }}" class="vid">
       <div class="position-relative">
-        <img src="{{ user.profile_music.hqdefault }}" alt="">
+        <img src="{{ user.profile_music.hqdefault }}" style="width: 100%;" alt="">
         <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
       </div>
       <div class="my-3">
@@ -86,22 +86,24 @@
 
 <div class="card-big-box" id="cab2" style="display: none;">
   {% for article in user.article_set.all %}
-  <ul class="box__menu">
-      <li><img class="box-img" src="{% static 'image/album.png' %}"></li>
-      <li><a href="{% url 'articles:detail' article.pk %}">{{ article.title }}</a></li>  
+  <ul>
+    <a href="{% url 'articles:detail' article.pk %}" class="box__menu">
+      <li><img class="box-img" src="{{ article.song.hqdefault }}"></li>
       <li class="box__menu--song">{{ article.song }}</li>  
-      {% comment %} <li>{{ article.singer }}</li>  {% endcomment %}
+      <li>{{ article.place }}</li>  
+    </a>
   </ul>
   {% endfor %}
 </div>
 
 <div class="card-big-box" id="cab3" style="display: none;">
   {% for article in user.like_article.all %}
-  <ul class="box__menu">
-    <li><img src="{% static 'image/album.png' %}" style="width:50px;"></li>
-    <li>{{ article.title }}</li>
-    <li class="box__menu--song">{{ article.song }}</li>  
-    {% comment %} <li>{{ article.singer }}</li>  {% endcomment %}
+  <ul>
+    <a href="{% url 'articles:detail' article.pk %}"  class="box__menu">
+      <li><img src="{{ article.song.hqdefault }}" style="width:50px;"></li>
+      <li class="box__menu--song">{{ article.song }}</li>  
+      <li>{{ article.content }}</li>
+    </a>
   </ul>
   {% endfor %}
 </div>

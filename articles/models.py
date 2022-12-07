@@ -8,8 +8,7 @@ class Article(models.Model):
     place = models.CharField(max_length=30)
     song = models.ForeignKey("main.Song", on_delete=models.CASCADE)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    title = models.CharField(max_length=30)
-    content = models.TextField()
+    content = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     image = ProcessedImageField(
         upload_to="images/",

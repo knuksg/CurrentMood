@@ -5,7 +5,7 @@ from .models import Article, Comment
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ("title", "created_at")
+    list_display = ("content", "created_at")
 
 
 class CommentAdmin(admin.ModelAdmin):

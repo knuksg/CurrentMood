@@ -1,76 +1,6 @@
 {% extends 'main/base.html' %}
+{% block style %}{% endblock %}
 {% block body %}
-<style>
-  .movie-music-btn {
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 32px;
-    gap: 7rem;
-    background: #000;
-    border: 1px solid white;
-  }
-
-  .video-button {
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 10px;
-    border-radius: 100%;
-    background-color: rgba( 255, 255, 255, 0.1 );
-  }
-  .video-button i {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-    font-size: 80px;
-  }
-
-  .player-btn {
-    cursor: pointer;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .player-btn i {
-    display: flex;
-    align-items: center;
-    margin: 0;
-    padding: 0;
-    font-size: 50px;
-  }
-
-  input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    cursor: pointer;
-    width: 12px;
-    height: 12px;
-    background: white;
-    border-radius: 50%;
-  }
-
-   #progress-bar {
-    background: linear-gradient(to right, #fff 0%, #fff 50%, #6c757d 50%, #6c757d 100%);
-    border-radius: 8px;
-    height: 4px;
-    width: 280px;
-    margin: auto;
-    outline: none;
-    -webkit-appearance: none;
-  }
-
-  .playlist-bottom {
-    display: flex;
-    justify-content: center;
-    position: fixed;
-    bottom: 0px;
-    width: 380px;
-  }
-</style>
 <div id="song">
   <div class="d-flex flex-column justify-content-center align-items-center">
     <div id="movie-music-btn" class="movie-music-btn" style="width: 380px;">
@@ -78,10 +8,11 @@
     </div>
     <img src="" alt="" style="width: 380px;">
     <div id="player" class="d-none"></div>
-    <div class="my-3" style="width: 380px;">
-      <p id="now-playing-title" class="m-0">재생 중인 곡이 없습니다</p>
-      <p id="now-playing-channel" class="m-0 opacity-75"></p>
-    </div>
+    <a id="detail-playing-link" class="detail-playing-link my-3" style="width: 380px;">
+      <div id="detail-playing-id" class="detail-playing-id d-none"></div>
+      <p id="detail-playing-title" class="m-0">재생 중인 곡이 없습니다</p>
+      <p id="detail-playing-channel" class="m-0 opacity-75"></p>
+    </a>
     <div class="d-flex gap-3">
       <div id="current-time">0:00</div>
       <input id="progress-bar" type="range" value="0">
@@ -103,7 +34,7 @@
 <div class="d-flex justify-content-center">
   <div class="playlist-bottom">
     <div class="w-100 bg-black">
-      <div id="playlist-btn" class="playlist-btn p-3">
+      <div id="playlist-btn" class="playlist-btn p-3 pb-0">
         <h1>플레이리스트</h1>  
       </div>
       <div id="playlist" style="overflow: auto;">
