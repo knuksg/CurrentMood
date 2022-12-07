@@ -169,9 +169,9 @@ def location_get(request):
 
 def public(request):
     # place model에서 필드를 가져온다.
-    place = Place.objects.all()
+    places = Article.objects.filter(place="서울")
     context = {
-        "place": place,
+        "places": places,
     }
     return render(request, "articles/public.html", context)
 

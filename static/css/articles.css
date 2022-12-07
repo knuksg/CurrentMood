@@ -126,3 +126,20 @@ body {
   color: #818181;
   padding: 1rem;
 }
+
+
+/* articles/public */
+.place__best {
+  height: 200px;
+  background-color: antiquewhite;
+}
+
+.place__recom {
+  height: 400px;
+  background-color: antiquewhite;
+}
+
+.place__bestUser {
+  height: 200px;
+  background-color: antiquewhite;
+}

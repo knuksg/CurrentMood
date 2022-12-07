@@ -1,26 +1,20 @@
 {% extends 'main/base.html' %}
 {% block body %}
-<!-- 유저의 현재 위치 -->
-<h1>{{place.0}}</h1>
 
-<!-- 유저가 가장 많은 장소 -->
-<header>
-    <div>{{place.0}}</div>
-</header>
+{% comment %} 1등 장소 {% endcomment %}
+<div class="place__best">
+    123
+</div>
 
-<!-- 추천장소 -->
-<main class="row row-cols-2">
-     <!-- carousel  -->
-    <div class="col bg-light"></div>
-    <div class="col bg-light"></div>
-    <div class="col bg-light"></div>
-    <div class="col bg-light"></div>
-</main>
+{% comment %} 나머지 장소 + 캐러셀 {% endcomment %}
+<div class="place__recom">
+    123
+</div>
 
-<!-- 인기 유저 -->
-<footer>
-    <!-- DB에서 인기유저 for 순환 (상위 10명 정도) -->
-    <!-- 계속 움직이는 carousel -->
-    <div></div>
-</footer>
+{% comment %} 인기 유저 + 캐러셀 {% endcomment %}
+<div class="place__bestUser">
+    123
+</div>
+
+
 {% endblock body %}
