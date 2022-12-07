@@ -207,9 +207,14 @@ def comment_create(request, pk):
     }
     return JsonResponse(context)
 
-def song(request, video_id):
+def song(request):
+    context = {
+    }
+    return render(request, "articles/song.html", context)
+
+def song_detail(request, video_id):
     song = Song.objects.get(vidid=video_id)
     context = {
         "song": song,
     }
-    return render(request, "articles/song.html", context)
+    return render(request, "articles/song_detail.html", context)
