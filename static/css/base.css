@@ -151,5 +151,7 @@ footer {
 }
 
 .footer {
+  position: fixed;
+  bottom: 0;
   height: 300px;
 }
