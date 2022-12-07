@@ -260,8 +260,41 @@
 	text-align: center;
 }
 
+/* my_following_page */
+.following,
+.follower {
+	display: flex;
+	justify-content: flex-start;
+	background-color: #868686;
+	font-size: 2rem;
+	padding: 8px 12px;
+	margin-bottom: 10px;
+}
+a {
+	z-index: 5;
+}
+.following-count,
+.follower-count {
+	width: 100%;
+	text-align: center;
+	font-weight: 600;
+}
+ul {
+	margin: 0;
+	padding: 0;
+}
+.following_user-info,
+.follower_user-info {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 8px 30px;
+}
+
 /* 반응형 */
 @media screen and (max-width: 970px) {
+	/* mypage */
 	.userprofile {
 		grid-template-rows: 150px;
 	}
@@ -283,6 +316,7 @@
 	.box__menu li {
 		padding: 8px 10px;
 	}
+	/* 프로필뮤직 */
 	.search-item {
 		height: 100px;
 	}
@@ -308,6 +342,11 @@
 	}
 	.search__input {
 		width: 15rem;
+	}
+	/* follow page */
+	.following,
+	.follower {
+		font-size: 1.5rem;
 	}
 }
 
