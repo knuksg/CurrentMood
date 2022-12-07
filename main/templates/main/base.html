@@ -100,16 +100,16 @@
             </div>
           </a>
           <div class="col-3">
-            <i id="previous" class="bi bi-skip-start-fill fs-1"></i>
-            <i id="video-button" class="bi bi-play-fill fs-1"></i>
-            <i id="next" class="bi bi-skip-end-fill fs-1"></i>
+            <i id="previous" class="bi bi-skip-start-fill fs-1" style="cursor: pointer;"></i>
+            <i id="video-button" class="bi bi-play-fill fs-1" style="cursor: pointer;"></i>
+            <i id="next" class="bi bi-skip-end-fill fs-1" style="cursor: pointer;"></i>
           </div>
         </div>
         <hr class="my-0">
       </div>
       <script>
         // 2. iframe api 불러오기
-        {% comment %} var tag = document.createElement('script'); {% endcomment %}
+        var tag = document.createElement('script');
 
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];
@@ -135,7 +135,7 @@
         function onYouTubeIframeAPIReady() {
           player = new YT.Player('player', {
             height: '360',
-            width: '640',
+            width: '480',
             playerVars: {
               controls: 0,
             },

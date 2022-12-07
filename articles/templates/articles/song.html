@@ -1,35 +1,49 @@
 {% extends 'main/base.html' %}
 {% block body %}
-<div id="song">
-  <div class="d-flex flex-column justify-content-center align-items-center">
-    <img src="" alt="">
-    <div class="my-3" style="width: 450px;">
-      <p id="now-playing-title" class="m-0">재생 중인 곡이 없습니다</p>
-      <p id="now-playing-channel" class="m-0 opacity-75"></p>
-    </div>
-    <div class="d-flex gap-3">
-      <div id="current-time">0:00</div>
-      <input id="progress-bar" type="range" value="0">
-      <div id="duration">0:00</div>
-    </div>
-    <div class="d-flex gap-5">
-      <i id="previous" class="bi bi-skip-start-fill fs-1"></i>
-      <i id="video-button" class="bi bi-play-fill fs-1"></i>
-      <i id="next" class="bi bi-skip-end-fill fs-1"></i>
-    </div>
-  </div>
-</div>
-<div class="fixed-bottom bg-black">
-  <div class="d-flex flex-column justify-content-center align-items-center">
-    <div style="width: 450px;">
-      <h1 id="playlist-btn" class="pt-3">플레이리스트</h1>
-      <div id="playlist">
-      </div>
-    </div>
-  </div>
-</div>
-
 <style>
+  .movie-music-btn {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 32px;
+    gap: 7rem;
+    background: #000;
+    border: 1px solid white;
+  }
+
+  .video-button {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    border-radius: 100%;
+    background-color: rgba( 255, 255, 255, 0.1 );
+  }
+  .video-button i {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    font-size: 80px;
+  }
+
+  .player-btn {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .player-btn i {
+    display: flex;
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    font-size: 50px;
+  }
+
   input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     cursor: pointer;
@@ -48,7 +62,53 @@
     outline: none;
     -webkit-appearance: none;
   }
+
+  .playlist-bottom {
+    display: flex;
+    justify-content: center;
+    position: fixed;
+    bottom: 0px;
+    width: 500px;
+  }
 </style>
+<div id="song">
+  <div class="d-flex flex-column justify-content-center align-items-center">
+    <div id="movie-music-btn" class="movie-music-btn">
+      <i class="bi bi-youtube"></i><span>/</span><i class="bi bi-music-note-beamed"></i>
+    </div>
+    <img src="" alt="">
+    <div id="player" class="d-none"></div>
+    <div class="my-3" style="width: 450px;">
+      <p id="now-playing-title" class="m-0">재생 중인 곡이 없습니다</p>
+      <p id="now-playing-channel" class="m-0 opacity-75"></p>
+    </div>
+    <div class="d-flex gap-3">
+      <div id="current-time">0:00</div>
+      <input id="progress-bar" type="range" value="0">
+      <div id="duration">0:00</div>
+    </div>
+    <div class="d-flex my-3 gap-5">
+      <div class="player-btn">
+        <i id="previous" class="bi bi-skip-start-fill"></i>
+      </div>
+      <div class="video-button">
+        <i id="video-button" class="bi bi-play-fill"></i>
+      </div>
+      <div class="player-btn">
+        <i id="next" class="bi bi-skip-end-fill"></i>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="playlist-bottom">
+  <div class="bg-black">
+    <div id="playlist-btn" class="playlist-btn pt-3">
+      <h1>플레이리스트</h1>  
+    </div>
+    <div id="playlist" style="overflow: auto;">
+    </div>
+  </div>
+</div>
 <script>
   document.querySelector('#progress-bar').oninput = function() {
     this.style.background = 'linear-gradient(to right, #fff 0%, #fff '+this.value +'%, #6c757d ' + this.value + '%, #6c757d 100%)'
@@ -61,31 +121,42 @@
   const index = window.sessionStorage.index
   const playlistBtn = document.querySelector('#playlist-btn')
   var playlistFull = false
-  playlistBtn.addEventListener('click', function(e) {
-    if (playlistFull == false) {
-      for (idx in videoIDs){
-        playlist.innerHTML += `
-        <div id="playlist-item" class="playlist-item">
-          <div id="${videoIDs[idx]}" class="playlist-vidid"></div>
-          <hr class="my-0">
-          <div class="d-flex justify-content-center align-items-center">
-            <img id="playlist-sm" class="col-2" src="https://i.ytimg.com/vi/${videoIDs[idx]}/default.jpg" alt="">
-            <div class="col-9 ms-3">
-              <p id="playlist-title" class="playlist-title m-0">${videoTitles[idx]}</p>
-              <p id="playlist-channel" class="playlist-channel m-0 opacity-75">${videoChannels[idx]}</p>
+
+  document.addEventListener('click', function(e) {
+    if (e.target.closest("div.playlist-btn")) {
+      if (playlistFull == false) {
+        playlist.style.height = '500px'
+        for (idx in videoIDs){
+          playlist.innerHTML += `
+          <div id="playlist-item" class="playlist-item">
+            <div id="${videoIDs[idx]}" class="playlist-vidid"></div>
+            <hr class="my-0">
+            <div class="d-flex justify-content-center align-items-center">
+              <img id="playlist-sm" class="col-2" src="https://i.ytimg.com/vi/${videoIDs[idx]}/default.jpg" alt="">
+              <div class="col-9 ms-3">
+                <p id="playlist-title" class="playlist-title m-0">${videoTitles[idx]}</p>
+                <p id="playlist-channel" class="playlist-channel m-0 opacity-75">${videoChannels[idx]}</p>
+              </div>
             </div>
           </div>
-        </div>
-        `
-      } 
-      playlistFull = true
-    } else {
-      playlist.innerHTML = ''
-      playlistFull = false
+          `
+        } 
+        playlistFull = true
+      } else {
+        playlist.innerHTML = ''
+        playlist.style.height = '30px'
+        playlistFull = false
+      }
     }
-  }) 
+  })
 
-
+  const movieMusicBtn = document.querySelector('#movie-music-btn')
+  movieMusicBtn.addEventListener('click', function(e) {
+    const player = document.querySelector('#player')
+    player.classList.toggle('d-none')
+    const img = document.querySelector('#song').querySelector('img')
+    img.classList.toggle('d-none')
+  })
 
   
 </script>
