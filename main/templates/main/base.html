@@ -67,16 +67,18 @@
       </nav>
     </header>
 
-    <div class="blockbody">
-      {% block body %}{% endblock body %}
+    <div id="wrap">
+      <section>
+        {% block body %}{% endblock body %}
+      </section>
+      <footer>
+        123
+      </footer>
     </div>
     
     <hr>
 
-    {% comment %} 푸터 {% endcomment %}
-    <div class="footer">
-      123
-    </div>
+
 
     <footer>
       <div id="player" class="d-none"></div>
@@ -107,7 +109,7 @@
       </div>
       <script>
         // 2. iframe api 불러오기
-        var tag = document.createElement('script');
+        {% comment %} var tag = document.createElement('script'); {% endcomment %}
 
         tag.src = "https://www.youtube.com/iframe_api";
         var firstScriptTag = document.getElementsByTagName('script')[0];

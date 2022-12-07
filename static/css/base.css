@@ -12,9 +12,13 @@ body {
   width: 100%;
   background-color: rgb(20, 20, 20);
 }
-.blockbody {
-  padding-bottom: 70px;
+
+#wrap {
+  min-height: 100vh;
+  position: relative;
+  width: 100%;
 }
+
 * {
   box-sizing: border-box;
   font-family: 'NanumSquareRound';
@@ -153,6 +157,14 @@ footer {
 }
 }
 
-.footer {
-  height: 300px;
+section {
+	padding-bottom: 200px; /* footer의 height값과 동일 */
+}
+
+footer {
+	width: 100%;
+	height: 180px; /* 내용물에 따라 알맞는 값 설정 */
+  padding-top: 20px;
+	bottom: 0px;
+	position: absolute;
 }
