@@ -19,7 +19,7 @@ class User(AbstractUser):
         format="JPEG",
         options={"quality": 100},
         null=True,
-        default="user_img/default.jpg",
+        default="static/image/profile.jpg",
     )
     followings = models.ManyToManyField(
         "self", symmetrical=False, related_name="followers"
