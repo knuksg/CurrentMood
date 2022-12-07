@@ -2,14 +2,13 @@
 {% load static %}
 {% block body %}
 
-<button id="sync">+</button>
 <form action="" method="POST">
   {% csrf_token %}
   <input id="exampleInput" type="text" value="" name="exampleInput" style="width:300px;">
 </form>
+<input id="pac-input" type="text" size="50" placeholder="Enter location">
 <p id="result"></p>
 <p>{{user_position}} 인근</p>
-<p id="markerCoords"></p>
 <!-- 지도 -->
 <div id="map" style="width:500px;height:500px;"></div>
 <script src="https://maps.googleapis.com/maps/api/js?key={{key}}&region=KR&callback=initMap&v=weekly" defer></script>
@@ -45,7 +44,7 @@ var options = {
 
 function success(pos) {
   var crd = pos.coords;
-  var usrCrd = [32.3311,126.5811] // 임시좌표
+  var usrCrd = [37.3311,126.5811] // 임시좌표
   const result = document.querySelector('#result')
   result.innerHTML = [usrCrd[0],usrCrd[1]] // 화면에 좌표 표시
   // const usrCrd = [crd.latitude,crd.longitude]
@@ -61,15 +60,15 @@ function success(pos) {
   request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
   request.send(`userLocation=${usrCrd}`)
   request.onreadystatechange=function(event){
-  console.log('location getted')
+  console.log('location sent')
 }
 }
 
 function error(err) {
   console.warn(`ERROR(${err.code}): ${err.message}`);
 }
-
-navigator.geolocation.watchPosition(success,error,options)
+// 위치 DB 지속적으로 보내주기
+navigator.geolocation.getCurrentPosition(success,error,options)
 
 const getLocationButton = document.querySelector("sync")
 // function sendLocation(){
@@ -85,7 +84,28 @@ const getLocationButton = document.querySelector("sync")
 // }
 getLocationButton.addEventListener("click",sendLocation)
 
+// 자동완성
+// const center = { lat: 50.064192, lng: -130.605469 };
+// // Create a bounding box with sides ~10km away from the center point
+// const defaultBounds = {
+//   north: center.lat + 0.1,
+//   south: center.lat - 0.1,
+//   east: center.lng + 0.1,
+//   west: center.lng - 0.1,
+// };
+// const input = document.getElementById("pac-input");
+// const options = {
+//   bounds: defaultBounds,
+//   componentRestrictions: { country: "us" },
+//   fields: ["address_components", "geometry", "icon", "name"],
+//   strictBounds: false,
+//   types: ["establishment"],
+// };
+// const autocomplete = new google.maps.places.Autocomplete(input, options);
+
+
 </script>
+
 
 
 {% endblock body %}

@@ -150,20 +150,16 @@ def location_get(request):
     gmap_api_key = os.getenv("gmap_api")
     user_location = request.POST.get("userLocation")
     marker_location = request.POST.get("markerLocation")
-    if request.method == "POST":
-        if user_location:
-            user_coords = user_location.split(",")
-            user_loc = parsing_geocoded(user_coords[0], user_coords[1])["loc"]
-            user_place = Place.objects.create(name=user_loc[0])
-        else:
-            user_loc = ["somewhere"]
-        if marker_location:
-            marker_coords = marker_location.split(",")
-            marker_loc = parsing_geocoded(marker_coords[0], marker_coords[1])["loc"]
-            marker_place = Place.objects.create(name=marker_loc[0])
-    # Place 테이블에 geocoding된 위치 값을 저장한다.
+    if request.method == "POST" and user_location:
+        user_coords = user_location.split(",")
+        user_loc = parsing_geocoded(user_coords[0], user_coords[1])["loc"]
+        user_place = Place.objects.create(name=user_loc[0])
+    else:
+        user_loc = ["somewhere"]
+    # Place 테이블에 geocoding된 위치 값을 저장한다. => 위치 지속적으로 업데이트 되도록 해야함
+    user_position = Place.objects.order_by("-id").values()[0]["name"]
     context = {
-        "user_position": user_loc[0],
+        "user_position": user_position,
         "key": gmap_api_key,
     }
     return render(request, "articles/locations.html", context)
@@ -210,6 +206,7 @@ def comment_create(request, pk):
         "username": comment.user.username,
     }
     return JsonResponse(context)
+
 
 def song(request):
     context = {
