@@ -57,7 +57,7 @@
     background: linear-gradient(to right, #fff 0%, #fff 50%, #6c757d 50%, #6c757d 100%);
     border-radius: 8px;
     height: 4px;
-    width: 350px;
+    width: 380px;
     margin: auto;
     outline: none;
     -webkit-appearance: none;
@@ -73,12 +73,12 @@
 </style>
 <div id="song">
   <div class="d-flex flex-column justify-content-center align-items-center">
-    <div id="movie-music-btn" class="movie-music-btn">
+    <div id="movie-music-btn" class="movie-music-btn" style="width: 500px;">
       <i class="bi bi-youtube"></i><span>/</span><i class="bi bi-music-note-beamed"></i>
     </div>
-    <img src="" alt="">
+    <img src="" alt="" style="width: 500px;">
     <div id="player" class="d-none"></div>
-    <div class="my-3" style="width: 450px;">
+    <div class="my-3" style="width: 480px;">
       <p id="now-playing-title" class="m-0">재생 중인 곡이 없습니다</p>
       <p id="now-playing-channel" class="m-0 opacity-75"></p>
     </div>
@@ -100,12 +100,14 @@
     </div>
   </div>
 </div>
-<div class="playlist-bottom">
-  <div class="bg-black">
-    <div id="playlist-btn" class="playlist-btn pt-3">
-      <h1>플레이리스트</h1>  
-    </div>
-    <div id="playlist" style="overflow: auto;">
+<div class="d-flex justify-content-center">
+  <div class="playlist-bottom">
+    <div class="w-100 bg-black">
+      <div id="playlist-btn" class="playlist-btn p-3">
+        <h1>플레이리스트</h1>  
+      </div>
+      <div id="playlist" style="overflow: auto;">
+      </div>
     </div>
   </div>
 </div>

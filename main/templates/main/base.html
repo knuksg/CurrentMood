@@ -76,11 +76,7 @@
         footer
       </div>
     </div>
-    
     <hr>
-
-
-
     <footer>
       <div id="player" class="d-none"></div>
       <!-- 플레이 시간 숨기기 -->
@@ -135,8 +131,8 @@
         const time = window.sessionStorage.time
         function onYouTubeIframeAPIReady() {
           player = new YT.Player('player', {
-            height: '360',
-            width: '480',
+            height: '375',
+            width: '500',
             playerVars: {
               controls: 0,
             },
@@ -295,6 +291,10 @@
             const songImg = song.querySelector('img')
             songImg.src = `https://i.ytimg.com/vi/${videoIDs[currentVideoId]}/hqdefault.jpg`
             bottomPlayer.classList.add('d-none')
+            const footer = document.querySelector('div.footer')
+            footer.classList.add('d-none')
+            const body = document.querySelector('body')
+            body.style.overflow = 'hidden'
           } else {
             bottomPlayer.classList.remove('d-none')
           }
