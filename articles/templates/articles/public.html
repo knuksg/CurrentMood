@@ -1,26 +1,160 @@
 {% extends 'main/base.html' %}
+{% load static %}
+{% load django_bootstrap5 %}
+
+{% block style %}
+    <link rel="stylesheet" href="{% static 'css/articles.css' %}">
+{% endblock %} 
+
 {% block body %}
-<!-- 유저의 현재 위치 -->
-<h1>{{place.0}}</h1>
 
-<!-- 유저가 가장 많은 장소 -->
-<header>
-    <div>{{place.0}}</div>
-</header>
+{% comment %} 1등 장소 {% endcomment %}
+<div class="place__best">
+  <div class="hero-image">
+    <div class="hero-text">
+      <h1>블루보틀 역삼 카페</h1>
+    </div>
+  </div>
+</div>
 
-<!-- 추천장소 -->
-<main class="row row-cols-2">
-     <!-- carousel  -->
-    <div class="col bg-light"></div>
-    <div class="col bg-light"></div>
-    <div class="col bg-light"></div>
-    <div class="col bg-light"></div>
-</main>
+<hr>
 
-<!-- 인기 유저 -->
-<footer>
-    <!-- DB에서 인기유저 for 순환 (상위 10명 정도) -->
-    <!-- 계속 움직이는 carousel -->
-    <div></div>
-</footer>
+{% comment %} 나머지 장소 + 캐러셀 {% endcomment %}
+<div class="place__recom">
+  <div class="place__recom--imgBox">
+    <div class="private-carousel">
+      <div class="mainSlide">
+        {% for user in users %}
+        <div class="box">
+            <img src="https://i.esdrop.com/d/f/HV29DjMTCH/ls3BTlRkWF.png" alt="">
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr>
+
+{% comment %} 인기 유저 + 캐러셀 {% endcomment %}
+  <div class="private-carousel bg-info text-center">
+    <div class="userSlide">
+      {% for user in users %}
+      <div class="box">
+          <img src="https://i.esdrop.com/d/f/HV29DjMTCH/ls3BTlRkWF.png" alt="">
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+
 {% endblock body %}
+
+{% block script %}
+  <!-- CDN axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  {% comment %} 추천 장소 캐러셀 {% endcomment %}
+  <script>
+    $(function(){
+      $('.mainSlide').slick({
+        dots: false,
+        infinite: false,
+        speed: 800,
+        rows: 2,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        prevArrow : "<div class='slick-prev carousel-control-prev' style='position: absolute; left: .2rem;'><h1><</h1></div>",
+        nextArrow : "<div class='slick-next carousel-control-next' style='position: absolute; right: .2rem;'><h1>></h1></div>",        
+        responsive: [
+          {
+            breakpoint: 1440,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+            }
+          },
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+            }
+          },
+          {
+            breakpoint: 860,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2
+            }
+          }
+        ]
+      });
+    });
+  </script>
+  {% comment %} 인기 유저 캐러셀 {% endcomment %}
+  <script>
+    $(function(){
+      $('.userSlide').slick({
+        dots: false,
+        infinite: false,
+        speed: 800,
+        infinite: true,
+        slidesToShow: 5,
+        slidesToScroll: 5,
+        prevArrow : "<div class='slick-prev carousel-control-prev' style='position: absolute; left: .2rem;'><h1><</h1></div>",
+        nextArrow : "<div class='slick-next carousel-control-next' style='position: absolute; right: .2rem;'><h1>></h1></div>",        
+        responsive: [
+          {
+            breakpoint: 1440,
+            settings: {
+              slidesToShow: 4,
+              slidesToScroll: 4,
+            }
+          },
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+            }
+          },
+          {
+            breakpoint: 860,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2
+            }
+          }
+        ]
+      });
+    });
+  </script>
+{% endblock script %}

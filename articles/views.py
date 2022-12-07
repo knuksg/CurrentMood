@@ -6,6 +6,7 @@ from main.models import Song
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.db.models import Count
+from django.contrib.auth import get_user_model
 
 # 위치 api 구현
 from .gmap import reverse_geocoding, parsing_geocoded
@@ -48,6 +49,7 @@ def index(request):
     # 임시로 서울로 설정함. 현재 위치 받아오게 되면 현재 위치 기준으로 설정하면 됨.
     song_queryset = (
         Article.objects.filter(place__icontains="서울")
+        .order_by("-pk")
         .values("song")
         .annotate(Count("id"))
     )
@@ -165,9 +167,11 @@ def location_get(request):
 
 def public(request):
     # place model에서 필드를 가져온다.
-    place = Place.objects.all()
+    users = get_user_model().objects.all()
+    places = Article.objects.filter(place="서울")
     context = {
-        "place": place,
+        "places": places,
+        "users": users,
     }
     return render(request, "articles/public.html", context)
 
@@ -204,9 +208,14 @@ def comment_create(request, pk):
     return JsonResponse(context)
 
 
-def song(request, video_id):
+def song(request):
+    context = {
+    }
+    return render(request, "articles/song.html", context)
+
+def song_detail(request, video_id):
     song = Song.objects.get(vidid=video_id)
     context = {
         "song": song,
     }
-    return render(request, "articles/song.html", context)
+    return render(request, "articles/song_detail.html", context)

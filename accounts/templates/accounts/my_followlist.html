@@ -1,42 +1,56 @@
 {% extends 'main/base.html' %}
+{% load django_bootstrap5 %}
 {% load static %}
 
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+{% endblock style %}
+
 {% block body %}
-<div>
-  팔로잉
+
+<div class="following">
+  <a href="{% url 'accounts:mypage' %}"><i class="fa-solid fa-arrow-left"></i></a>
+  <div class="following-count">
+    {% if not user.followings.all  %}
+      팔로잉 0명
+    {% else %}  
+      팔로잉 {{ user.followings.count }}명
+    {% endif %} 
+  </div>
 </div>
 
-<hr>
-<h1 class="fw-bold mt-3">  
-  <span>
-    {% if user.user_img %}
-    <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
-    {% else %}
-    <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
-    {% endif %}
-  </span>
-  {{ user.username }}님이 팔로우하는 사람들
-</h1>
-
-<hr>
-<div>
+<div class="following_list">
   <ul>
-    <li class='fw-bold'>팔로우 리스트 {{ user.followings.count }}명</li>
     {% for myfollowing in user.followings.all %}
-    <a href="{% url 'accounts:detail' user.pk %}">
       {% if myfollowing.user_img %}
-        <li class="list-group-item"><img class=" rounded-circle mx-2" src="{{ myfollowing.user_img.url }}" style="width:50px;">{{ myfollowing.username }}</li>
+        <li class="following_user-info">
+          <a href="{% url 'accounts:detail' myfollowing.pk %}">
+            <div>
+            <img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollowing.username }}
+            </div>
+          </a>
+          <div>
+            <i class="fa-solid fa-check"></i>
+          </div>
+        </li>
       {% else %}
-        <li class="list-group-item"><img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollowing.username }}</li>
+        <li class="following_user-info">
+          <a href="{% url 'accounts:detail' myfollowing.pk %}">
+            <div>
+            <img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollowing.username }}
+            </div>
+          </a>
+          <div>
+            <i class="fa-solid fa-check"></i>
+          </div>
+        </li>
       {% endif %}
     </a>
     {% endfor %}
     {% if not user.followings.all %}
-      <li class="list-group-item">내가 팔로우 하는 사람이 없습니다.</li>
+      <li class="mt-4 d-flex justify-content-center">내가 팔로우 하는 사람이 없습니다.</li>
     {% endif %}
   </ul>
 </div>
-<hr>
-<a href="{% url 'accounts:mypage' %}">뒤로가기</a>
 
 {% endblock %}
