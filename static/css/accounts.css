@@ -208,43 +208,58 @@
 .profile-setting-music {
 	display: flex;
 	flex-direction: column;
+	align-items: center;
 	text-align: center;
 	margin: 20px 40px;
 }
-.search-item {
+.profile-set-music {
 	display: flex;
-	align-items: center;
-	justify-content: space-evenly;
-	height: 120px;
-	padding: 8px 8px;
-	background-color: #5a5a5acf;
-	border-radius: 5px;
-	margin: 5px 0px;
+	flex-direction: column;
+	text-align: center;
+	
 }
-.search-item img {
-	width: 15vw;
-	height: auto;
+.search-list {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	overflow: auto;
+	height: 270px;
+	width: 320px;
+	z-index: 8;
+	overflow-x: hidden;
 	margin: 0;
+}
+.search-item {
+	display: grid;
+	grid-template-columns: 40% 60%;
+	grid-template-rows: 90px;
+	/* display: flex;
+	justify-content: flex-start;
+	height: 380px; */
+	width: 320px;
+	padding: 0;
+	margin: 0;
+	background-color: var(--inputbg-color);
+	color: #2f2e2f;
 }
 .music_info {
 	display: flex;
 	flex-direction: column;
+	justify-content: center;
 	font-size: 1rem;
 }
 .music_title {
-	width: 300px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 .music_channel {
-	width: 300px;
 	white-space: nowrap;
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
 #search-form {
-	margin-bottom: 10px;
+	margin-bottom: 0;
 }
 .search-btn {
 	display: none;

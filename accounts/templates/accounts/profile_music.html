@@ -33,20 +33,21 @@
     <p>현재 설정된 프로필 뮤직</p>
       <div id="profile_music" class="profile-music">
         {% if user.profile_music.vidid %}
-        <div id="{{ user.profile_music.vidid }}" class="search-item">
-          <img src="https://i.ytimg.com/vi/{{ user.profile_music.vidid }}/default.jpg" alt="">
-            <div class="music_info">
-              <div class="music_title">
-                {{ user.profile_music.title }}
-              </div>
-              <div class="music_channel">
-                {{ user.profile_music.channel }}
-              </div>
-            </div>
-            <div>
-              <i class="bi bi-play-circle fs-1"></i>
-            </div>
+    <div id="{{ user.profile_music.vidid }}" class="vid">
+      <div class="position-relative">
+        <img src="{{ user.profile_music.hqdefault }}" style="width: 500px;" alt="">
+        <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
+      </div>
+      <div class="my-3">
+        <div class="title">
+          {{ user.profile_music.title }}
         </div>
+        <span> - </span>
+        <div class="channel">
+          {{ user.profile_music.channel }}
+        </div>
+      </div>
+    </div>
         {% else %}
         <p>프로필 뮤직이 없습니다...</p>
         {% endif %}
@@ -59,10 +60,9 @@
           <input type="search" id="search-input" class="search__input" onkeydown="if(event.keyCode == 13){searchForm();}" placeholder="프로필 뮤직 검색">
           <input id="search-btn" class="search-btn" type="submit">
           <label for="search-btn"><i class="fa-solid fa-magnifying-glass"></i></label>
-          <div id="search-list" class="search-list">
-          </div>
         </form>
-        <div id="search-list" class="search-list"></div>
+        <div id="search-list" class="search-list">
+        </div>
       </div>
   </div>
 
@@ -106,8 +106,10 @@
         const searchItemsList = []
         searchItems.forEach((searchItem) => {
           searchList.innerHTML += `
-          <div id="` + searchItem.id.videoId + `" class="search-item">
-            <img src="`+ searchItem.snippet.thumbnails.default.url + `" alt="">
+            <div id="` + searchItem.id.videoId + `" class="search-item">
+              <div class="music_img">
+                <img src="`+ searchItem.snippet.thumbnails.default.url + `" alt="">
+              </div>
               <div class="music_info">
                 <div class="music_title">
                   `+ searchItem.snippet.title +`
@@ -116,10 +118,7 @@
                   `+ searchItem.snippet.channelTitle +`
                 </div>
               </div>
-              <div>
-                <i class="bi bi-play-circle fs-1"></i>
-              </div>
-          </div>
+            </div>
           `
         })
       })
