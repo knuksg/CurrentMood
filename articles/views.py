@@ -49,9 +49,9 @@ def index(request):
     # 임시로 서울로 설정함. 현재 위치 받아오게 되면 현재 위치 기준으로 설정하면 됨.
     song_queryset = (
         Article.objects.filter(place__icontains="서울")
-        .order_by("-pk")
         .values("song")
         .annotate(Count("id"))
+        .order_by('-id__count')
     )
     song_list = []
     for song_id in song_queryset:
