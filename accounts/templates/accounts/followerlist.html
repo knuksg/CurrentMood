@@ -10,10 +10,10 @@
 <div class="follower">
   <a href="{% url 'accounts:detail' user.pk %}"><i class="fa-solid fa-arrow-left"></i></a>
   <div class="follower-count">
-    {% if not user.followers.all %}
-      팔로워 0명
+    {% if user.followers.all %}
+      팔로워 {{ user.followers.count }}명  
     {% else %} 
-      팔로워 {{ user.followers.count }}명
+      팔로워 0명
     {% endif %}
   </div>
 </div>
@@ -28,14 +28,15 @@
             <img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollower.username }}
             </div>
           </a>
+          <!-- 요청유저가 팔로워유저랑 같지 않다면 -->
           {% if request.user != myfollower %}
-          <div>
-            <i class="fa-solid fa-user-plus"></i>
-          </div>
-          {% else %}
-          <div>
-            <i class="fa-solid fa-check"></i>
-          </div>
+            <a class="follow" href="#">
+              {% if request.user in myfollower.followers.all %}
+                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{myfollower.pk}}" id="follow-btn" ></i>
+              {% else %}
+                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{myfollower.pk}}"  id="follow-btn" ></i>
+              {% endif %}
+            </a>  
           {% endif %}
         </li>
       {% else %}
@@ -46,17 +47,13 @@
             </div>
           </a>
           {% if request.user != myfollower %}
-              <a href="{% url 'accounts:follow' myfollower.pk %}">
+            <a class="follow" href="#">
               {% if request.user in myfollower.followers.all %}
-                <i class="fa-solid fa-check"></i>
+                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{myfollower.pk}}" id="follow-btn" ></i>
               {% else %}
-                <i class="fa-solid fa-user-plus"></i>
+                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{myfollower.pk}}"  id="follow-btn" ></i>
               {% endif %}
-              </a>
-          {% else %}
-            <div>
-              <i class="fa-solid fa-check"></i>
-            </div>
+            </a>  
           {% endif %}
         </li>
       {% endif %}
@@ -67,5 +64,25 @@
   </ul>
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+const follow = (e) => {
+  const follow_id = document.querySelector(`#${e.id}`).id;
+  axios({
+      method: 'get', 
+      url: `/accounts/${event.target.dataset.followId}/follow/`})
+      .then(response => {
+      console.log(response)
+      if (response.data.isFollow === true) {
+      e.classList.add('fa-check')
+      e.classList.remove('fa-user-plus')
+      console.log('팔로우')
+      } else {
+      e.classList.add('fa-user-plus')
+      e.classList.remove('fa-check')
+      console.log('팔로우취소')
+      }
+  })
+  }
+</script>
 {% endblock %}

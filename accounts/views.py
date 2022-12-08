@@ -11,7 +11,7 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from main.models import Song
-
+from django.http import JsonResponse
 # Create your views here.
 
 
@@ -102,18 +102,20 @@ def delete(request):
 
 @login_required
 def follow(request, pk):
-
+    user = get_user_model().objects.get(pk=pk)
     if request.user.pk != pk:
-        user = get_user_model().objects.get(pk=pk)
-
-        if request.user in user.followers.all():
-            user.followers.remove(request.user)
+        if request.user not in user.followers.all():
+            request.user.followings.add(user)
+            is_follow = True
         else:
-            user.followers.add(request.user)
-
-        return redirect("accounts:detail", pk)
-    else:
-        return redirect("main:base")
+            request.user.followings.remove(user)
+            is_follow = False
+        context = {
+            "isFollow": is_follow,
+            "followers_count": user.followers.count(),
+            "followings_count": user.followings.count(),
+        }
+        return JsonResponse(context)
 
 
 @login_required
