@@ -3,9 +3,47 @@
 {% load django_bootstrap5 %}
 
 {% block body %}
-  {% comment %} 플레이어 {% endcomment %}
-  <div class="private-player">
-    <img src="{% static 'image/album.png' %}">
+  {% comment %} 선교님 플레이어 {% endcomment %}
+  <div id="song">
+    <div class="d-flex flex-column justify-content-center align-items-center">
+      <div id="movie-music-btn" class="movie-music-btn" style="width: 380px;">
+        <i class="bi bi-youtube"></i><span>/</span><i class="bi bi-music-note-beamed"></i>
+      </div>
+      <img src="" alt="" style="width: 380px;">
+      <div id="player" class="d-none"></div>
+      <a id="detail-playing-link" class="detail-playing-link my-3" style="width: 380px;">
+        <div id="detail-playing-id" class="detail-playing-id d-none"></div>
+        <p id="detail-playing-title" class="m-0">재생 중인 곡이 없습니다</p>
+        <p id="detail-playing-channel" class="m-0 opacity-75"></p>
+      </a>
+      <div class="d-flex gap-3">
+        <div id="current-time">0:00</div>
+        <input id="progress-bar" type="range" value="0">
+        <div id="duration">0:00</div>
+      </div>
+      <div class="d-flex my-3 gap-5">
+        <div class="player-btn">
+          <i id="previous" class="bi bi-skip-start-fill"></i>
+        </div>
+        <div class="video-button">
+          <i id="video-button" class="bi bi-play-fill"></i>
+        </div>
+        <div class="player-btn">
+          <i id="next" class="bi bi-skip-end-fill"></i>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex justify-content-center">
+    <div class="playlist-bottom">
+      <div class="w-100 bg-black">
+        <div id="playlist-btn" class="playlist-btn p-3 pb-0">
+          <h1>플레이리스트</h1>  
+        </div>
+        <div id="playlist" style="overflow: auto;">
+        </div>
+      </div>
+    </div>
   </div>
 
   {% comment %} 글 작성 버튼 {% endcomment %}
@@ -13,16 +51,6 @@
     <a href="{% url 'articles:index' %}">
       <h3><i class="bi bi-pencil-square"></i></h3>
     </a>
-  </div>
-
-
-  {% comment %} 재생 버튼 {% endcomment %}
-  <div class="private-playButton">
-    <div class="private-playButton__image">
-      <img src="{% static 'image/private_next.png' %}" style="-webkit-transform: scaleX(-1); transform: scaleX(-1);">
-      <img src="{% static 'image/private_play.png' %}">
-      <img src="{% static 'image/private_next.png' %}">
-    </div>
   </div>
 
   {% comment %} 캐러셀1 {% endcomment %}
@@ -167,5 +195,58 @@
     function closeNav() {
       document.getElementById("mySidenav").style.height = "0";
     }
+  </script>
+
+  {% comment %} 선교님 플레이어 {% endcomment %}
+  <script>
+    document.querySelector('#progress-bar').oninput = function() {
+      this.style.background = 'linear-gradient(to right, #fff 0%, #fff '+this.value +'%, #6c757d ' + this.value + '%, #6c757d 100%)'
+    }
+    const playlist = document.querySelector('#playlist')
+    var videoIDs = JSON.parse(window.sessionStorage.getItem('videoIDs'))
+    var videoTitles = JSON.parse(window.sessionStorage.getItem('videoTitles'))
+    var videoChannels = JSON.parse(window.sessionStorage.getItem('videoChannels'))
+  
+    const index = window.sessionStorage.index
+    const playlistBtn = document.querySelector('#playlist-btn')
+    var playlistFull = false
+  
+    document.addEventListener('click', function(e) {
+      if (e.target.closest("div.playlist-btn")) {
+        if (playlistFull == false) {
+          playlist.style.height = '500px'
+          for (idx in videoIDs){
+            playlist.innerHTML += `
+            <div id="playlist-item" class="playlist-item">
+              <div id="${videoIDs[idx]}" class="playlist-vidid"></div>
+              <hr class="my-0">
+              <div class="d-flex justify-content-center align-items-center">
+                <img id="playlist-sm" class="col-2" src="https://i.ytimg.com/vi/${videoIDs[idx]}/default.jpg" alt="">
+                <div class="col-9 ms-3">
+                  <p id="playlist-title" class="playlist-title m-0">${videoTitles[idx]}</p>
+                  <p id="playlist-channel" class="playlist-channel m-0 opacity-75">${videoChannels[idx]}</p>
+                </div>
+              </div>
+            </div>
+            `
+          } 
+          playlistFull = true
+        } else {
+          playlist.innerHTML = ''
+          playlist.style.height = '30px'
+          playlistFull = false
+        }
+      }
+    })
+  
+    const movieMusicBtn = document.querySelector('#movie-music-btn')
+    movieMusicBtn.addEventListener('click', function(e) {
+      const player = document.querySelector('#player')
+      player.classList.toggle('d-none')
+      const img = document.querySelector('#song').querySelector('img')
+      img.classList.toggle('d-none')
+    })
+  
+    
   </script>
 {% endblock script %}
