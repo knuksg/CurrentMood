@@ -128,14 +128,35 @@ def delete(request, pk):
 def update(request, pk):
     article = Article.objects.get(pk=pk)
     if request.method == "POST":
-        form = ArticleForm(request.POST, request.FILES, instance=article)
-        if form.is_valid():
-            form.save()
-            return redirect("articles:detail", article.pk)
+        place = request.POST.get("place", "")
+        content = request.POST.get("content", "")
+        vidid = request.POST.get("vidid", "")
+        vidtitle = request.POST.get("vidtitle", "")
+        channel = request.POST.get("channel", "")
+        hqdefault = request.POST.get("hqdefault", "")
+        default = request.POST.get("default", "")
+        mqdefault = request.POST.get("mqdefault", "")
+        try:
+            song = Song.objects.get(vidid=vidid)
+        except:
+            song = Song.objects.create(
+                vidid=vidid,
+                title=vidtitle,
+                channel=channel,
+                hqdefault=hqdefault,
+                default=default,
+                mqdefault=mqdefault,
+            )
+        article.user = request.user
+        article.place = place
+        article.content = content
+        article.song = song
+        article.save(update_fields=['user', 'place', 'content', 'song'])
+        return redirect("articles:index")
     else:
-        form = ArticleForm(instance=article)
-
+        form = ArticleForm()
     context = {
+        "article": article,
         "form": form,
     }
     return render(request, "articles/update.html", context)

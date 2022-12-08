@@ -2,10 +2,133 @@
 {% load django_bootstrap5 %}
 
 {% block body %}
-  <h1>create</h1>
-  <form action="" method="POST">
-    {% bootstrap_form form %}
+<div class="container">
+  <h1>update</h1>
+  <form id="search-form">
     {% csrf_token %}
+    <label for="search-input">사연 노래</label>
+    <div class="d-flex justify-content-center mb-3">
+      <input id="search-input" type="text" class="col-10" placeholder='{{ article.song }}'>
+      <button type="submit" class="col-2">search</button>
+    </div>
+  </form>
+  <div id="search-list" class="search-list">
+  </div>
+  <form id="article-form" data-article-pk={{ article.pk }}>
+    {% csrf_token %}
+    <div>
+      <label for="place">사연 장소</label>
+      <input id="place" name="place" type="text" class="w-100 mb-3" value='{{ article.place }}' disabled readonly>
+    </div>
+    <div>
+      <label for="content">사연 내용</label>
+      <textarea id="content" name="content" cols="10" rows="3" class="w-100 mb-3">{{ article.content }}</textarea>
+    </div>
     <input type="submit" value="OK">
   </form>
+</div>
+  <!-- 검색 스크립트 -->
+  <script>
+    const searchForm = document.querySelector("#search-form")
+    searchForm.addEventListener('submit', function(event) {
+      event.preventDefault()
+      const kw = searchForm.querySelector("#search-input").value
+      getSearchList(kw)
+    })
+  
+    function getSearchList(kw) {
+      const apiKey = "AIzaSyDglrT26TS8c3g7EhbV-wEZeGZnIiK2ObE"
+      axios.get('https://www.googleapis.com/youtube/v3/search', {
+        params: {
+          key: apiKey,
+          part: "snippet",
+          order: "viewCount",
+          q: kw,
+          type: "video",
+          videoEmbeddable: "true",
+          videoSyndicated: "true",
+        }
+      })
+        .then(function (response) {
+          console.log('good', response)
+          const searchList = document.querySelector('#search-list')
+          searchList.innerHTML = ''
+          const searchItems = response.data.items
+          const searchItemsList = []
+          searchItems.forEach((searchItem) => {
+            searchList.innerHTML += `
+            <div id="` + searchItem.id.videoId + `" class="search-item d-flex gap-3">
+              <img src="`+ searchItem.snippet.thumbnails.default.url + `" alt="">
+              <div>
+                <h5>`+ searchItem.snippet.title +`</h5>
+                <div class="d-flex gap-3">
+                  <p>`+ searchItem.snippet.channelTitle +`</p>
+                </div>
+              </div>
+            </div>
+            `
+          })
+        })
+    }
+  </script>
+  <!-- 검색폼 스크립트 -->
+  <script>
+    document.addEventListener('click', function(e) {
+      if (e.target.closest("div.search-list")) {
+        // 폼에 담아서 뷰로 넘겨주기
+        const searchItem = e.target.closest('div.search-item')
+        const ArticleMusicId = searchItem.id
+        const ArticleMusicTitle = searchItem.querySelector('h5').innerText
+        const ArticleMusicChannelTitle = searchItem.querySelector('p').innerText
+  
+        vidid = ArticleMusicId
+        vidtitle = ArticleMusicTitle
+        channel = ArticleMusicChannelTitle
+        hqdefault = `https://i.ytimg.com/vi/${ArticleMusicId}/hqdefault.jpg`
+        imgdefault = `https://i.ytimg.com/vi/${ArticleMusicId}/default.jpg`
+        mqdefault = `https://i.ytimg.com/vi/${ArticleMusicId}/mqdefault.jpg`
+        console.log(vidid)
+  
+        // 검색 폼 초기화해주기
+        const searchList = document.querySelector('#search-list')
+        searchList.innerHTML = ''
+        const searchInput = document.querySelector("#search-input")
+        searchInput.value = ArticleMusicTitle + ' - ' + ArticleMusicChannelTitle
+      }
+    })
+
+    const articleForm = document.querySelector('#article-form')
+    articleForm.addEventListener('submit', function(e) {
+      e.preventDefault()
+
+      const place = articleForm.place.value
+      const title = articleForm.title.value
+      const content = articleForm.content.value
+
+      form = new FormData()
+      form.append('place', place)
+      form.append('content', content)
+      form.append('vidid', vidid)
+      form.append('vidtitle', vidtitle)
+      form.append('channel', channel)
+      form.append('hqdefault', hqdefault)
+      form.append('default', imgdefault)
+      form.append('mqdefault', mqdefault)
+
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+      const articlePk = e.target.dataset.articlePk
+      console.log(articlePk)
+      axios.post(`/${articlePk}/update/`, form, {
+        headers: {
+          'X-CSRFToken': csrftoken
+        }
+      })
+      .then((response) => { 
+        console.log('test')
+        <!--window.location.href='http://currentmoodbeanstalk4-env.eba-k6spzvmy.ap-northeast-2.elasticbeanstalk.com/index/'-->
+        window.location.href='/index/'
+      })
+    })
+  </script>
+
 {% endblock body %}
