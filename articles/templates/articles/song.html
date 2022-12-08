@@ -1,6 +1,8 @@
 {% extends 'main/base.html' %}
 {% load static %}
-{% block style %}{% endblock %}
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/articles.css' %}">
+{% endblock %}
 {% block body %}
 <div id="song">
   <div class="d-flex flex-column justify-content-center align-items-center">
@@ -33,10 +35,10 @@
   </div>
 </div>
 <div class="d-flex justify-content-center">
-  <div class="playlist-bottom">
+  <div id="playlist-bottom" class="playlist-bottom">
     <div class="w-100 bg-black">
-      <div id="playlist-btn" class="playlist-btn p-3 pb-0">
-        <h1>플레이리스트</h1>  
+      <div id="playlist-btn" class="playlist-btn">
+        <i class="bi bi-music-note-list"></i><span>playlist</span>
       </div>
       <div id="playlist" style="overflow: auto;">
       </div>
@@ -78,7 +80,7 @@
         playlistFull = true
       } else {
         playlist.innerHTML = ''
-        playlist.style.height = '30px'
+        playlist.style.height = '0px'
         playlistFull = false
       }
     }
