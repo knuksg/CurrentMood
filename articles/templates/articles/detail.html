@@ -9,20 +9,36 @@
       <img src="{{ article.song.hqdefault }}" alt="" style="width: 100%;">
       <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
     </div>
-  </div>
-  <div>
-    <p>사연 장소: {{ article.place }}</p>
-    <p><span>노래 제목: {{ article.song.title }}</span>  |  <span>가수: {{ article.song.channel }}</span></p>
-    <p>작성자: {{ article.user }}  |  {{ article.created_at }}</p>
-    <p>사연 내용: {{ article.content }}</p>
+    <div>
+      <div id="title" class="article-title">{{ article.song.title }}</div>  
+      <div id="channel" class="article-channel opacity-75">{{ article.song.channel }}</div>
+      <div class="my-3">
+        <p>사연 장소: {{ article.place }}</p>
+        <p>작성자: {{ article.user }}  |  {{ article.created_at }}</p>
+        <p>사연 내용: {{ article.content }}</p>
+      </div>
+    </div>
   </div>
   <!-- 좋아요 -->
   <div>
-    {% if request.user in article.like_users.all %}
-    <a href="{% url 'articles:like' article.pk %}" class="btn btn-danger btn-sm">♥ {{ article.like_users.count }} </a>
-    {% else %}
-      <a href="{% url 'articles:like' article.pk %}" class="btn btn-outline-danger btn-sm">♥ {{ article.like_users.count }} </a>
-    {% endif %}
+    <form class='like-forms' data-article-id="{{ article.pk }}">
+      {% csrf_token %}
+      {% if request.user in article.like_users.all %}
+        <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+          id='like-btn-{{ article.pk }}'>
+          <i class="bi bi-heart-fill" id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" name="heart">
+            <span id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span>
+          </i> 
+        </button>
+      {% else %}
+        <button type=" submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+          id='like-btn-{{ article.pk }}'>
+          <i class="bi bi-heart" id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" name="heart">
+            <span id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span>
+          </i> 
+        </button>
+      {% endif %}
+    </form>
   </div>
   
   <!-- 버튼 -->
@@ -79,6 +95,45 @@
       const hr = document.createElement('hr')
       comments.append(p, hr) 
       commentForm.reset()
+    })
+  })
+</script>
+<!-- 좋아요 비동기 -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const forms = document.querySelectorAll('.like-forms')
+  const likecsrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  forms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const articleId = event.target.dataset.articleId
+
+      axios({
+        method: 'post',
+        url: `/${event.target.dataset.articleId}/like/`,
+        headers: { 'X-CSRFToken': likecsrftoken },
+      })
+        .then((response) => {
+          const likeBtn = document.querySelector(`#like-btn-${articleId}`)
+          const likeCount = document.querySelector(`#like-count-${articleId}`)
+          const isLiked = response.data.is_liked
+          const heart = document.querySelector(`#heart-${articleId}`)
+
+          if (isLiked === true) {
+            heart.classList.add('bi-heart-fill')
+            heart.classList.remove('bi-heart')
+            likeCount.innerText = response.data.likeCount
+          } else {
+            heart.classList.remove('bi-heart-fill')
+            heart.classList.add('bi-heart')
+            likeCount.innerText = response.data.likeCount
+          }
+
+        })
+        .catch((error) => {
+          console.log(error.response)
+        })
     })
   })
 </script>

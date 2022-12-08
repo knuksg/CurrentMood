@@ -212,3 +212,15 @@
   transform: translate(-50%, -50%);
   color: white;
 }
+
+.playlist-btn {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px;
+}
+
+.playlist-item {
+  cursor: pointer;
+}

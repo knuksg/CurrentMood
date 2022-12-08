@@ -75,7 +75,7 @@
       </div>
     </div>
     {% else %}
-    <p>프로필 뮤직이 없습니다...</p>
+    <p class="my-3">프로필 뮤직을 설정해주세요</p>
     {% endif %}
   </div>
   <div class="profile-music-create">
@@ -85,27 +85,41 @@
 
 
 <div class="card-big-box" id="cab2" style="display: none;">
-  {% for article in user.article_set.all %}
-  <ul>
-    <a href="{% url 'articles:detail' article.pk %}" class="box__menu">
-      <li><img class="box-img" src="{{ article.song.hqdefault }}"></li>
-      <li class="box__menu--song">{{ article.song }}</li>  
-      <li>{{ article.place }}</li>  
-    </a>
-  </ul>
-  {% endfor %}
+  {% if user.article_set.all %}
+    {% for article in user.article_set.all|slice:":5" %}
+    <ul>
+      <a href="{% url 'articles:detail' article.pk %}" class="box__menu">
+        <li><img class="box-img" src="{{ article.song.hqdefault }}"></li>
+        <li class="box__menu--song">{{ article.song }}</li>  
+        <li>{{ article.place }}</li>  
+      </a>
+    </ul>
+    {% endfor %}
+    {% if user.article_set.all.count > 5 %}
+    <a href="{% url 'accounts:mylist' %}">더보기</a>
+    {% endif %}
+  {% else %}
+    <p class="my-3">좋아요한 글이 없습니다</p>
+  {% endif %}
 </div>
 
 <div class="card-big-box" id="cab3" style="display: none;">
-  {% for article in user.like_article.all %}
-  <ul>
-    <a href="{% url 'articles:detail' article.pk %}"  class="box__menu">
-      <li><img src="{{ article.song.hqdefault }}" style="width:50px;"></li>
-      <li class="box__menu--song">{{ article.song }}</li>  
-      <li>{{ article.content }}</li>
-    </a>
-  </ul>
-  {% endfor %}
+  {% if user.like_article.all %}
+    {% for article in user.like_article.all|slice:":5" %}
+    <ul>
+      <a href="{% url 'articles:detail' article.pk %}"  class="box__menu">
+        <li><img src="{{ article.song.hqdefault }}" style="width:50px;"></li>
+        <li class="box__menu--song">{{ article.song }}</li>  
+        <li>{{ article.content }}</li>
+      </a>
+    </ul>
+    {% endfor %}
+    {% if user.like_article.all > 5 %}
+    <a href="{% url 'accounts:mylist' %}">더보기</a>
+    {% endif %}
+  {% else %}
+  <p class="my-3">좋아요한 글이 없습니다</p>
+  {% endif %}
 </div>
 
 {% comment %} <div class='d-flex'>

@@ -128,14 +128,35 @@ def delete(request, pk):
 def update(request, pk):
     article = Article.objects.get(pk=pk)
     if request.method == "POST":
-        form = ArticleForm(request.POST, request.FILES, instance=article)
-        if form.is_valid():
-            form.save()
-            return redirect("articles:detail", article.pk)
+        place = request.POST.get("place", "")
+        content = request.POST.get("content", "")
+        vidid = request.POST.get("vidid", "")
+        vidtitle = request.POST.get("vidtitle", "")
+        channel = request.POST.get("channel", "")
+        hqdefault = request.POST.get("hqdefault", "")
+        default = request.POST.get("default", "")
+        mqdefault = request.POST.get("mqdefault", "")
+        try:
+            song = Song.objects.get(vidid=vidid)
+        except:
+            song = Song.objects.create(
+                vidid=vidid,
+                title=vidtitle,
+                channel=channel,
+                hqdefault=hqdefault,
+                default=default,
+                mqdefault=mqdefault,
+            )
+        article.user = request.user
+        article.place = place
+        article.content = content
+        article.song = song
+        article.save(update_fields=["user", "place", "content", "song"])
+        return redirect("articles:index")
     else:
-        form = ArticleForm(instance=article)
-
+        form = ArticleForm()
     context = {
+        "article": article,
         "form": form,
     }
     return render(request, "articles/update.html", context)
@@ -183,12 +204,20 @@ def like(request, pk):
 
     article = Article.objects.get(pk=pk)
 
-    if request.user in article.like_users.all():
+    if article.like_users.filter(pk=request.user.pk).exists():
         article.like_users.remove(request.user)
+        is_liked = False
     else:
         article.like_users.add(request.user)
+        is_liked = True
 
-    return redirect("articles:detail", pk)
+    like_count = article.like_users.count()
+
+    context = {
+        "is_liked": is_liked,
+        "likeCount": like_count,
+    }
+    return JsonResponse(context)
 
 
 def comment_create(request, pk):
@@ -207,9 +236,9 @@ def comment_create(request, pk):
 
 
 def song(request):
-    context = {
-    }
+    context = {}
     return render(request, "articles/song.html", context)
+
 
 def song_detail(request, video_id):
     song = Song.objects.get(vidid=video_id)

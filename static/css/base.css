@@ -32,6 +32,21 @@ a {
 a:hover {
 	color: inherit;
 }
+
+i.bi-play-circle {
+  cursor: pointer;
+}
+i.bi-music-note-beamed {
+  cursor: pointer;
+}
+i.bi-chat-right-text-fill {
+  cursor: pointer;
+}
+i.bi-heart-fill {
+  cursor: pointer;
+}
+
+
 .navbar {
   display: flex;
   justify-content: space-around;
@@ -223,6 +238,7 @@ input[type=range]::-webkit-slider-thumb {
 }
 
  #progress-bar {
+  cursor: pointer;
   background: linear-gradient(to right, #fff 0%, #fff 50%, #6c757d 50%, #6c757d 100%);
   border-radius: 8px;
   height: 4px;
