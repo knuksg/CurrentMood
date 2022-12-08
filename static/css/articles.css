@@ -36,7 +36,7 @@
   object-fit: cover;
   padding: 0.5rem;
   width: 100%;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
 }
 
 .icon {
@@ -177,6 +177,20 @@
 @media (min-width: 1200px) {
   .place__recom--imgBox {
     width: 60%;
+    background-color: green;
+  }
+}
+
+@media (min-width: 1400px) {
+  .place__recom--imgBox {
+    width: 50%;
+    background-color: green;
+  }
+}
+
+@media (min-width: 1400px) {
+  .place__recom--imgBox {
+    width: 40%;
     background-color: green;
   }
 }
