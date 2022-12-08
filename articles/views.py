@@ -151,7 +151,7 @@ def update(request, pk):
         article.place = place
         article.content = content
         article.song = song
-        article.save(update_fields=['user', 'place', 'content', 'song'])
+        article.save(update_fields=["user", "place", "content", "song"])
         return redirect("articles:index")
     else:
         form = ArticleForm()
@@ -204,12 +204,20 @@ def like(request, pk):
 
     article = Article.objects.get(pk=pk)
 
-    if request.user in article.like_users.all():
+    if article.like_users.filter(pk=request.user.pk).exists():
         article.like_users.remove(request.user)
+        is_liked = False
     else:
         article.like_users.add(request.user)
+        is_liked = True
 
-    return redirect("articles:detail", pk)
+    like_count = article.like_users.count()
+
+    context = {
+        "is_liked": is_liked,
+        "likeCount": like_count,
+    }
+    return JsonResponse(context)
 
 
 def comment_create(request, pk):
@@ -228,9 +236,9 @@ def comment_create(request, pk):
 
 
 def song(request):
-    context = {
-    }
+    context = {}
     return render(request, "articles/song.html", context)
+
 
 def song_detail(request, video_id):
     song = Song.objects.get(vidid=video_id)
