@@ -282,7 +282,6 @@
         // 5. 플레이어 상태가 바뀌었을 때 실행될 함수
         var done = false;
         const videoButton = document.querySelector("#video-button")
-        console.log(videoButton)
         function onPlayerStateChange(event) {
           // 버퍼링 중일 때
           if (event.data==-1) {
@@ -411,7 +410,6 @@
             const articleMusic = e.target.closest("div.article-music").querySelector('div.music-vidid')
             const articleTitle = document.querySelector('div.article-title').innerText
             const articleChannel = document.querySelector('div.article-channel').innerText
-            console.log(articleMusic)
 
             // 플레이리스트에 이미 존재하는 노래인지 판단
             // 플레이리스트에 존재한다면
@@ -480,7 +478,6 @@
 
         bottomPlayer.addEventListener('mouseleave', (e) => {
           endY = e.pageY
-          console.log(endY)
           if (isMouseDown && (endY - startY) > 30) {
             slideDown(bottomPlayer, duration=400)
           }
