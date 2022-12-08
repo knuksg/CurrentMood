@@ -29,13 +29,15 @@ def index(request):
 def signup(request):
     if request.method == "POST":
         form = CustomUserCreationForm(request.POST)
+        print(1)
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
+            print(2)
             return redirect("accounts:login")
     else:
         form = CustomUserCreationForm()
-
+        print(3)
     context = {"form": form}
     return render(request, "accounts/signup.html", context)
 
