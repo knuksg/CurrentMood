@@ -47,7 +47,7 @@
       </div>
     </div>
     {% else %}
-    <p>프로필 뮤직이 없습니다...</p>
+    <p class="my-3">프로필 뮤직을 설정해주세요</p>
     {% endif %}
   </div>
 </div>
@@ -59,6 +59,7 @@
     |
     <a href="#"><i id="comment-delete-btn" class="bi bi-trash3-fill"></i></a>
   </div>
+  {% if user.article_set.all %}
   {% for article in user.article_set.all %}
   <ul class="position-relative">
     <a href="{% url 'articles:detail' article.pk %}" class="box__menu">
@@ -72,12 +73,16 @@
     </div>
   </ul>
   {% endfor %}
+  {% else %}
+  <p class="my-3">작성한 글이 없습니다</p>
+  {% endif %}
 </div>
 
 <div class="card-big-box" id="cab3" style="display: none;">
   <div class="mylist-btn">
     <a href="#"><i id="like-delete-btn" class="bi bi-trash3-fill"></i></a>
   </div>
+  {% if user.like_article.all %}
   {% for article in user.like_article.all %}
   <ul class="position-relative">
     <a href="{% url 'articles:detail' article.pk %}"  class="box__menu">
@@ -90,6 +95,9 @@
     </div>
   </ul>
   {% endfor %}
+  {% else %}
+  <p class="my-3">좋아요한 글이 없습니다</p>
+  {% endif %}
 </div>
 
 {% comment %} <div class='d-flex'>

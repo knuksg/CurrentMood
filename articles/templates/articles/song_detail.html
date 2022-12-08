@@ -21,13 +21,14 @@
       </div>
   </div>
   <div>
+    {% if articles %}
     {% for article in articles %}
-    <a href="{% url 'articles:detail' article.pk %}" class="d-flex gap-3">
-      <div>
+    <a href="{% url 'articles:detail' article.pk %}" class="d-flex my-3 gap-3">
+      <div class="d-flex flex-column justify-content-center align-items-center">
         {% if article.user.user_img %}
-        <img class="rounded-circle" src="{{ article.user.user_img.url }}" alt="" style="width:100px;">
-        {% else %}
-        <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
+        {% comment %} <img class="rounded-circle" src="{{ article.user.user_img.url }}" alt="" style="width:100px;">
+        {% else %} {% endcomment %}
+        <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:50px;">
         {% endif %}
         <p>{{ article.user }}</p>
       </div>
@@ -37,6 +38,11 @@
       </div>
     </a>
     {% endfor %}
+    {% else %}
+    <div class="d-flex justify-content-center">
+      <p class="my-3">작성된 글이 없습니다</p>
+    </div>
+    {% endif %}
   </div>
 </div>
 {% endblock body %}
