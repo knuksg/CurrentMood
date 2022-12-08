@@ -4,7 +4,7 @@
 
 {% block body %}
   {% comment %} 선교님 플레이어 {% endcomment %}
-  <div id="song">
+  <div id="song" class="mt-5">
     <div class="d-flex flex-column justify-content-center align-items-center">
       <div id="movie-music-btn" class="movie-music-btn" style="width: 380px;">
         <i class="bi bi-youtube"></i><span>/</span><i class="bi bi-music-note-beamed"></i>
@@ -69,49 +69,89 @@
   <!-- 댓글창 : 클릭 후 열린 창 -->
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
     <div class="sidenav__comment">
       <h5>댓글</h5>
     </div>
     <hr>
     {% for article in articles %}
-    <a href="{% url 'articles:detail' article.pk %}">
-      <div class="row d-flex">
-        <div class="col-1 d-flex flex-column mt-2">
-          {% if article.user.user_img %}
-            <img src="{{ article.user.user_img.url }}" alt="" style="width: 3rem;">
-          {% endif %}
-          {{ article.user.username }}
-        </div>
-        <div class="col-11 text-center text-truncate">
-          {{ article.song }}
-          {{ article.content }}
-        </div>
+
+    <div class="row d-flex justify-content-between">
+          
+      {% comment %} 유저 정보 {% endcomment %}
+      <div class="col-2">
+        <a href="{% url 'accounts:detail' article.user.pk %}">
+          <div class="d-flex flex-column align-items-center mb-0 mt-3 p-0">
+            {% if article %}
+            {% if article.user.user_img %}
+              <img src="{% static 'image/profile.jpg'%}" alt="" style="width: 3.5rem; border-radius: 50%;">
+            {% else %}
+              <img src="{% static 'image/profile.jpg'%}" alt="" style="width: 3.5rem; border-radius: 50%;">
+            {% endif %}
+            <p class="d-inline-block mt-1">{{ article.user.username }}</p>
+          </div>
+        </a>  
       </div>
-    </a>
+
+      {% comment %} 댓글 내용 {% endcomment %}
+      <div class="col-7 d-flex justify-content-center align-items-center px-0 bg-secondary bg-opacity-50">
+        <p class="my-0 px-5 text-truncate">{{ article.content }}</p>
+        {% else %}
+        <p class="my-0 px-5 text-truncate"> 댓글을 입력해주세요 </p>
+        {% endif %}
+      </div>
+
+      {% comment %} 앨범 재킷 {% endcomment %}
+      <div class="col-2 mt-2 mb-0">
+        <a href="">
+          <img src="{{ article.song.hqdefault }}" alt="" style="width: 8rem;">
+        </a>
+      </div>
+    </div>
+
     <hr>
     {% endfor %}  
   </div>
 
+  <div class="my-5"></div>
+
   <hr>
-  
   <!-- 댓글창 : 클릭 전 -->
   <div onclick="openNav()">
-    <div class="row d-flex">
-      <div class="col-2 d-flex flex-column mt-2">
-      {% if top_article %}
-        {% if top_article.user.user_img %}
-          <img src="{{ top_article.user.user_img.url }}" alt="" style="width: 3rem;">
-        {% endif %}
-        {{ top_article.user.username }}
+
+    <div class="row d-flex justify-content-between">    
+      
+      {% comment %} 유저 정보 {% endcomment %}
+      <div class="col-2">
+        <a href="{% url 'accounts:detail' top_article.user.pk %}">
+          <div class="d-flex flex-column align-items-center mb-0 mt-3 p-0">
+            {% if top_article %}
+            {% if top_article.user.user_img %}
+              <img src="{% static 'image/profile.jpg'%}" alt="" style="width: 3.5rem; border-radius: 50%;">
+            {% else %}
+              <img src="{% static 'image/profile.jpg'%}" alt="" style="width: 3.5rem; border-radius: 50%;">
+            {% endif %}
+            <p class="d-inline-block mt-1">{{ top_article.user.username }}</p>
+          </div>
+        </a>  
       </div>
-      <div class="col-10 text-center text-truncate">
-        {{ top_article.song }}
-        {{ top_article.content }}
+
+      {% comment %} 댓글 내용 {% endcomment %}
+      <div class="col-7 d-flex justify-content-center align-items-center px-0 bg-secondary bg-opacity-50"
+        <p class="my-0 px-5 text-truncate">{{ top_article.content }}</p>
         {% else %}
-        <p> 댓글을 입력해주세요 </p>
+        <p class="my-0 px-5 text-truncate"> 댓글을 입력해주세요 </p>
         {% endif %}
+      </div>
+
+      {% comment %} 앨범 재킷 {% endcomment %}
+      <div class="col-2 mt-2 mb-0">
+        <a href="">
+          <img src="{{ top_article.song.hqdefault }}" alt="" style="width: 8rem;">
+        </a>
       </div>
     </div>
+    <hr>
   </div>
 
 {% endblock body %}
