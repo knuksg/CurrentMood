@@ -307,8 +307,10 @@
             bottomPlayer.classList.add('d-none')
             const footer = document.querySelector('div.footer')
             footer.classList.add('d-none')
-            const body = document.querySelector('body')
-            body.style.overflow = 'hidden'
+            if (document.querySelector('#playlist-bottom')) {
+              const body = document.querySelector('body')
+              body.style.overflow = 'hidden'
+            }
           } else {
             bottomPlayer.classList.remove('d-none')
           }

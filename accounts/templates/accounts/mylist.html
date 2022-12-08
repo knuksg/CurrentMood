@@ -59,37 +59,35 @@
     |
     <a href="#"><i id="comment-delete-btn" class="bi bi-trash3-fill"></i></a>
   </div>
-  <script>
-    const commentUpdateBtn = document.querySelector('#comment-update-btn')
-    commentUpdateBtn.addEventListener('click', function(e) {
-      const commentUpdates = document.querySelectorAll('#comment-update')
-      commentUpdates.forEach((commentUpdate) => {
-        commentUpdate.classList.remove('d-none')
-      })
-    })
-  </script>
   {% for article in user.article_set.all %}
-  <ul>
+  <ul class="position-relative">
     <a href="{% url 'articles:detail' article.pk %}" class="box__menu">
       <li><img class="box-img" src="{{ article.song.hqdefault }}"></li>
       <li class="box__menu--song">{{ article.song }}</li>  
-      <li>{{ article.place }}</li>
+      <li>{{ article.place|truncatechars:10 }}</li>
     </a>
-    <li>
-      <a href=""><i id="comment-update" class="fa-solid fa-pen d-none"></i></a>
-    </li>
+    <div class="position-absolute" style="top: 50%; right: 15px; transform: translate(0%, -50%)">
+      <a href="{% url 'articles:update' article.pk %}"><i id="comment-update" class="fa-solid fa-pen d-none"></i></a>
+      <a href="{% url 'articles:delete' article.pk %}"><i id="comment-delete" class="bi bi-trash3-fill d-none"></i></a>
+    </div>
   </ul>
   {% endfor %}
 </div>
 
 <div class="card-big-box" id="cab3" style="display: none;">
+  <div class="mylist-btn">
+    <a href="#"><i id="like-delete-btn" class="bi bi-trash3-fill"></i></a>
+  </div>
   {% for article in user.like_article.all %}
-  <ul>
+  <ul class="position-relative">
     <a href="{% url 'articles:detail' article.pk %}"  class="box__menu">
       <li><img src="{{ article.song.hqdefault }}" style="width:50px;"></li>
       <li class="box__menu--song">{{ article.song }}</li>  
-      <li>{{ article.content }}</li>
+      <li>{{ article.content|truncatechars:10 }}</li>
     </a>
+    <div class="position-absolute" style="top: 50%; right: 15px; transform: translate(0%, -50%)">
+      <a href="{% url 'articles:like' article.pk %}"><i id="like-delete" class="bi bi-trash3-fill d-none"></i></a>
+    </div>
   </ul>
   {% endfor %}
 </div>
@@ -122,5 +120,35 @@
     </div>
   </div>
 </div> {% endcomment %}
-
+<script>
+  const commentUpdateBtn = document.querySelector('#comment-update-btn')
+  commentUpdateBtn.addEventListener('click', function(e) {
+    const commentUpdates = document.querySelectorAll('#comment-update')
+    const commentDeletes = document.querySelectorAll('#comment-delete')
+    commentDeletes.forEach((commentDelete) => {
+      commentDelete.classList.add('d-none')
+    })
+    commentUpdates.forEach((commentUpdate) => {
+      commentUpdate.classList.remove('d-none')
+    })
+  })
+  const commentDeleteBtn = document.querySelector('#comment-delete-btn')
+  commentDeleteBtn.addEventListener('click', function(e) {
+    const commentUpdates = document.querySelectorAll('#comment-update')
+    const commentDeletes = document.querySelectorAll('#comment-delete')
+    commentUpdates.forEach((commentUpdate) => {
+      commentUpdate.classList.add('d-none')
+    })
+    commentDeletes.forEach((commentDelete) => {
+      commentDelete.classList.remove('d-none')
+    })
+  })
+  const likeDeleteBtn = document.querySelector('#like-delete-btn')
+  likeDeleteBtn.addEventListener('click', function(e) {
+    const likeDeletes = document.querySelectorAll('#like-delete')
+    likeDeletes.forEach((likeDelete) => {
+      likeDelete.classList.remove('d-none')
+    })
+  })
+</script>
 {% endblock body %}

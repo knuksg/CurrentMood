@@ -10,13 +10,6 @@ class Article(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     content = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
-    image = ProcessedImageField(
-        upload_to="images/",
-        blank=True,
-        processors=[ResizeToFill(400, 300)],
-        format="JPEG",
-        options={"quality": 90},
-    )
     like_users = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name="like_article"
     )
