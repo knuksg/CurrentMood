@@ -53,6 +53,7 @@
    <label for="radio3"><i class="bi bi-heart-fill"></i></label>
   </div>
 </form>
+
 <div class="card-big-box" id="cab1">
   <div id="profile_music" class="my-music">
     {% if user.profile_music.vidid %}
@@ -72,39 +73,42 @@
       </div>
     </div>
     {% else %}
-    <p>프로필 뮤직이 없습니다...</p>
+    <p class="my-3">설정한 프로필 뮤직이 없습니다</p>
     {% endif %}
   </div>
-  {% if request.user == user %}
-  <div class="profile-music-create">
-  <a href="{% url 'accounts:profile_music' user.pk %}"><i class="fa-solid fa-pen"></i></a>
-  </div>
-  {% endif %}
 </div>
 
 
 <div class="card-big-box" id="cab2" style="display: none;">
-  {% for article in user.article_set.all %}
-  <ul>
-    <a href="{% url 'articles:detail' article.pk %}" class="box__menu">
-      <li><img class="box-img" src="{{ article.song.hqdefault }}"></li>
-      <li class="box__menu--song">{{ article.song }}</li>  
-      <li>{{ article.place }}</li>  
-    </a>
-  </ul>
-  {% endfor %}
+  {% if user.article_set.all %}
+    {% for article in user.article_set.all %}
+    <ul>
+      <a href="{% url 'articles:detail' article.pk %}" class="box__menu">
+        <li><img class="box-img" src="{{ article.song.hqdefault }}"></li>
+        <li class="box__menu--song">{{ article.song }}</li>  
+        <li>{{ article.place }}</li>  
+      </a>
+    </ul>
+    {% endfor %}
+  {% else %}
+    <p class="my-3">작성한 글이 없습니다</p>
+  {% endif %}
 </div>
 
 <div class="card-big-box" id="cab3" style="display: none;">
-  {% for article in user.like_article.all %}
-  <ul>
-    <a href="{% url 'articles:detail' article.pk %}"  class="box__menu">
-      <li><img src="{{ article.song.hqdefault }}" style="width:50px;"></li>
-      <li class="box__menu--song">{{ article.song }}</li>  
-      <li>{{ article.content }}</li>
-    </a>
-  </ul>
-  {% endfor %}
+  {% if user.like_article.all %}
+    {% for article in user.like_article.all %}
+    <ul>
+      <a href="{% url 'articles:detail' article.pk %}"  class="box__menu">
+        <li><img src="{{ article.song.hqdefault }}" style="width:50px;"></li>
+        <li class="box__menu--song">{{ article.song }}</li>  
+        <li>{{ article.content }}</li>
+      </a>
+    </ul>
+    {% endfor %}
+  {% else %}
+  <p class="my-3">좋아요한 글이 없습니다</p>
+  {% endif %}
 </div>
 
 

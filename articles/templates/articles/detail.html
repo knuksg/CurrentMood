@@ -1,10 +1,21 @@
 {% extends 'main/base.html' %}
 {% load django_bootstrap5 %}
-
+{% load static %}
 {% block body %}
 <div class="container">
   <div class="d-inline-block">
-    <div id="article-music" class="article-music position-relative d-flex justify-content-center">
+    <div class="d-flex gap-3 mt-3">
+      <a href="{% url 'accounts:detail' article.user.pk %}">
+        <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:50px; height: 50px;">
+      </a>
+      <div>
+        <a href="{% url 'accounts:detail' article.user.pk %}">
+          <p class="m-0">{{ article.user }}</p>
+        </a>
+        <p>{{ article.place }}</p>
+      </div>
+    </div>
+    <div id="article-music" class="article-music position-relative d-flex justify-content-center mb-1">
       <div id="{{ article.song.vidid }}" class="music-vidid d-none">이 태그를 지우지 마세요.</div>
       <img src="{{ article.song.hqdefault }}" alt="" style="width: 100%;">
       <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
@@ -13,9 +24,8 @@
       <div id="title" class="article-title">{{ article.song.title }}</div>  
       <div id="channel" class="article-channel opacity-75">{{ article.song.channel }}</div>
       <div class="my-3">
-        <p>사연 장소: {{ article.place }}</p>
-        <p>작성자: {{ article.user }}  |  {{ article.created_at }}</p>
-        <p>사연 내용: {{ article.content }}</p>
+        <p>{{ article.content }}</p>
+        <small class="opacity-50">{{ article.created_at }}</small>
       </div>
     </div>
   </div>

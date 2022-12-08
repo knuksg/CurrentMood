@@ -14,7 +14,7 @@
   </form>
   <div id="search-list" class="search-list">
   </div>
-  <form id="article-form" data-article-pk={{ article.pk }}>
+  <form id="article-form" data-article-pk={{ article.pk }} data-song-vidid={{ article.song.vidid }}>
     {% csrf_token %}
     <div>
       <label for="place">사연 장소</label>
@@ -73,6 +73,8 @@
   </script>
   <!-- 검색폼 스크립트 -->
   <script>
+    var searched = false
+
     document.addEventListener('click', function(e) {
       if (e.target.closest("div.search-list")) {
         // 폼에 담아서 뷰로 넘겨주기
@@ -94,6 +96,8 @@
         searchList.innerHTML = ''
         const searchInput = document.querySelector("#search-input")
         searchInput.value = ArticleMusicTitle + ' - ' + ArticleMusicChannelTitle
+
+        searched = true
       }
     })
 
@@ -102,18 +106,25 @@
       e.preventDefault()
 
       const place = articleForm.place.value
-      const title = articleForm.title.value
       const content = articleForm.content.value
-
-      form = new FormData()
-      form.append('place', place)
-      form.append('content', content)
-      form.append('vidid', vidid)
-      form.append('vidtitle', vidtitle)
-      form.append('channel', channel)
-      form.append('hqdefault', hqdefault)
-      form.append('default', imgdefault)
-      form.append('mqdefault', mqdefault)
+      const songVidid = e.target.dataset.songVidid
+      
+      if (searched) {
+        form = new FormData()
+        form.append('place', place)
+        form.append('content', content)
+        form.append('vidid', vidid)
+        form.append('vidtitle', vidtitle)
+        form.append('channel', channel)
+        form.append('hqdefault', hqdefault)
+        form.append('default', imgdefault)
+        form.append('mqdefault', mqdefault)
+      } else {
+        form = new FormData()
+        form.append('place', place)
+        form.append('content', content)
+        form.append('vidid', songVidid)
+      }
 
       const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
       const articlePk = e.target.dataset.articlePk
