@@ -35,7 +35,7 @@
         {% if user.profile_music.vidid %}
     <div id="{{ user.profile_music.vidid }}" class="vid">
       <div class="position-relative">
-        <img src="{{ user.profile_music.hqdefault }}" style="width: 500px;" alt="">
+        <img src="{{ user.profile_music.hqdefault }}" style="width: 100%;" alt="">
         <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
       </div>
       <div class="my-3">
@@ -86,7 +86,7 @@
   })
 
   function getSearchList(kw) {
-    const apiKey = "AIzaSyDglrT26TS8c3g7EhbV-wEZeGZnIiK2ObE"
+    const apiKey = "AIzaSyC6_bB2PiPp_Vtf8cPdnhoQ-hzL4gNVFIE"
     axios.get('https://www.googleapis.com/youtube/v3/search', {
       params: {
         key: apiKey,
