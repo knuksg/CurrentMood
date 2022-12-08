@@ -1,43 +1,11 @@
 {% extends 'main/base.html' %}
 {% load django_bootstrap5 %}
 {% load static %}
-
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/accounts.css' %}">
 {% endblock style %}
-
 {% block body %}
 
-<div class="userprofile">
-  <div class="userprofile-img">
-    {% if user.user_img %}
-    <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
-    {% else %}
-    <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
-    {% endif %}
-    <p><a href="{% url 'accounts:update' user.pk %}">프로필 수정</a></p>
-  </div>
-  <div class="user-info">
-    <p>{{ user.username }}</p>
-    <div class="user-info__follow">
-      <div><a href="{% url 'accounts:my_followlist' %}">팔로잉</a> : {{ user.followings.count }}
-      </div> 
-      <div><a href="{% url 'accounts:my_followerlist' %}">팔로워</a> : {{ user.followers.count }}
-      </div>
-    </div>
-    <div class="user-info-followbtn">
-      {% if request.user.pk != user.pk%}
-        <a href="{% url 'accounts:follow' user.pk %}">
-        {% if request.user in user.followers.all %}
-          <button class="followbtn">팔로우 취소</button>
-        {% else %}
-          <button class="followbtn">팔로우</button>
-        {% endif %}
-        </a>
-      {% endif %}
-    </div>
-  </div>
-</div>
 <form class="form_radio_btn" id="radioform">
   <div>
     <input id="radio1" type="radio" name="menu" value="" checked>
@@ -55,8 +23,12 @@
   </div>
 </form>
 
-
 <div class="card-big-box" id="cab1">
+  <div class="mylist-btn">
+    <a href="{% url 'accounts:profile_music' user.pk %}"><i class="fa-solid fa-pen"></i></a>
+    |
+    <a href="{% url 'accounts:profile_music_delete' user.pk %}"><i class="bi bi-trash3-fill"></i></a>
+  </div>
   <div id="profile_music" class="my-music">
     {% if user.profile_music.vidid %}
     <div id="{{ user.profile_music.vidid }}" class="vid">
@@ -78,20 +50,34 @@
     <p>프로필 뮤직이 없습니다...</p>
     {% endif %}
   </div>
-  <div class="profile-music-create">
-  <a href="{% url 'accounts:profile_music' user.pk %}"><i class="fa-solid fa-pen"></i></a>
-  </div>
 </div>
 
 
 <div class="card-big-box" id="cab2" style="display: none;">
+  <div class="mylist-btn">
+    <a href="#"><i id="comment-update-btn" class="fa-solid fa-pen"></i></a>
+    |
+    <a href="#"><i id="comment-delete-btn" class="bi bi-trash3-fill"></i></a>
+  </div>
+  <script>
+    const commentUpdateBtn = document.querySelector('#comment-update-btn')
+    commentUpdateBtn.addEventListener('click', function(e) {
+      const commentUpdates = document.querySelectorAll('#comment-update')
+      commentUpdates.forEach((commentUpdate) => {
+        commentUpdate.classList.remove('d-none')
+      })
+    })
+  </script>
   {% for article in user.article_set.all %}
   <ul>
     <a href="{% url 'articles:detail' article.pk %}" class="box__menu">
       <li><img class="box-img" src="{{ article.song.hqdefault }}"></li>
       <li class="box__menu--song">{{ article.song }}</li>  
-      <li>{{ article.place }}</li>  
+      <li>{{ article.place }}</li>
     </a>
+    <li>
+      <a href=""><i id="comment-update" class="fa-solid fa-pen d-none"></i></a>
+    </li>
   </ul>
   {% endfor %}
 </div>

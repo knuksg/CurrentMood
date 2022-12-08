@@ -231,3 +231,22 @@ def profile_music(request, pk):
             user.profile_music = song
             user.save(update_fields=['profile_music'])
     return render(request, "accounts/profile_music.html")
+
+
+@login_required
+def mylist(request):
+    user = get_user_model().objects.get(pk=request.user.pk)
+    context = {
+        "user": user,
+    }
+    return render(request, "accounts/mylist.html", context)
+
+@login_required
+def profile_music_delete(request, pk):
+    user = get_user_model().objects.get(pk=pk)
+    user.profile_music = None
+    user.save(update_fields=['profile_music'])
+    context = {
+        "user": user,
+    }
+    return redirect('accounts:mylist')

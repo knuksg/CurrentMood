@@ -21,12 +21,8 @@
       <input id="place" name="place" type="text" class="w-100 mb-3" placeholder='사연 장소'>
     </div>
     <div>
-      <label for="title">사연 제목</label>
-      <input id="title" name="title" type="text" class="w-100 mb-3" placeholder='사연 제목'>
-    </div>
-    <div>
       <label for="content">사연 내용</label>
-      <textarea id="content" name="content" cols="30" rows="10" class="w-100 mb-3"></textarea>
+      <textarea id="content" name="content" cols="30" rows="5" class="w-100 mb-3"></textarea>
     </div>
     <input type="submit" value="OK">
   </form>
@@ -111,7 +107,6 @@
 
       form = new FormData()
       form.append('place', place)
-      form.append('title', title)
       form.append('content', content)
       form.append('vidid', vidid)
       form.append('vidtitle', vidtitle)
@@ -127,7 +122,8 @@
         }
       })
       .then((response) => { 
-        window.location.href='http://127.0.0.1:8000/index/'
+        <!--window.location.href='http://currentmoodbeanstalk4-env.eba-k6spzvmy.ap-northeast-2.elasticbeanstalk.com/index/'-->
+        window.location.href='/index/'
       })
     })
   </script>

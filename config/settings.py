@@ -34,6 +34,8 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     "Currentmoodbeanstalk4-env.eba-k6spzvmy.ap-northeast-2.elasticbeanstalk.com",
+    "currentmood.cf",
+    "www.currentmood.cf",
 ]
 
 # Application definition

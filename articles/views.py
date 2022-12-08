@@ -6,6 +6,7 @@ from main.models import Song
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse
 from django.db.models import Count
+from django.contrib.auth import get_user_model
 
 # 위치 api 구현
 from .gmap import reverse_geocoding, parsing_geocoded
@@ -48,6 +49,7 @@ def index(request):
     # 임시로 서울로 설정함. 현재 위치 받아오게 되면 현재 위치 기준으로 설정하면 됨.
     song_queryset = (
         Article.objects.filter(place__icontains="서울")
+        .order_by("-pk")
         .values("song")
         .annotate(Count("id"))
     )
@@ -69,7 +71,6 @@ def index(request):
 def create(request):
     if request.method == "POST":
         place = request.POST.get("place", "")
-        title = request.POST.get("title", "")
         content = request.POST.get("content", "")
         vidid = request.POST.get("vidid", "")
         vidtitle = request.POST.get("vidtitle", "")
@@ -91,7 +92,6 @@ def create(request):
         Article.objects.create(
             user=request.user,
             place=place,
-            title=title,
             content=content,
             song=song,
         )
@@ -148,20 +148,16 @@ def location_get(request):
     gmap_api_key = os.getenv("gmap_api")
     user_location = request.POST.get("userLocation")
     marker_location = request.POST.get("markerLocation")
-    if request.method == "POST":
-        if user_location:
-            user_coords = user_location.split(",")
-            user_loc = parsing_geocoded(user_coords[0], user_coords[1])["loc"]
-            user_place = Place.objects.create(name=user_loc[0])
-        else:
-            user_loc = ["somewhere"]
-        if marker_location:
-            marker_coords = marker_location.split(",")
-            marker_loc = parsing_geocoded(marker_coords[0], marker_coords[1])["loc"]
-            marker_place = Place.objects.create(name=marker_loc[0])
-    # Place 테이블에 geocoding된 위치 값을 저장한다.
+    if request.method == "POST" and user_location:
+        user_coords = user_location.split(",")
+        user_loc = parsing_geocoded(user_coords[0], user_coords[1])["loc"]
+        user_place = Place.objects.create(name=user_loc[0])
+    else:
+        user_loc = ["somewhere"]
+    # Place 테이블에 geocoding된 위치 값을 저장한다. => 위치 지속적으로 업데이트 되도록 해야함
+    user_position = Place.objects.order_by("-id").values()[0]["name"]
     context = {
-        "user_position": user_loc[0],
+        "user_position": user_position,
         "key": gmap_api_key,
     }
     return render(request, "articles/locations.html", context)
@@ -169,9 +165,11 @@ def location_get(request):
 
 def public(request):
     # place model에서 필드를 가져온다.
+    users = get_user_model().objects.all()
     places = Article.objects.filter(place="서울")
     context = {
         "places": places,
+        "users": users,
     }
     return render(request, "articles/public.html", context)
 
@@ -207,6 +205,7 @@ def comment_create(request, pk):
     }
     return JsonResponse(context)
 
+
 def song(request):
     context = {
     }
@@ -214,7 +213,9 @@ def song(request):
 
 def song_detail(request, video_id):
     song = Song.objects.get(vidid=video_id)
+    articles = Article.objects.filter(song=song)
     context = {
         "song": song,
+        "articles": articles,
     }
     return render(request, "articles/song_detail.html", context)

@@ -9,23 +9,154 @@
 {% block body %}
 
 {% comment %} 1등 장소 {% endcomment %}
-<div class="place__best">
-    123
-</div>
+<a href="{% url 'articles:private' %}">
+  <div class="place__best">
+    <div class="hero-image">
+      <div class="hero-text">
+        <h1>블루보틀 역삼 카페</h1>
+      </div>
+    </div>
+  </div>
+</a>
 
 <hr>
 
 {% comment %} 나머지 장소 + 캐러셀 {% endcomment %}
 <div class="place__recom">
-    123
+  <div class="place__recom--imgBox">
+    <div class="private-carousel">
+      <div class="mainSlide">
+        {% for user in users %}
+        <div class="box">
+            <img src="https://i.esdrop.com/d/f/HV29DjMTCH/ls3BTlRkWF.png" alt="">
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 </div>
 
 <hr>
 
 {% comment %} 인기 유저 + 캐러셀 {% endcomment %}
-<div class="place__bestUser">
-    123
-</div>
-
+  <div class="private-carousel bg-info text-center">
+    <div class="userSlide">
+      {% for user in users %}
+      <div class="box">
+          <img src="https://i.esdrop.com/d/f/HV29DjMTCH/ls3BTlRkWF.png" alt="">
+      </div>
+      {% endfor %}
+    </div>
+  </div>
 
 {% endblock body %}
+
+{% block script %}
+  <!-- CDN axios -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  {% comment %} 추천 장소 캐러셀 {% endcomment %}
+  <script>
+    $(function(){
+      $('.mainSlide').slick({
+        dots: false,
+        infinite: false,
+        speed: 800,
+        rows: 2,
+        slidesToShow: 3,
+        slidesToScroll: 3,
+        infinite: true,
+        prevArrow : "<div class='slick-prev carousel-control-prev' style='position: absolute; left: .2rem;'><h1><</h1></div>",
+        nextArrow : "<div class='slick-next carousel-control-next' style='position: absolute; right: .2rem;'><h1>></h1></div>",        
+        responsive: [
+          {
+            breakpoint: 1440,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+            }
+          },
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+            }
+          },
+          {
+            breakpoint: 860,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2
+            }
+          }
+        ]
+      });
+    });
+  </script>
+  {% comment %} 인기 유저 캐러셀 {% endcomment %}
+  <script>
+    $(function(){
+      $('.userSlide').slick({
+        dots: false,
+        infinite: false,
+        speed: 800,
+        infinite: true,
+        slidesToShow: 5,
+        slidesToScroll: 5,
+        prevArrow : "<div class='slick-prev carousel-control-prev' style='position: absolute; left: .2rem;'><h1><</h1></div>",
+        nextArrow : "<div class='slick-next carousel-control-next' style='position: absolute; right: .2rem;'><h1>></h1></div>",        
+        responsive: [
+          {
+            breakpoint: 1440,
+            settings: {
+              slidesToShow: 4,
+              slidesToScroll: 4,
+            }
+          },
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+            }
+          },
+          {
+            breakpoint: 860,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2,
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2
+            }
+          }
+        ]
+      });
+    });
+  </script>
+{% endblock script %}

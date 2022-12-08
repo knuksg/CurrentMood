@@ -14,7 +14,7 @@
   right: 1rem;
 }
 
-.private-playButton{
+.private-playButton {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -27,11 +27,16 @@
   margin: 0 2rem;
 }
 
+.box {
+  display: flex;
+  align-items: center;
+}
+
 .box img {
   object-fit: cover;
-  margin: 1rem;
   padding: 0.5rem;
   width: 100%;
+  border-radius: 1rem;
 }
 
 .icon {
@@ -50,16 +55,24 @@
 
 /* The side navigation menu */
 .sidenav {
-  height: 0; /* 100% Full-height */
-  width: 100%; /* 0 width - change this with JavaScript */
-  position: fixed; /* Stay in place */
-  z-index: 3; /* Stay on top */
-  bottom: 0; /* Stay at the top */
+  height: 0;
+  /* 100% Full-height */
+  width: 100%;
+  /* 0 width - change this with JavaScript */
+  position: fixed;
+  /* Stay in place */
+  z-index: 3;
+  /* Stay on top */
+  bottom: 0;
+  /* Stay at the top */
   left: 0;
-  background-color: #111; /* Black*/
-  overflow-x: hidden; /* Disable horizontal scroll */
+  background-color: #111;
+  /* Black*/
+  overflow-x: hidden;
+  /* Disable horizontal scroll */
   /* padding-top: 60px; Place content 60px from the top */
-  transition: 0.5s; /* 0.5 second transition effect to slide in the sidenav */
+  transition: 0.5s;
+  /* 0.5 second transition effect to slide in the sidenav */
 }
 
 /* The navigation menu links */
@@ -88,8 +101,11 @@
 
 /* On smaller screens, where height is less than 450px, change the style of the sidenav (less padding and a smaller font size) */
 @media screen and (max-height: 450px) {
+
   /* .sidenav {padding-top: 15px;} */
-  .sidenav a {font-size: 18px;}
+  .sidenav a {
+    font-size: 18px;
+  }
 }
 
 .private-comment a {
@@ -109,7 +125,7 @@
   height: 3rem;
 }
 
-.sidenav__comment > h3 {
+.sidenav__comment>h3 {
   color: #818181;
   padding: 1rem;
 }
@@ -117,16 +133,82 @@
 
 /* articles/public */
 .place__best {
-  height: 200px;
+  height: 300px;
   background-color: antiquewhite;
+}
+
+.place__best--imgBox {
+  width: 80%;
+  background-color: gray;
 }
 
 .place__recom {
   height: 600px;
   background-color: antiquewhite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
+@media (max-width: 800px) {
+  .place__recom--imgBox {
+    width: 100%;
+    background-color: green;
+  }
+
+}
+
+@media (min-width: 800px) {
+  .place__recom--imgBox {
+    width: 80%;
+    background-color: green;
+  }
+}
+
+
+@media (min-width: 1000px) {
+  .place__recom--imgBox {
+    width: 70%;
+    background-color: green;
+  }
+}
+
+
+@media (min-width: 1200px) {
+  .place__recom--imgBox {
+    width: 60%;
+    background-color: green;
+  }
+}
+
+
 .place__bestUser {
-  height: 200px;
   background-color: antiquewhite;
+  display: flex;
+  align-items: center;
+}
+
+/* The hero image */
+.hero-image {
+  /* Use "linear-gradient" to add a darken background effect to the image (photographer.jpg). This will make the text easier to read */
+  background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("https://i.esdrop.com/d/f/HV29DjMTCH/lhdqnEkufU.jpg");
+
+  /* Set a specific height */
+  height: 100%;
+
+  /* Position and center the image to scale nicely on all screens */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+
+/* Place text in the middle of the image */
+.hero-text {
+  text-align: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
 }
