@@ -11,46 +11,88 @@
 <div class="following">
   <a href="{% url 'accounts:mypage' %}"><i class="fa-solid fa-arrow-left"></i></a>
   <div class="following-count">
-    {% if not user.followings.all  %}
+    {% if request.user.followings.all  %}
+      팔로잉 <span id="followings-count">{{ request.user.followings.count }}</span>명
+    {% else %}
       팔로잉 0명
-    {% else %}  
-      팔로잉 {{ user.followings.count }}명
     {% endif %} 
   </div>
 </div>
 
 <div class="following_list">
   <ul>
+    <!-- for문 시작-->
     {% for myfollowing in user.followings.all %}
-      {% if myfollowing.user_img %}
+    <!-- 유저의 프로필 이미지가 있다면-->
+    {% if myfollowing.user_img %}
         <li class="following_user-info">
           <a href="{% url 'accounts:detail' myfollowing.pk %}">
             <div>
-            <img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollowing.username }}
+            <img class=" rounded-circle mx-2" src="{{ user.profile_image.url }}" style="width:50px;">{{ myfollowing.username }}
             </div>
           </a>
-          <div>
-            <i class="fa-solid fa-check"></i>
-          </div>
-        </li>
+          <!-- 요청유저가 팔로워유저랑 같지 않다면 -->
+          {% if request.user != myfollowing %}
+            <a class="follow" href="#">
+              {% if request.user in myfollowing.followings.all %}
+                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{ myfollowing.pk }}" id="follow-btn" ></i>
+              {% else %}
+                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{ myfollowing.pk }}"  id="follow-btn" ></i>
+              {% endif %}
+            </a>  
+          {% endif %}
+          </li>
       {% else %}
+      <!-- 유저의 프로필 이미지가 없다면 -->
         <li class="following_user-info">
           <a href="{% url 'accounts:detail' myfollowing.pk %}">
             <div>
             <img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollowing.username }}
             </div>
           </a>
-          <div>
-            <i class="fa-solid fa-check"></i>
-          </div>
-        </li>
+          <!-- 요청유저가 유저랑 같지 않다면 -->
+          {% if request.user != myfollowing %}
+            <a class="follow" href="#">
+              {% if request.user in myfollowing.followings.all %}
+                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{ myfollowing.pk }}" id="follow-btn" ></i>
+              {% else %}
+                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{ myfollowing.pk }}"  id="follow-btn" ></i>
+              {% endif %}
+            </a>  
+          {% endif %}
+          </li>
       {% endif %}
-    </a>
     {% endfor %}
     {% if not user.followings.all %}
       <li class="mt-4 d-flex justify-content-center">내가 팔로우 하는 사람이 없습니다.</li>
     {% endif %}
   </ul>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const follow = (e) => {
+    const follow_id = document.querySelector(`#${e.id}`).id;
+    axios({
+      method: 'get', 
+      url: `/accounts/${event.target.dataset.followId}/follow/`})
+      .then(response => {
+      console.log(response)
+      if (response.data.isFollow === true) {
+        e.classList.add('fa-check')
+        e.classList.remove('fa-user-plus')
+      console.log('팔로우');
+      } else {
+        e.classList.add('fa-user-plus')
+        e.classList.remove('fa-check')
+      console.log('팔로우취소');
+      }
+      const followingsCount = document.querySelector('#followings-count');
+      const followingsCountValue = response.data.followings_count;
+      followingsCount.innerText = followingsCountValue;
+      console.log('팔로잉카운트');
+    })
+  }
+</script>
 
 {% endblock %}

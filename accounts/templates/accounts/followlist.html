@@ -30,17 +30,13 @@
             </div>
           </a>
           {% if request.user != myfollowing %}
-              <a href="{% url 'accounts:follow' myfollowing.pk %}">
-              {% if request.user in myfollowing.followers.all %}
-                <i class="fa-solid fa-check"></i>
+            <a class="follow" href="#">
+              {% if request.user in myfollowing.followings.all %}
+                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{myfollowing.pk}}" id="follow-btn" ></i>
               {% else %}
-                <i class="fa-solid fa-user-plus"></i>
+                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{myfollowing.pk}}"  id="follow-btn" ></i>
               {% endif %}
-              </a>
-          {% else %}
-            <div>
-              <i class="fa-solid fa-check"></i>
-            </div>
+            </a>  
           {% endif %}
         </li>
       {% else %}
@@ -51,17 +47,13 @@
             </div>
           </a>
           {% if request.user != myfollowing %}
-              <a href="{% url 'accounts:follow' myfollowing.pk %}">
-              {% if request.user in myfollowing.followers.all %}
-                <i class="fa-solid fa-check"></i>
+            <a class="follow" href="#">
+              {% if request.user in myfollowing.followings.all %}
+                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{myfollowing.pk}}" id="follow-btn" ></i>
               {% else %}
-                <i class="fa-solid fa-user-plus"></i>
+                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{myfollowing.pk}}"  id="follow-btn" ></i>
               {% endif %}
-              </a>
-          {% else %}
-            <div>
-              <i class="fa-solid fa-check"></i>
-            </div>
+            </a>  
           {% endif %}
         </li>
       {% endif %}
@@ -73,4 +65,29 @@
   </ul>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const follow = (e) => {
+    const follow_id = document.querySelector(`#${e.id}`).id;
+    axios({
+      method: 'get', 
+      url: `/accounts/${event.target.dataset.followId}/follow/`})
+      .then(response => {
+      console.log(response)
+      if (response.data.isFollow === true) {
+        e.classList.add('fa-check')
+        e.classList.remove('fa-user-plus')
+      console.log('팔로우');
+      } else {
+        e.classList.add('fa-user-plus')
+        e.classList.remove('fa-check')
+      console.log('팔로우취소');
+      }
+      const followingsCount = document.querySelector('#followings-count');
+      const followingsCountValue = response.data.followings_count;
+      followingsCount.innerText = followingsCountValue;
+      console.log('팔로잉카운트');
+    })
+  }
+</script>
 {% endblock %}

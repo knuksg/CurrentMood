@@ -21,20 +21,18 @@
   <div class="user-info">
     <p>{{ user.username }}</p>
     <div class="user-info__follow">
-      <div><a href="{% url 'accounts:followlist' user.pk %}">팔로잉</a> : {{ user.followings.count }}
+      <div><a href="{% url 'accounts:followlist' user.pk %}">팔로잉</a> : <span id="followings-count">{{ user.followings.count }}</span>
       </div> 
-      <div><a href="{% url 'accounts:followerlist' user.pk %}">팔로워</a> : {{ user.followers.count }}
+      <div><a href="{% url 'accounts:followerlist' user.pk %}">팔로워</a> : <span id="followers-count">{{ user.followers.count }}</span>
       </div>
     </div>
     <div class="user-info-followbtn">
-      {% if request.user.pk != user.pk%}
-        <a href="{% url 'accounts:follow' user.pk %}">
-        {% if request.user in user.followers.all %}
-          <button class="followbtn">팔로우 취소</button>
+      {% if request.user != user %}
+        {% if request.user in user.followings.all %}
+          <button class="followbtn btnW" onclick="follow(this)" data-follow-id="{{user.pk}}" id="follow-btn" >팔로우 취소</button>
         {% else %}
-          <button class="followbtn">팔로우</button>
+          <button class="followbtn" onclick="follow(this)" data-follow-id="{{user.pk}}"  id="follow-btn" >팔로우</button>
         {% endif %}
-        </a>
       {% endif %}
     </div>
   </div>
@@ -113,5 +111,33 @@
 <hr>
 <a href="{% url 'articles:index' %}">뒤로가기</a>
 
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+const follow = (e) => {
+  const follow_id = document.querySelector(`#${e.id}`).id;
+  axios({
+      method: 'get', 
+      url: `/accounts/${event.target.dataset.followId}/follow/`})
+      .then(response => {
+      console.log(response)
+      const followBtn = document.querySelector('#follow-btn')
+      if (response.data.isFollow === true) {
+      followBtn.innerText = '팔로우 취소'
+      followBtn.classList.add('btnW')
+      console.log('팔로우')
+      } else {
+      followBtn.innerText = '팔로우'
+      followBtn.classList.remove('btnW')
+      console.log('팔로우취소')
+      }
+      const followersCount = document.querySelector('#followers-count');
+      const followingsCount = document.querySelector('#followings-count');
+      const followersCountValue = response.data.followers_count;
+      const followingsCountValue = response.data.followings_count;
+      followersCount.innerText = followersCountValue;
+      followingsCount.innerText = followingsCountValue;
+  })
+  }
+</script>
 
 {% endblock %}

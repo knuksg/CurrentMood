@@ -10,7 +10,6 @@
 
 <div class="follower">
   <a href="{% url 'accounts:mypage' %}"><i class="fa-solid fa-arrow-left"></i></a>
-  </div>
   <div class="follower-count">
     {% if not user.followers.all %}
       팔로워 0명
@@ -22,31 +21,47 @@
 
 <div class="follower_list">
   <ul>
+    <!-- for문 시작-->
     {% for myfollower in user.followers.all %}
-      {% if myfolloer.user_img %}
+    <!-- 유저의 프로필 이미지가 있다면-->
+    {% if myfollower.user_img %}
         <li class="follower_user-info">
           <a href="{% url 'accounts:detail' myfollower.pk %}">
             <div>
-            <img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollower.username }}
+            <img class=" rounded-circle mx-2" src="{{ user.profile_image.url }}" style="width:50px;">{{ myfollower.username }}
             </div>
           </a>
-          <div>
-            <i class="fa-solid fa-check"></i>
-          </div>
-        </li>
+          <!-- 요청유저가 팔로워유저랑 같지 않다면 -->
+          {% if request.user != myfollower %}
+            <a class="follow" href="#">
+              {% if request.user in myfollower.followers.all %}
+                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{myfollower.pk}}" id="follow-btn" ></i>
+              {% else %}
+                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{myfollower.pk}}"  id="follow-btn" ></i>
+              {% endif %}
+            </a>  
+          {% endif %}
+          </li>
       {% else %}
+      <!-- 유저의 프로필 이미지가 없다면 -->
         <li class="follower_user-info">
           <a href="{% url 'accounts:detail' myfollower.pk %}">
             <div>
             <img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollower.username }}
             </div>
           </a>
-          <div>
-            <i class="fa-solid fa-check"></i>
-          </div>
-        </li>
+          <!-- 요청유저가 팔로워유저랑 같지 않다면 -->
+          {% if request.user != myfollower %}
+            <a class="follow" href="#">
+              {% if request.user in myfollower.followers.all %}
+                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{myfollower.pk}}" id="follow-btn" ></i>
+              {% else %}
+                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{myfollower.pk}}"  id="follow-btn" ></i>
+              {% endif %}
+            </a>  
+          {% endif %}
+          </li>
       {% endif %}
-    </a>
     {% endfor %}
     {% if not user.followers.all %}
       <li class="mt-4 d-flex justify-content-center">나를 팔로우 하는 사람이 없습니다.</li>
@@ -72,5 +87,25 @@
 </div>
 <hr>
 <a href="{% url 'accounts:mypage' %}">뒤로가기</a> {% endcomment %}
-
-{% endblock %}
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+const follow = (e) => {
+  const follow_id = document.querySelector(`#${e.id}`).id;
+  axios({
+      method: 'get', 
+      url: `/accounts/${event.target.dataset.followId}/follow/`})
+      .then(response => {
+      console.log(response)
+      if (response.data.isFollow === true) {
+      e.classList.add('fa-check')
+      e.classList.remove('fa-user-plus')
+      console.log('팔로우')
+      } else {
+      e.classList.add('fa-user-plus')
+      e.classList.remove('fa-check')
+      console.log('팔로우취소')
+      }
+  })
+  }
+</script>
+{% endblock body %}
