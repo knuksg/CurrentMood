@@ -405,6 +405,44 @@
             } ); 
           }
 
+          // 아티클 뮤직 재생
+          if (e.target.closest("div.article-music")) {
+            slideUp(bottomPlayer, duration=500)
+            const articleMusic = e.target.closest("div.article-music").querySelector('div.music-vidid')
+            const articleTitle = document.querySelector('div.article-title').innerText
+            const articleChannel = document.querySelector('div.article-channel').innerText
+            console.log(articleMusic)
+
+            // 플레이리스트에 이미 존재하는 노래인지 판단
+            // 플레이리스트에 존재한다면
+            if (videoIDs.includes(articleMusic.id)) {
+              const idx = videoIDs.indexOf(articleMusic.id)
+              // 가장 마지막 인덱스가 아니라면 기존 인덱스 삭제하고 새로 추가
+              if (idx > -1 && idx < videoIDs.length - 1) {
+                videoIDs.splice(idx, 1)
+                videoIDs.push(articleMusic.id)
+                videoTitles.splice(idx, 1)
+                videoTitles.push(articleTitle)
+                videoChannels.splice(idx, 1)
+                videoChannels.push(articleChannel)
+              }
+            // 플레이리스트에 없다면 추가
+            } else {
+              videoIDs.push(articleMusic.id)
+              videoTitles.push(articleTitle)
+              videoChannels.push(articleChannel)
+            }
+
+            window.sessionStorage.setItem('videoIDs', JSON.stringify(videoIDs))
+            window.sessionStorage.setItem('videoTitles', JSON.stringify(videoTitles))
+            window.sessionStorage.setItem('videoChannels', JSON.stringify(videoChannels))
+
+            player.loadPlaylist( {
+              playlist:videoIDs,
+              index: videoIDs.length - 1
+            } );
+          }
+
           // 플레이리스트 뮤직 재생
           if (e.target.closest("div.playlist-item")) {
             slideUp(bottomPlayer, duration=500)
@@ -432,14 +470,12 @@
           bottomPlayer.classList.add('active')
 
           startY = e.pageY
-          console.log(startY)
         })
         bottomPlayer.addEventListener('touchstart', (e) => {
           isMouseDown = true
           bottomPlayer.classList.add('active')
 
           startY = e.pageY
-          console.log(startY)
         })
 
         bottomPlayer.addEventListener('mouseleave', (e) => {
@@ -455,7 +491,6 @@
 
         bottomPlayer.addEventListener('mouseup', (e) => {
           endY = e.pageY
-          console.log(endY)
           if (isMouseDown && (endY - startY) > 30) {
             slideDown(bottomPlayer, duration=400)
           }
@@ -465,7 +500,6 @@
         })
         bottomPlayer.addEventListener('touchend', (e) => {
           endY = e.pageY
-          console.log(endY)
           if (isMouseDown && (endY - startY) > 0) {
             slideDown(bottomPlayer, duration=400)
           }
