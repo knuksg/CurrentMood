@@ -233,9 +233,6 @@
 	display: grid;
 	grid-template-columns: 40% 60%;
 	grid-template-rows: 90px;
-	/* display: flex;
-	justify-content: flex-start;
-	height: 380px; */
 	width: 320px;
 	padding: 0;
 	margin: 0;
