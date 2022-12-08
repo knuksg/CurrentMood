@@ -1,88 +1,19 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% block body %}
-
-<form action="" method="POST">
+<form action="{% url 'articles:clicked_location'%}" method="POST" style="display:flex">
   {% csrf_token %}
-  <input id="exampleInput" type="text" value="" name="exampleInput" style="width:300px;">
+  <input id="clicked" type="text" value="" name="clicked" size="38" placeholder="click한 위치">
+  <!-- <input id="pac-input" type="text" size="35" name="searched_location" placeholder="장소 검색" style="margin-left: 38rem;"> -->
 </form>
-<input id="pac-input" type="text" size="50" placeholder="Enter location">
-<p id="result"></p>
-<p>{{user_position}} 인근</p>
+<!-- <p id="result"></p> -->
+<p>현재위치 : {{user_position}} 인근</p>
 <!-- 지도 -->
-<div id="map" style="width:500px;height:500px;"></div>
-<script src="https://maps.googleapis.com/maps/api/js?key={{key}}&region=KR&callback=initMap&v=weekly" defer></script>
+<div id="map" style="width:100%;height:700px;"></div>
+<script src="https://maps.googleapis.com/maps/api/js?key={{key}}&libraries=places&region=KR&callback=initMap&v=weekly" defer></script>
 
 <script>
-// csrftoken 생성
-function getCookie(name) {
-  var cookieValue = null;
-  if (document.cookie && document.cookie !== '') {
-      var cookies = document.cookie.split(';');
-      for (var i = 0; i < cookies.length; i++) {
-          var cookie = cookies[i].trim();
-          // Does this cookie string begin with the name we want?
-          if (cookie.substring(0, name.length + 1) === (name + '=')) {
-              cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-              break;
-          }
-      }
-  }
-  return cookieValue;
-}
-
-var csrftoken = getCookie('csrftoken');
-
-
-
-// web geolocation으로 좌표값 가져오기
-var options = {
-  enableHighAccuracy: false,
-  timeout: 10000,
-  maximumAge: 0
-};
-
-function success(pos) {
-  var crd = pos.coords;
-  var usrCrd = [37.3311,126.5811] // 임시좌표
-  const result = document.querySelector('#result')
-  result.innerHTML = [usrCrd[0],usrCrd[1]] // 화면에 좌표 표시
-  // const usrCrd = [crd.latitude,crd.longitude]
-  // result.innerHTML= [crd.latitude,crd.longitude]
-  // 1. form으로 전송하기
-  // const reqForm = document.querySelector("#locationForm")
-  // reqForm.userLocation.value = usrCrd
-  // 2. 다른 방법
-  localStorage.setItem('crds',usrCrd)
-  const request = new XMLHttpRequest;
-  request.open('POST',`http://127.0.0.1:8000/locations/`)
-  request.setRequestHeader("X-CSRFToken", csrftoken); 
-  request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  request.send(`userLocation=${usrCrd}`)
-  request.onreadystatechange=function(event){
-  console.log('location sent')
-}
-}
-
-function error(err) {
-  console.warn(`ERROR(${err.code}): ${err.message}`);
-}
-// 위치 DB 지속적으로 보내주기
-navigator.geolocation.getCurrentPosition(success,error,options)
-
-const getLocationButton = document.querySelector("sync")
-// function sendLocation(){
-//   localStorage.setItem('crds',usrCrd)
-//   const request = new XMLHttpRequest;
-//   request.open('POST',`http://127.0.0.1:8000/locations/`)
-//   request.setRequestHeader("X-CSRFToken", csrftoken); 
-//   request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-//   request.send(`userLocation=${usrCrd}`)
-//   request.onreadystatechange=function(event){
-//   console.log('location getted')
-// }
-// }
-getLocationButton.addEventListener("click",sendLocation)
+// GPS script => gps.js
 
 // 자동완성
 // const center = { lat: 50.064192, lng: -130.605469 };
@@ -105,7 +36,5 @@ getLocationButton.addEventListener("click",sendLocation)
 
 
 </script>
-
-
 
 {% endblock body %}

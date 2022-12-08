@@ -175,6 +175,7 @@ def location_get(request):
         user_place = Place.objects.create(name=user_loc[0])
     else:
         user_loc = ["somewhere"]
+        user_position = ["somewhere"]
     # Place 테이블에 geocoding된 위치 값을 저장한다. => 위치 지속적으로 업데이트 되도록 해야함
     user_position = Place.objects.order_by("-id").values()[0]["name"]
     context = {
@@ -182,6 +183,25 @@ def location_get(request):
         "key": gmap_api_key,
     }
     return render(request, "articles/locations.html", context)
+
+
+def clicked_location(request):
+    return redirect("articles:location_test")
+
+
+def location_test(request):
+    clicked_location = request.POST.get("clicked")
+    user_position = " ".join(
+        Place.objects.order_by("-id").values()[0]["name"].split(" ")[3:5]
+    )
+    context = {
+        "user_position": user_position,
+        "clicked": clicked_location,
+    }
+    # 주소명 장소명으로 변환하기
+    # DB 방식 변경하기
+    # 마커, 현재위치버튼
+    return render(request, "articles/locationInputTest.html", context)
 
 
 def public(request):
