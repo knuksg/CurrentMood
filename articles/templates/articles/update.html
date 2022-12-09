@@ -14,11 +14,18 @@
   </form>
   <div id="search-list" class="search-list">
   </div>
-  <form id="article-form" data-article-pk={{ article.pk }} data-song-vidid={{ article.song.vidid }}>
+  <form id="article-form" method="POST" data-article-pk={{ article.pk }} data-song-vidid={{ article.song.vidid }}>
     {% csrf_token %}
+    <input type="hidden" id="vidid" name="vidid" value="{{ article.song.vidid }}">
+    <input type="hidden" id="vidtitle" name="vidtitle" value="">
+    <input type="hidden" id="channel" name="channel" value="">
+    <input type="hidden" id="hqdefault" name="hqdefault" value="">
+    <input type="hidden" id="default" name="default" value="">
+    <input type="hidden" id="mqdefault" name="mqdefault" value="">
+    <input type="hidden" id="place" name="place" value="{{ article.place }}">
     <div>
       <label for="place">사연 장소</label>
-      <input id="place" name="place" type="text" class="w-100 mb-3" value='{{ article.place }}' disabled readonly>
+      <input id="" name="" type="text" class="w-100 mb-3" value='{{ article.place }}' disabled readonly>
     </div>
     <div>
       <label for="content">사연 내용</label>
@@ -73,7 +80,7 @@
   </script>
   <!-- 검색폼 스크립트 -->
   <script>
-    var searched = false
+    const articleForm = document.querySelector('#article-form')
 
     document.addEventListener('click', function(e) {
       if (e.target.closest("div.search-list")) {
@@ -83,62 +90,19 @@
         const ArticleMusicTitle = searchItem.querySelector('h5').innerText
         const ArticleMusicChannelTitle = searchItem.querySelector('p').innerText
   
-        vidid = ArticleMusicId
-        vidtitle = ArticleMusicTitle
-        channel = ArticleMusicChannelTitle
-        hqdefault = `https://i.ytimg.com/vi/${ArticleMusicId}/hqdefault.jpg`
-        imgdefault = `https://i.ytimg.com/vi/${ArticleMusicId}/default.jpg`
-        mqdefault = `https://i.ytimg.com/vi/${ArticleMusicId}/mqdefault.jpg`
-        console.log(vidid)
+        articleForm.querySelector('#vidid').value = ArticleMusicId
+        articleForm.querySelector('#vidtitle').value = ArticleMusicTitle
+        articleForm.querySelector('#channel').value = ArticleMusicChannelTitle
+        articleForm.querySelector('#hqdefault').value = `https://i.ytimg.com/vi/${ArticleMusicId}/hqdefault.jpg`
+        articleForm.querySelector('#default').value = `https://i.ytimg.com/vi/${ArticleMusicId}/default.jpg`
+        articleForm.querySelector('#mqdefault').value = `https://i.ytimg.com/vi/${ArticleMusicId}/mqdefault.jpg`
   
         // 검색 폼 초기화해주기
         const searchList = document.querySelector('#search-list')
         searchList.innerHTML = ''
         const searchInput = document.querySelector("#search-input")
         searchInput.value = ArticleMusicTitle + ' - ' + ArticleMusicChannelTitle
-
-        searched = true
       }
-    })
-
-    const articleForm = document.querySelector('#article-form')
-    articleForm.addEventListener('submit', function(e) {
-      e.preventDefault()
-
-      const place = articleForm.place.value
-      const content = articleForm.content.value
-      const songVidid = e.target.dataset.songVidid
-      
-      if (searched) {
-        form = new FormData()
-        form.append('place', place)
-        form.append('content', content)
-        form.append('vidid', vidid)
-        form.append('vidtitle', vidtitle)
-        form.append('channel', channel)
-        form.append('hqdefault', hqdefault)
-        form.append('default', imgdefault)
-        form.append('mqdefault', mqdefault)
-      } else {
-        form = new FormData()
-        form.append('place', place)
-        form.append('content', content)
-        form.append('vidid', songVidid)
-      }
-
-      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-      const articlePk = e.target.dataset.articlePk
-      console.log(articlePk)
-      axios.post(`/${articlePk}/update/`, form, {
-        headers: {
-          'X-CSRFToken': csrftoken
-        }
-      })
-      .then((response) => { 
-        console.log('test')
-        <!--window.location.href='http://currentmoodbeanstalk4-env.eba-k6spzvmy.ap-northeast-2.elasticbeanstalk.com/index/'-->
-        window.location.href='/index/'
-      })
     })
   </script>
 
