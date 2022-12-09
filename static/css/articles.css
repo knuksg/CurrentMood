@@ -244,12 +244,15 @@
   cursor: pointer;
   width: 380px;
 }
+
 .img-btn:hover img {
   opacity: 50%;
 }
+
 .img-btn:hover img {
   opacity: 50%;
 }
+
 .img-btn:hover .img-icon {
   opacity: 100;
 }

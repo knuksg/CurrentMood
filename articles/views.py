@@ -51,7 +51,7 @@ def index(request):
         Article.objects.filter(place__icontains="서울")
         .values("song")
         .annotate(Count("id"))
-        .order_by('-id__count')
+        .order_by("-id__count")
     )
     song_list = []
     for song_id in song_queryset:
@@ -266,8 +266,10 @@ def song(request):
 def song_detail(request, video_id):
     song = Song.objects.get(vidid=video_id)
     articles = Article.objects.filter(song=song)
+    comment_form = CommentForm(request.POST)
     context = {
         "song": song,
         "articles": articles,
+        "comment_form": comment_form,
     }
     return render(request, "articles/song_detail.html", context)
