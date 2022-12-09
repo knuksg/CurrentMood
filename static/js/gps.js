@@ -27,7 +27,7 @@ function getCookie(name) {
   };
   
   function success(pos) {
-    var usrCrd = [35.3311,126.5811] // 임시좌표
+    var usrCrd = [37.55483,126.95498] // 임시좌표
     console.log([usrCrd[0],usrCrd[1]])
     var crd = pos.coords;
     // const usrCrd = [crd.latitude,crd.longitude]
