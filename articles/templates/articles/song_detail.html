@@ -23,8 +23,8 @@
     <a href="{% url 'articles:detail' article.pk %}" class="d-flex gap-3 border-top">
       <div class="d-flex flex-column justify-content-center align-items-center mt-3">
         {% if article.user.user_img %}
-        {% comment %} <img class="rounded-circle" src="{{ article.user.user_img.url }}" alt="" style="width:100px;">
-        {% else %} {% endcomment %}
+        <img class="rounded-circle" src="{{ article.user.user_img.url }}" alt="" style="width:30px;">
+        {% else %}
         <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:30px;">
         {% endif %}
         <p>{{ article.user }}</p>
