@@ -15,8 +15,9 @@
 	<form action="" method="POST" class="signupform" enctype="multipart/form-data">
 	{% csrf_token %}
 		<div class="signupform-info">
+
 				<input id='user_img' type="file" name="user_img" class="signupform__userimg">
-				프로필 사진추가
+				<label for="user_img">프로필 사진추가</label>
 				<br>
 				이름
 				<input type="text" name="first_name" class="signupform__input">

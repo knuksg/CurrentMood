@@ -27,47 +27,43 @@
       </div>
     </div>
   </div>
-
+  <br>
+  <!-- 프로필뮤직 검색창 -->
+  <div class="p-5 d-flex justify-content-center">
+    <form id="search-form" data-user-id={{ user.pk }}>
+      {% csrf_token %}
+      <input type="search" id="search-input" class="search__input" onkeydown="if(event.keyCode == 13){searchForm();}" placeholder="프로필 뮤직 검색">
+      <input id="search-btn" class="search-btn" type="submit">
+      <label for="search-btn"><i class="fa-solid fa-magnifying-glass"></i></label>
+    </form>
+    <div id="search-list" class="search-off search-list ">
+    </div>
+  </div>
+  <br>
   <!-- user's profile_music -->
   <div class="profile-setting-music">
     <p>현재 설정된 프로필 뮤직</p>
+      <!-- 프로필 뮤직 -->
       <div id="profile_music" class="profile-music">
         {% if user.profile_music.vidid %}
-    <div id="{{ user.profile_music.vidid }}" class="vid">
-      <div class="position-relative">
-        <img src="{{ user.profile_music.hqdefault }}" style="width: 100%;" alt="">
-        <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
-      </div>
-      <div class="my-3">
-        <div class="title">
-          {{ user.profile_music.title }}
+        <div id="{{ user.profile_music.vidid }}" class="search-item">
+          <div class="music_img">
+            <img src="{{ user.profile_music.hqdefault }}" alt="">
+          </div>
+          <div class="music_info">
+            <div class="music_title">
+              {{ user.profile_music.title }}
+            </div>
+            <div class="music_channel">
+              {{ user.profile_music.channel }}
+            </div>
+          </div>
         </div>
-        <span> - </span>
-        <div class="channel">
-          {{ user.profile_music.channel }}
-        </div>
-      </div>
-    </div>
         {% else %}
         <p>프로필 뮤직이 없습니다...</p>
         {% endif %}
       </div>
-
-      <!-- profile_music search -->
-      <div>
-        <form id="search-form" data-user-id={{ user.pk }}>
-          {% csrf_token %}
-          <input type="search" id="search-input" class="search__input" onkeydown="if(event.keyCode == 13){searchForm();}" placeholder="프로필 뮤직 검색">
-          <input id="search-btn" class="search-btn" type="submit">
-          <label for="search-btn"><i class="fa-solid fa-magnifying-glass"></i></label>
-        </form>
-        <div id="search-list" class="search-list">
-        </div>
-      </div>
   </div>
-
-  
-
   
   <hr>
   <a href="{% url 'accounts:mypage' %}">뒤로가기</a>
