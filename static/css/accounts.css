@@ -208,17 +208,20 @@
 .profile-setting-music {
 	display: flex;
 	flex-direction: column;
+	height: 1000px;
 	align-items: center;
+	justify-content: start;
 	text-align: center;
 	margin: 20px 40px;
+	padding: 0;
 }
-.profile-set-music {
+.profile-music {
+	margin-top: 10px;
 	display: flex;
 	flex-direction: column;
-	text-align: center;
 }
 .search-off {
-	height: 50px;
+	display: none;
 }
 .search-list {
 	display: flex;
