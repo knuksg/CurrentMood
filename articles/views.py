@@ -69,7 +69,6 @@ def index(request):
 
 @login_required
 def create(request):
-    print('asdf')
     if request.method == "POST":
         place = request.POST.get("place", "")
         content = request.POST.get("content", "")
