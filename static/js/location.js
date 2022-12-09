@@ -5,10 +5,16 @@ function initMap() {
   const coords = localStorage.getItem('crds').split(",").map(Number)
   const userCoords = { lat: coords[0], lng: coords[1] };
   const map = new google.maps.Map(document.getElementById("map"), {
-    zoom: 10,
+    zoom: 20,
     center: userCoords,
   });
+  map.setOptions({draggable:false}); // 지도 이동 금지
+  // 확대/축소 금지
+  //
+  
   // // 장소 검색
+  // https://velog.io/@gkwlsdl1/Django-redis-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
+  // https://developers.google.com/maps/documentation/javascript/places#find_place_from_query
   // const searchedPlace = document.querySelector("#pac-input")
   // const searchButton = document.querySelector("#searchButton")
   // var request = {
@@ -31,11 +37,11 @@ function initMap() {
     map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
     locationButton.addEventListener("click", () => {
       const pos = {
-        // DB에서 위치값 가져오기
+        // DB/server에서 위치값 가져오기
         // lat: position.coords.latitude,
         // lng: position.coords.longitude,
-        lat : 37.3311,
-        lng : 126.5811,
+        lat : 37.55483,
+        lng : 126.95498,
       };
       map.setCenter(pos);
       if (navigator.geolocation==false){
@@ -56,21 +62,63 @@ function initMap() {
       map: map,
     });
     map.addListener("click", (mapsMouseEvent) => {
-      // Create a new InfoWindow.
-      const clickedCoordsJson = mapsMouseEvent.latLng.toJSON()
-      const clickedCoords = {lat:parseFloat(clickedCoordsJson['lat']),lng:parseFloat(clickedCoordsJson['lng'])}
-      const marker = new google.maps.Marker({
-        position: clickedCoords,
-        map: map,
-      });
+      // const marker = new google.maps.Marker({
+        //   position: clickedCoords,
+        //   map: map,
+        // });
       // Input창에 위치 넣기
       const exampleInput = document.querySelector("#clicked")
+      console.log(map.__gm.eventCapturer.innerText.split("\n")[0])
+      exampleInput.value = map.__gm.eventCapturer.innerText.split("\n")[0]
       const geocoder = new google.maps.Geocoder();
-      geocoder.geocode({location:clickedCoords})
-      .then((response)=>exampleInput.value = response.results[0].formatted_address.split(" ").slice(3,5).join(" "))
+      const clickedCoordsJson = mapsMouseEvent.latLng.toJSON()
+      const clickedCoords = {lat:parseFloat(clickedCoordsJson['lat']),lng:parseFloat(clickedCoordsJson['lng'])}
+      // 좌표 geocoding => 주소
+      // geocoder.geocode({location:clickedCoords})
+      // .then(function(response){
+      //   // exampleInput.value = response.results[0].formatted_address.split(" ").slice(3,5).join(" ")
+      //   // 텍스트 검색
+      //   var request = {
+      //     location: map.getCenter(),
+      //     radius: '500',
+      //     query: response.results[0].formatted_address
+      //   };
+      
+      //   var service = new google.maps.places.PlacesService(map);
+      //   service.textSearch(request, callback);
+      //   function callback(results){
+      //     console.log(results[0])
+      //   }
+      // })
+      
     });
-    
+    // 검색바
+    const mapsearch = document.getElementById("mapsearch")
+    var searchBox = new google.maps.places.SearchBox(mapsearch)
+    // 검색위치
+    google.maps.event.addListener(searchBox,'places_changed',function(){
+      var places = searchBox.getPlaces();
+      var bounds = new google.maps.LatLngBounds();
+      var i, place;
+      for (i=0; place=places[i];i++){
+        console.log(place.geometry.location);
+        bounds.extend(place.geometry.location);
+        marker.setPosition(place.geometry.location)
+      }
+      map.fitBounds(bounds);
+      map.setZoom(17)
+    })
 }
   
 window.initMap = initMap;
+
+// location.js?60:72 Uncaught ReferenceError: names is not defined
+//     at kj.<anonymous> (location.js?60:72:13)
+//     at _.O (js?key=AIzaSyBQjvkVCuRWteXvMvioRJZ0P24bi_XSHaw&libraries=places&region=KR&callback=initMap&v=weekly:111:320)
+//     at pka (map.js:31:109)
+//     at ju (map.js:28:488)
+//     at Object.onClick (map.js:27:441)
+//     at _.n.onClick (common.js:238:286)
+//     at G._.Ih.fd (common.js:81:469)
+
 

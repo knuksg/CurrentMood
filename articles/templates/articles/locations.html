@@ -7,32 +7,14 @@
   <!-- <input id="pac-input" type="text" size="35" name="searched_location" placeholder="장소 검색" style="margin-left: 38rem;"> -->
 </form>
 <!-- <p id="result"></p> -->
+<input type="text" id="mapsearch" size="38">
 <p>현재위치 : {{user_position}} 인근</p>
 <!-- 지도 -->
 <div id="map" style="width:100%;height:700px;"></div>
-<script src="https://maps.googleapis.com/maps/api/js?key={{key}}&libraries=places&region=KR&callback=initMap&v=weekly" defer></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQjvkVCuRWteXvMvioRJZ0P24bi_XSHaw&libraries=places&region=KR&callback=initMap&v=weekly" defer></script>
 
 <script>
 // GPS script => gps.js
-
-// 자동완성
-// const center = { lat: 50.064192, lng: -130.605469 };
-// // Create a bounding box with sides ~10km away from the center point
-// const defaultBounds = {
-//   north: center.lat + 0.1,
-//   south: center.lat - 0.1,
-//   east: center.lng + 0.1,
-//   west: center.lng - 0.1,
-// };
-// const input = document.getElementById("pac-input");
-// const options = {
-//   bounds: defaultBounds,
-//   componentRestrictions: { country: "us" },
-//   fields: ["address_components", "geometry", "icon", "name"],
-//   strictBounds: false,
-//   types: ["establishment"],
-// };
-// const autocomplete = new google.maps.places.Autocomplete(input, options);
 
 
 </script>
