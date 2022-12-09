@@ -14,8 +14,14 @@
   </form>
   <div id="search-list" class="search-list">
   </div>
-  <form id="article-form">
+  <form id="article-form" method="POST">
     {% csrf_token %}
+    <input type="hidden" id="vidid" name="vidid" value="">
+    <input type="hidden" id="vidtitle" name="vidtitle" value="">
+    <input type="hidden" id="channel" name="channel" value="">
+    <input type="hidden" id="hqdefault" name="hqdefault" value="">
+    <input type="hidden" id="default" name="default" value="">
+    <input type="hidden" id="mqdefault" name="mqdefault" value="">
     <div>
       <label for="place">사연 장소</label>
       <input id="place" name="place" type="text" class="w-100 mb-3" placeholder='사연 장소'>
@@ -73,6 +79,8 @@
   </script>
   <!-- 검색폼 스크립트 -->
   <script>
+    const articleForm = document.querySelector('#article-form')
+
     document.addEventListener('click', function(e) {
       if (e.target.closest("div.search-list")) {
         // 폼에 담아서 뷰로 넘겨주기
@@ -81,13 +89,12 @@
         const ArticleMusicTitle = searchItem.querySelector('h5').innerText
         const ArticleMusicChannelTitle = searchItem.querySelector('p').innerText
   
-        vidid = ArticleMusicId
-        vidtitle = ArticleMusicTitle
-        channel = ArticleMusicChannelTitle
-        hqdefault = `https://i.ytimg.com/vi/${ArticleMusicId}/hqdefault.jpg`
-        imgdefault = `https://i.ytimg.com/vi/${ArticleMusicId}/default.jpg`
-        mqdefault = `https://i.ytimg.com/vi/${ArticleMusicId}/mqdefault.jpg`
-        console.log(vidid)
+        articleForm.querySelector('#vidid').value = ArticleMusicId
+        articleForm.querySelector('#vidtitle').value = ArticleMusicTitle
+        articleForm.querySelector('#channel').value = ArticleMusicChannelTitle
+        articleForm.querySelector('#hqdefault').value = `https://i.ytimg.com/vi/${ArticleMusicId}/hqdefault.jpg`
+        articleForm.querySelector('#default').value = `https://i.ytimg.com/vi/${ArticleMusicId}/default.jpg`
+        articleForm.querySelector('#mqdefault').value = `https://i.ytimg.com/vi/${ArticleMusicId}/mqdefault.jpg`
   
         // 검색 폼 초기화해주기
         const searchList = document.querySelector('#search-list')
@@ -95,36 +102,6 @@
         const searchInput = document.querySelector("#search-input")
         searchInput.value = ArticleMusicTitle + ' - ' + ArticleMusicChannelTitle
       }
-    })
-
-    const articleForm = document.querySelector('#article-form')
-    articleForm.addEventListener('submit', function(e) {
-      e.preventDefault()
-
-      const place = articleForm.place.value
-      const title = articleForm.title.value
-      const content = articleForm.content.value
-
-      form = new FormData()
-      form.append('place', place)
-      form.append('content', content)
-      form.append('vidid', vidid)
-      form.append('vidtitle', vidtitle)
-      form.append('channel', channel)
-      form.append('hqdefault', hqdefault)
-      form.append('default', imgdefault)
-      form.append('mqdefault', mqdefault)
-
-      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
-      axios.post(`/create/`, form, {
-        headers: {
-          'X-CSRFToken': csrftoken
-        }
-      })
-      .then((response) => { 
-        <!--window.location.href='http://currentmoodbeanstalk4-env.eba-k6spzvmy.ap-northeast-2.elasticbeanstalk.com/index/'-->
-        window.location.href='/index/'
-      })
     })
   </script>
 

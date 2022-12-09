@@ -78,28 +78,28 @@ def create(request):
         hqdefault = request.POST.get("hqdefault", "")
         default = request.POST.get("default", "")
         mqdefault = request.POST.get("mqdefault", "")
-        try:
-            song = Song.objects.get(vidid=vidid)
-        except:
-            song = Song.objects.create(
-                vidid=vidid,
-                title=vidtitle,
-                channel=channel,
-                hqdefault=hqdefault,
-                default=default,
-                mqdefault=mqdefault,
+        if vidid and place and content:
+            try:
+                song = Song.objects.get(vidid=vidid)
+            except:
+                song = Song.objects.create(
+                    vidid=vidid,
+                    title=vidtitle,
+                    channel=channel,
+                    hqdefault=hqdefault,
+                    default=default,
+                    mqdefault=mqdefault,
+                )
+            Article.objects.create(
+                user=request.user,
+                place=place,
+                content=content,
+                song=song,
             )
-        Article.objects.create(
-            user=request.user,
-            place=place,
-            content=content,
-            song=song,
-        )
-        return redirect("articles:index")
-    else:
-        form = ArticleForm()
+            return redirect("articles:index")
+        else:
+            return redirect("articles:create")
     context = {
-        "form": form,
     }
     return render(request, "articles/create.html", context)
 
@@ -136,30 +136,39 @@ def update(request, pk):
         hqdefault = request.POST.get("hqdefault", "")
         default = request.POST.get("default", "")
         mqdefault = request.POST.get("mqdefault", "")
-        try:
-            song = Song.objects.get(vidid=vidid)
-        except:
-            song = Song.objects.create(
-                vidid=vidid,
-                title=vidtitle,
-                channel=channel,
-                hqdefault=hqdefault,
-                default=default,
-                mqdefault=mqdefault,
-            )
-        article.user = request.user
-        article.place = place
-        article.content = content
-        article.song = song
-        article.save(update_fields=["user", "place", "content", "song"])
-        return redirect("articles:index")
-    else:
-        form = ArticleForm()
+        print(vidid, place, content)
+        if vidid and place and content:
+            try:
+                song = Song.objects.get(vidid=vidid)
+            except:
+                song = Song.objects.create(
+                    vidid=vidid,
+                    title=vidtitle,
+                    channel=channel,
+                    hqdefault=hqdefault,
+                    default=default,
+                    mqdefault=mqdefault,
+                )
+            article.user = request.user
+            article.place = place
+            article.content = content
+            article.song = song
+            article.save(update_fields=["user", "place", "content", "song"])
+            return redirect("articles:index")
+        else:
+            return redirect("articles:update", pk)
     context = {
         "article": article,
-        "form": form,
     }
     return render(request, "articles/update.html", context)
+
+@login_required
+def create(request):
+    
+    context = {
+    }
+    return render(request, "articles/create.html", context)
+
 
 
 def location_get(request):
