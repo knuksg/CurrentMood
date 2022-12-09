@@ -105,6 +105,7 @@ def delete(request):
 @login_required
 def follow(request, pk):
     user = get_user_model().objects.get(pk=pk)
+    me = get_user_model().objects.get(pk=request.user.pk)
     if request.user.pk != pk:
         if request.user not in user.followers.all():
             request.user.followings.add(user)
@@ -116,6 +117,7 @@ def follow(request, pk):
             "isFollow": is_follow,
             "followers_count": user.followers.count(),
             "followings_count": user.followings.count(),
+            "myfollowings_count": me.followings.count(),
         }
         return JsonResponse(context)
 

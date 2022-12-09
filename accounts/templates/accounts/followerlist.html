@@ -20,38 +20,38 @@
 
 <div class="follower_list">
   <ul>
-    {% for myfollower in user.followers.all %}
-      {% if myfolloer.user_img %}
+    {% for follower in user.followers.all %}
+      {% if follower.user_img %}
         <li class="follower_user-info">
-          <a href="{% url 'accounts:detail' myfollower.pk %}">
+          <a href="{% url 'accounts:detail' follower.pk %}">
             <div>
-            <img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollower.username }}
+            <img class=" rounded-circle mx-2" src="{{ follower.user_img.url }}" style="width:50px;">{{ follower.username }}
             </div>
           </a>
           <!-- 요청유저가 팔로워유저랑 같지 않다면 -->
-          {% if request.user != myfollower %}
+          {% if request.user != follower %}
             <a class="follow" href="#">
-              {% if request.user in myfollower.followers.all %}
-                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{myfollower.pk}}" id="follow-btn" ></i>
+              {% if follower in request.user.folloings.all %}
+                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{ follower.pk }}" id="follow-btn" ></i>
               {% else %}
-                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{myfollower.pk}}"  id="follow-btn" ></i>
+                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{ follower.pk }}"  id="follow-btn" ></i>
               {% endif %}
             </a>  
           {% endif %}
         </li>
       {% else %}
         <li class="follower_user-info">
-          <a href="{% url 'accounts:detail' myfollower.pk %}">
+          <a href="{% url 'accounts:detail' follower.pk %}">
             <div>
-            <img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ myfollower.username }}
+            <img class=" rounded-circle mx-2" src="{% static 'image/profile.jpg' %}" style="width:50px;">{{ follower.username }}
             </div>
           </a>
-          {% if request.user != myfollower %}
+          {% if request.user != follower %}
             <a class="follow" href="#">
-              {% if request.user in myfollower.followers.all %}
-                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{myfollower.pk}}" id="follow-btn" ></i>
+              {% if follower in request.user.folloings.all %}
+                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{ follower.pk }}" id="follow-btn" ></i>
               {% else %}
-                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{myfollower.pk}}"  id="follow-btn" ></i>
+                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{ follower.pk }}"  id="follow-btn" ></i>
               {% endif %}
             </a>  
           {% endif %}

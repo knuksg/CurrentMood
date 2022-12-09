@@ -18,8 +18,6 @@ class User(AbstractUser):
         processors=[ResizeToFill(400, 400)],
         format="JPEG",
         options={"quality": 100},
-        null=True,
-        default="static/image/profile.jpg",
     )
     followings = models.ManyToManyField(
         "self", symmetrical=False, related_name="followers"
