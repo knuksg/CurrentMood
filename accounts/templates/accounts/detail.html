@@ -28,7 +28,7 @@
     </div>
     <div class="user-info-followbtn">
       {% if request.user != user %}
-        {% if request.user in user.followings.all %}
+        {% if request.user in user.followers.all %}
           <button class="followbtn btnW" onclick="follow(this)" data-follow-id="{{user.pk}}" id="follow-btn" >팔로우 취소</button>
         {% else %}
           <button class="followbtn" onclick="follow(this)" data-follow-id="{{user.pk}}"  id="follow-btn" >팔로우</button>
@@ -140,6 +140,7 @@ const follow = (e) => {
       const followingsCountValue = response.data.followings_count;
       followersCount.innerText = followersCountValue;
       followingsCount.innerText = followingsCountValue;
+      console.log('팔로우카운트');
   })
   }
 </script>

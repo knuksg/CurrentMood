@@ -28,19 +28,17 @@
         <li class="follower_user-info">
           <a href="{% url 'accounts:detail' myfollower.pk %}">
             <div>
-            <img class=" rounded-circle mx-2" src="{{ user.profile_image.url }}" style="width:50px;">{{ myfollower.username }}
+            <img class=" rounded-circle mx-2" src="{{ myfollower.user_img.url }}" style="width:50px;">{{ myfollower.username }}
             </div>
           </a>
           <!-- 요청유저가 팔로워유저랑 같지 않다면 -->
-          {% if request.user != myfollower %}
             <a class="follow" href="#">
-              {% if request.user in myfollower.followers.all %}
+              {% if myfollower in user.followings.all %}
                 <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{myfollower.pk}}" id="follow-btn" ></i>
               {% else %}
                 <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{myfollower.pk}}"  id="follow-btn" ></i>
               {% endif %}
             </a>  
-          {% endif %}
           </li>
       {% else %}
       <!-- 유저의 프로필 이미지가 없다면 -->
@@ -51,15 +49,13 @@
             </div>
           </a>
           <!-- 요청유저가 팔로워유저랑 같지 않다면 -->
-          {% if request.user != myfollower %}
-            <a class="follow" href="#">
-              {% if request.user in myfollower.followers.all %}
-                <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{myfollower.pk}}" id="follow-btn" ></i>
-              {% else %}
-                <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{myfollower.pk}}"  id="follow-btn" ></i>
-              {% endif %}
-            </a>  
-          {% endif %}
+          <a class="follow" href="#">
+            {% if myfollower in user.followings.all %}
+              <i class="fa-solid fa-check" onclick="follow(this)" data-follow-id="{{myfollower.pk}}" id="follow-btn" ></i>
+            {% else %}
+              <i class="fa-solid fa-user-plus" onclick="follow(this)" data-follow-id="{{myfollower.pk}}"  id="follow-btn" ></i>
+            {% endif %}
+          </a>
           </li>
       {% endif %}
     {% endfor %}
