@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = "accounts"
 
@@ -18,7 +20,11 @@ urlpatterns = [
         "mypage/sharedmusiclist/", views.my_sharedmusiclist, name="my_sharedmusiclist"
     ),
     path("mypage/profile_music/<int:pk>/", views.profile_music, name="profile_music"),
-    path("mypage/profile_music/<int:pk>/delete", views.profile_music_delete, name="profile_music_delete"),
+    path(
+        "mypage/profile_music/<int:pk>/delete",
+        views.profile_music_delete,
+        name="profile_music_delete",
+    ),
     path("mypage/likedmusiclist/", views.my_likedmusiclist, name="my_likedmusiclist"),
     path("<int:pk>/", views.detail, name="detail"),
     path("<int:pk>/update/", views.update, name="update"),

@@ -84,7 +84,7 @@
           <div class="d-flex flex-column align-items-center mb-0 mt-3 p-0">
             {% if article %}
             {% if article.user.user_img %}
-              <img src="{% static 'image/profile.jpg'%}" alt="" style="width: 3.5rem; border-radius: 50%;">
+              <img src="{{ article.user.user_img.url }}" alt="" style="width: 3.5rem; border-radius: 50%;">
             {% else %}
               <img src="{% static 'image/profile.jpg'%}" alt="" style="width: 3.5rem; border-radius: 50%;">
             {% endif %}
@@ -151,7 +151,7 @@
           <div class="d-flex flex-column align-items-center mb-0 mt-3 p-0">
             {% if top_article %}
             {% if top_article.user.user_img %}
-              <img src="{% static 'image/profile.jpg'%}" alt="" style="width: 3.5rem; border-radius: 50%;">
+              <img src="{{ top_article.user.user_img.url }}" alt="" style="width: 3.5rem; border-radius: 50%;">
             {% else %}
               <img src="{% static 'image/profile.jpg'%}" alt="" style="width: 3.5rem; border-radius: 50%;">
             {% endif %}
