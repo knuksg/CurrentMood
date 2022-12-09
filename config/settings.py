@@ -143,8 +143,8 @@ DEBUG = os.getenv("DEBUG") == "True"
 # DEBUG = False
 
 if DEBUG:
-    MEDIA_ROOT = BASE_DIR / "images"
-    MEDIA_URL = "/media/"
+    # MEDIA_ROOT = BASE_DIR / "images"
+    # MEDIA_URL = "/media/"
 
     DATABASES = {
         "default": {

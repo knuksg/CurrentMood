@@ -12,6 +12,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from main.models import Song
 from django.http import JsonResponse
+
 # Create your views here.
 
 
@@ -189,7 +190,7 @@ def password(request):
 
 def popular(request):
 
-    users = User.objects.annotate(follower=Count("followings")).order_by("follower")
+    users = User.objects.order_by("-followers")
 
     context = {
         "users": users,
@@ -219,21 +220,28 @@ def my_likedmusiclist(request):
 
 def profile_music(request, pk):
     user = User.objects.get(pk=pk)
-    if request.method == 'POST':
-        vidid = request.POST.get('vidid', '')
-        title = request.POST.get('title', '')
-        channel = request.POST.get('channel', '')
-        hqdefault = request.POST.get('hqdefault', '')
-        default = request.POST.get('default', '')
-        mqdefault = request.POST.get('mqdefault', '')
+    if request.method == "POST":
+        vidid = request.POST.get("vidid", "")
+        title = request.POST.get("title", "")
+        channel = request.POST.get("channel", "")
+        hqdefault = request.POST.get("hqdefault", "")
+        default = request.POST.get("default", "")
+        mqdefault = request.POST.get("mqdefault", "")
         try:
             song = Song.objects.get(vidid=vidid)
             user.profile_music = song
-            user.save(update_fields=['profile_music'])
+            user.save(update_fields=["profile_music"])
         except:
-            song = Song.objects.create(vidid=vidid, title=title, channel=channel, hqdefault=hqdefault, default=default, mqdefault=mqdefault)
+            song = Song.objects.create(
+                vidid=vidid,
+                title=title,
+                channel=channel,
+                hqdefault=hqdefault,
+                default=default,
+                mqdefault=mqdefault,
+            )
             user.profile_music = song
-            user.save(update_fields=['profile_music'])
+            user.save(update_fields=["profile_music"])
     return render(request, "accounts/profile_music.html")
 
 
@@ -245,12 +253,13 @@ def mylist(request):
     }
     return render(request, "accounts/mylist.html", context)
 
+
 @login_required
 def profile_music_delete(request, pk):
     user = get_user_model().objects.get(pk=pk)
     user.profile_music = None
-    user.save(update_fields=['profile_music'])
+    user.save(update_fields=["profile_music"])
     context = {
         "user": user,
     }
-    return redirect('accounts:mylist')
+    return redirect("accounts:mylist")

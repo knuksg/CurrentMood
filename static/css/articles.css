@@ -36,7 +36,7 @@
   object-fit: cover;
   padding: 0.5rem;
   width: 100%;
-  border-radius: 1rem;
+  border-radius: 0.5rem;
 }
 
 .icon {
@@ -181,6 +181,20 @@
   }
 }
 
+@media (min-width: 1400px) {
+  .place__recom--imgBox {
+    width: 50%;
+    background-color: green;
+  }
+}
+
+@media (min-width: 1400px) {
+  .place__recom--imgBox {
+    width: 40%;
+    background-color: green;
+  }
+}
+
 
 .place__bestUser {
   background-color: antiquewhite;
@@ -223,4 +237,28 @@
 
 .playlist-item {
   cursor: pointer;
+}
+
+.img-btn {
+  position: relative;
+  cursor: pointer;
+  width: 380px;
+}
+.img-btn:hover img {
+  opacity: 50%;
+}
+.img-btn:hover img {
+  opacity: 50%;
+}
+.img-btn:hover .img-icon {
+  opacity: 100;
+}
+
+.img-icon {
+  opacity: 0;
+  position: absolute;
+  font-size: 50px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

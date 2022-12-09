@@ -6,7 +6,7 @@ import os
 def reverse_geocoding(lat, lng):
     gmaps = googlemaps.Client(key=os.getenv("gmap_api"))
     # Look up an address with reverse geocoding
-    reverse_geocode_result = gmaps.reverse_geocode((lat, lng))
+    reverse_geocode_result = gmaps.reverse_geocode((lat, lng), language="ko")
     return reverse_geocode_result
 
 

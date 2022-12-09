@@ -4,7 +4,7 @@
 
 {% block body %}
   {% comment %} 선교님 플레이어 {% endcomment %}
-  <div id="song">
+  <div id="song" class="mt-5">
     <div class="d-flex flex-column justify-content-center align-items-center">
       <div id="movie-music-btn" class="movie-music-btn" style="width: 380px;">
         <i class="bi bi-youtube"></i><span>/</span><i class="bi bi-music-note-beamed"></i>
@@ -69,49 +69,113 @@
   <!-- 댓글창 : 클릭 후 열린 창 -->
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+
     <div class="sidenav__comment">
-      <h5>댓글</h5>
+      <h5>이 지역의 사연</h5>
     </div>
     <hr>
     {% for article in articles %}
-    <a href="{% url 'articles:detail' article.pk %}">
-      <div class="row d-flex">
-        <div class="col-1 d-flex flex-column mt-2">
-          {% if article.user.user_img %}
-            <img src="{{ article.user.user_img.url }}" alt="" style="width: 3rem;">
-          {% endif %}
-          {{ article.user.username }}
-        </div>
-        <div class="col-11 text-center text-truncate">
-          {{ article.song }}
-          {{ article.content }}
+
+    <div class="row d-flex justify-content-between">
+          
+      {% comment %} 유저 정보 {% endcomment %}
+      <div class="col-2">
+        <a href="{% url 'accounts:detail' article.user.pk %}">
+          <div class="d-flex flex-column align-items-center mb-0 mt-3 p-0">
+            {% if article %}
+            {% if article.user.user_img %}
+              <img src="{{ article.user.user_img.url }}" alt="" style="width: 3.5rem; border-radius: 50%;">
+            {% else %}
+              <img src="{% static 'image/profile.jpg'%}" alt="" style="width: 3.5rem; border-radius: 50%;">
+            {% endif %}
+            <p class="d-inline-block mt-1">{{ article.user.username }}</p>
+          </div>
+        </a>  
+      </div>
+
+      {% comment %} 사연 내용 {% endcomment %}
+      <div class="col-7 d-flex justify-content-center align-items-center px-0 bg-secondary bg-opacity-50">
+        <p class="my-0 px-5 text-truncate">{{ article.content }}</p>
+        {% else %}
+        <p class="my-0 px-5 text-truncate"> 이 지역의 사연이 없어요 ㅠㅠ </p>
+        {% endif %}
+      </div>
+
+      {% comment %} 앨범 재킷 {% endcomment %}
+      <div class="col-2 mt-2 mb-0">
+        <a href="">
+          <img src="{{ article.song.hqdefault }}" alt="" style="width: 8rem;">
+        </a>
+      </div>
+      {% comment %} 좋아요 {% endcomment %}
+      <div class="col-1 d-flex">
+        <div class="align-self-center">
+          <form class='like-forms' data-article-id="{{ article.pk }}">
+            {% csrf_token %}
+            {% if request.user in article.like_users.all %}
+              <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+                id='like-btn-{{ article.pk }}'>
+                <i class="bi bi-heart-fill" id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" name="heart">
+                  <span id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span>
+                </i> 
+              </button>
+            {% else %}
+              <button type=" submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+                id='like-btn-{{ article.pk }}'>
+                <i class="bi bi-heart" id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" name="heart">
+                  <span id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span>
+                </i> 
+              </button>
+            {% endif %}
+          </form>
         </div>
       </div>
-    </a>
+      
+    </div>
+
     <hr>
     {% endfor %}  
   </div>
 
+  <div class="my-5"></div>
+
   <hr>
-  
   <!-- 댓글창 : 클릭 전 -->
   <div onclick="openNav()">
-    <div class="row d-flex">
-      <div class="col-2 d-flex flex-column mt-2">
-      {% if top_article %}
-        {% if top_article.user.user_img %}
-          <img src="{{ top_article.user.user_img.url }}" alt="" style="width: 3rem;">
-        {% endif %}
-        {{ top_article.user.username }}
+
+    <div class="row d-flex justify-content-between">    
+      
+      {% comment %} 유저 정보 {% endcomment %}
+      <div class="col-2">
+        <a href="{% url 'accounts:detail' top_article.user.pk %}">
+          <div class="d-flex flex-column align-items-center mb-0 mt-3 p-0">
+            {% if top_article %}
+            {% if top_article.user.user_img %}
+              <img src="{{ top_article.user.user_img.url }}" alt="" style="width: 3.5rem; border-radius: 50%;">
+            {% else %}
+              <img src="{% static 'image/profile.jpg'%}" alt="" style="width: 3.5rem; border-radius: 50%;">
+            {% endif %}
+            <p class="d-inline-block mt-1">{{ top_article.user.username }}</p>
+          </div>
+        </a>  
       </div>
-      <div class="col-10 text-center text-truncate">
-        {{ top_article.song }}
-        {{ top_article.content }}
+
+      {% comment %} 댓글 내용 {% endcomment %}
+      <div class="col-7 d-flex justify-content-center align-items-center px-0 bg-secondary bg-opacity-50"
+        <p class="my-0 px-5 text-truncate">{{ top_article.content }}</p>
         {% else %}
-        <p> 댓글을 입력해주세요 </p>
+        <p class="my-0 px-5 text-truncate"> 댓글을 입력해주세요 </p>
         {% endif %}
+      </div>
+
+      {% comment %} 앨범 재킷 {% endcomment %}
+      <div class="col-2 mt-2 mb-0">
+        <a href="">
+          <img src="{{ top_article.song.hqdefault }}" alt="" style="width: 8rem;">
+        </a>
       </div>
     </div>
+    <hr>
   </div>
 
 {% endblock body %}
@@ -237,5 +301,44 @@
     })
   
     
+  </script>
+  <!-- 댓글 창 좋아요 비동기 -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    const forms = document.querySelectorAll('.like-forms')
+    const likecsrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+    forms.forEach((form) => {
+      form.addEventListener('submit', function (event) {
+        event.preventDefault()
+        const articleId = event.target.dataset.articleId
+
+        axios({
+          method: 'post',
+          url: `/${event.target.dataset.articleId}/like/`,
+          headers: { 'X-CSRFToken': likecsrftoken },
+        })
+          .then((response) => {
+            const likeBtn = document.querySelector(`#like-btn-${articleId}`)
+            const likeCount = document.querySelector(`#like-count-${articleId}`)
+            const isLiked = response.data.is_liked
+            const heart = document.querySelector(`#heart-${articleId}`)
+
+            if (isLiked === true) {
+              heart.classList.add('bi-heart-fill')
+              heart.classList.remove('bi-heart')
+              likeCount.innerText = response.data.likeCount
+            } else {
+              heart.classList.remove('bi-heart-fill')
+              heart.classList.add('bi-heart')
+              likeCount.innerText = response.data.likeCount
+            }
+
+          })
+          .catch((error) => {
+            console.log(error.response)
+          })
+      })
+    })
   </script>
 {% endblock script %}

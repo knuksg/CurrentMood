@@ -6,33 +6,30 @@
 {% endblock %}
 {% block body %}
 <div class="container">
-  <div id="{{ song.vidid }}" class="search-item">
-    <img src="https://i.ytimg.com/vi/{{ song.vidid }}/default.jpg" alt="">
-      <div class="music_info">
-        <div class="music_title">
-          {{ song.title }}
-        </div>
-        <div class="music_channel">
-          {{ song.channel }}
-        </div>
+  <div id="{{ song.vidid }}" class="w-100 d-flex gap-3 my-3">
+    <img src="https://i.ytimg.com/vi/{{ song.vidid }}/default.jpg" alt="" style="width: 50px;">
+    <div>
+      <div class="">
+        {{ song.title }}
       </div>
-      <div>
-        <i class="bi bi-play-circle fs-1"></i>
+      <div class="">
+        {{ song.channel }}
       </div>
+    </div>
   </div>
   <div>
     {% if articles %}
     {% for article in articles %}
-    <a href="{% url 'articles:detail' article.pk %}" class="d-flex my-3 gap-3">
-      <div class="d-flex flex-column justify-content-center align-items-center">
+    <a href="{% url 'articles:detail' article.pk %}" class="d-flex gap-3 border-top">
+      <div class="d-flex flex-column justify-content-center align-items-center mt-3">
         {% if article.user.user_img %}
-        {% comment %} <img class="rounded-circle" src="{{ article.user.user_img.url }}" alt="" style="width:100px;">
-        {% else %} {% endcomment %}
-        <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:50px;">
+        <img class="rounded-circle" src="{{ article.user.user_img.url }}" alt="" style="width:30px;">
+        {% else %}
+        <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:30px;">
         {% endif %}
         <p>{{ article.user }}</p>
       </div>
-      <div>
+      <div class="mt-3">
         <p class="mb-1 opacity-75">{{ article.place }}</p>
         <p>{{ article.content }}</p>
       </div>
