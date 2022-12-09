@@ -9,7 +9,10 @@
     <div id="movie-music-btn" class="movie-music-btn" style="width: 380px;">
       <i class="bi bi-youtube"></i><span>/</span><i class="bi bi-music-note-beamed"></i>
     </div>
-    <img src="" alt="" style="width: 380px;">
+    <div id="img-btn" class="img-btn">
+      <img class="w-100" src="" alt="">
+      <i class="img-icon fa-solid fa-pen"></i>
+    </div>
     <div id="player" class="d-none"></div>
     <a id="detail-playing-link" class="detail-playing-link my-3" style="width: 380px;">
       <div id="detail-playing-id" class="detail-playing-id d-none"></div>
@@ -45,6 +48,14 @@
     </div>
   </div>
 </div>
+<!-- 클릭하면 바로 공유되는 폼 -->
+<form id="article-create-form" action="/create/" method="POST">
+  {% csrf_token %}
+  <input type="hidden" id="vidid" name="vidid" value="">
+  <input type="hidden" id="place" name="place" value="">
+  <input type="hidden" id="content" name="content" value="이 곡을 추천합니다!">
+  <button type="submit" class="btn btn-primary d-none">Submit</button>
+</form>
 <script>
   document.querySelector('#progress-bar').oninput = function() {
     this.style.background = 'linear-gradient(to right, #fff 0%, #fff '+this.value +'%, #6c757d ' + this.value + '%, #6c757d 100%)'
@@ -92,6 +103,21 @@
     player.classList.toggle('d-none')
     const img = document.querySelector('#song').querySelector('img')
     img.classList.toggle('d-none')
+  })
+
+  const imgBtn = document.querySelector('#img-btn')
+  imgBtn.addEventListener('click', function(e) {
+    const articleCreateForm = document.querySelector('#article-create-form')
+    articleCreateForm.vidid.value = videoIDs[index]
+    articleCreateForm.place.value = "서울"
+    articleCreateForm.submit()
+  })
+
+  imgBtn.addEventListener('touch', function(e) {
+    const articleCreateForm = document.querySelector('#article-create-form')
+    articleCreateForm.vidid.value = videoIDs[index]
+    articleCreateForm.place.value = "서울"
+    articleCreateForm.submit()
   })
 
   
