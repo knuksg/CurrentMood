@@ -69,6 +69,7 @@ def index(request):
 
 @login_required
 def create(request):
+    print('asdf')
     if request.method == "POST":
         place = request.POST.get("place", "")
         content = request.POST.get("content", "")
@@ -78,6 +79,7 @@ def create(request):
         hqdefault = request.POST.get("hqdefault", "")
         default = request.POST.get("default", "")
         mqdefault = request.POST.get("mqdefault", "")
+        print(vidid, place, content)
         if vidid and place and content:
             try:
                 song = Song.objects.get(vidid=vidid)
@@ -161,14 +163,6 @@ def update(request, pk):
         "article": article,
     }
     return render(request, "articles/update.html", context)
-
-@login_required
-def create(request):
-    
-    context = {
-    }
-    return render(request, "articles/create.html", context)
-
 
 
 def location_get(request):
