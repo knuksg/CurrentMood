@@ -42,8 +42,11 @@
     </a>
   </div>
 
+  <div style="height: 10vh;"></div>
+
   {% comment %} 캐러셀1 {% endcomment %}
-  <div class="private-carousel bg-info text-center">
+  <h2 class="ms-3 mb-2">추천 곡</h2>
+  <div class="private-carousel text-center">
     <div class="mainSlide">
       {% for song in song_list %}
       <div class="box">
@@ -53,19 +56,22 @@
     </div>
   </div>
 
-  <hr>
+  <div style="height: 10vh;"></div>
   
   {% comment %} 캐러셀2 {% endcomment %}
-  <div class="private-carousel bg-info text-center">
-      <div class="mainSlide">
-        {% for song in song_list %}
-          <div class="box">
-            <img src="{{ song.hqdefault }}">
-          </div>
-        {% endfor %}
-      </div>
+  <h2 class="ms-3 mb-2">추천 곡</h2>
+  <div class="private-carousel text-center">
+    <div class="mainSlide">
+      {% for song in song_list %}
+        <div class="box">
+          <img src="{{ song.hqdefault }}">
+        </div>
+      {% endfor %}
     </div>
+  </div>
 
+  <div style="height: 10vh;"></div>
+  
   <!-- 댓글창 : 클릭 후 열린 창 -->
   <div id="mySidenav" class="sidenav">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>

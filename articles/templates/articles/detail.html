@@ -3,6 +3,8 @@
 {% load static %}
 {% block body %}
 <div class="container">
+  
+  {% comment %} 음악 정보 {% endcomment %}
   <div class="d-inline-block">
     <div class="d-flex gap-3 mt-3">
       <a href="{% url 'accounts:detail' article.user.pk %}">
@@ -33,6 +35,7 @@
       </div>
     </div>
   </div>
+
   <!-- 좋아요 -->
   <div>
     <form class='like-forms' data-article-id="{{ article.pk }}">
