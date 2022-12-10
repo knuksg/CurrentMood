@@ -131,8 +131,8 @@
               <img src="`+ searchItem.snippet.thumbnails.default.url + `" alt="">
               </div>
               <div class="music_info">
-                <h4 class="title">`+ searchItem.snippet.title +`</h4>
-                <p class="channel">`+ searchItem.snippet.channelTitle +`</p>
+                <h4>`+ searchItem.snippet.title +`</h4>
+                <p>`+ searchItem.snippet.channelTitle +`</p>
               </div>
             </div>
           `
@@ -152,8 +152,8 @@
       console.log('넘겼어');
       // 폼에 담아서 뷰로 넘겨주기
       const profileMusicId = searchItem.id
-      const profileMusicTitle = searchItem.querySelector('.title`').innerText
-      const profileMusicChannelTitle = searchItem.querySelector('.channel').innerText
+      const profileMusicTitle = searchItem.querySelector('h4').innerText
+      const profileMusicChannelTitle = searchItem.querySelector('p').innerText
 
       const form = new FormData()
       form.append('vidid', profileMusicId)
