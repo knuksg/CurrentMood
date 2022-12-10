@@ -32,7 +32,7 @@
   <div class="p-5 d-flex justify-content-center">
     <form id="search-form" data-user-id={{ user.pk }}>
       {% csrf_token %}
-      <input type="search" id="search-input" class="search__input" onkeydown="if(event.keyCode == 13){searchForm();}" placeholder="프로필 뮤직 검색">
+      <input type="search" id="search-input" class="search__input" onkeydown="if(event.keyCode == 13){getSearchList(this.value);}" placeholder="프로필 뮤직 검색">
       <input id="search-btn" class="search-btn" type="submit">
       <label for="search-btn"><i class="fa-solid fa-magnifying-glass"></i></label>
     </form>
@@ -82,7 +82,7 @@
   })
 
   function getSearchList(kw) {
-    const apiKey = "AIzaSyC6_bB2PiPp_Vtf8cPdnhoQ-hzL4gNVFIE"
+    const apiKey = "AIzaSyDglrT26TS8c3g7EhbV-wEZeGZnIiK2ObE"
     axios.get('https://www.googleapis.com/youtube/v3/search', {
       params: {
         key: apiKey,
