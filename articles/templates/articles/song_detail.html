@@ -2,18 +2,18 @@
 {% load django_bootstrap5 %}
 {% load static %}
 {% block style %}
-<link rel="stylesheet" href="{% static 'css/accounts.css' %}">
+<link rel="stylesheet" href="{% static 'css/articles.css' %}">
 {% endblock %}
 {% block body %}
 
-<div class="container"> 
+<div class="songDetail__container"> 
 
-  <div class="row align-items-center mt-5">
-    <div class="col-7" id="{{ song.vidid }}">
-      <img src="https://i.ytimg.com/vi/{{ song.vidid }}/hqdefault.jpg" alt="" style="width: 200px;" >
+  <div class="row align-items-center my-5">
+    <div class="col-lg-6 my-3" id="{{ song.vidid }}">
+      <img src="https://i.ytimg.com/vi/{{ song.vidid }}/hqdefault.jpg" alt="" class="imgCenter">
     </div>
 
-    <div class="col-5">
+    <div class="songDetail__imgText col-8 col-lg-6">
       <p>{{ song.title }}</p>
       <p>{{ song.channel }}</p>
     </div>
@@ -48,6 +48,5 @@
 
     {% endif %}
   </div>
-
 </div>
 {% endblock body %}
