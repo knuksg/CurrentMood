@@ -205,6 +205,107 @@
 	border: 0;
 }
 /* 프로필뮤직*/
+.container {
+	width: 40vw;
+	position: relative;
+}
+/* .search_box {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	text-align: center;
+	padding: 20px;
+} */
+.search-off {
+	display: none;
+}
+.search-on {
+	display: block;
+}
+.search-list {
+  height: 300px;
+	overflow: auto;
+	z-index: 8;
+  overflow-x: hidden;
+  border-radius: 10px;
+}
+.search-item {
+	display: flex;
+	align-items: center;
+	background-color: #00000000;
+	color: #d6d6d6;
+	border-radius: 5px;	
+}
+.search-item:hover {
+  background-color: #8e048b7f;
+  color: #d6d6d6;
+}
+.search-item img {
+	border-radius: 7px;
+}
+.music_info {
+	display: table;
+	table-layout: fixed; 
+  margin-left: 10px;
+}
+.music_info h4 {
+	display: table-cell;
+	font-size: 1vw;
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+}
+/*
+.music_img {
+	width: 100%;
+} */
+.music_title {
+	width: 180px;
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	font-size: 1vw;
+	text-align: start;
+}
+.music_channel {
+	width: 180px;
+	white-space: nowrap;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	font-size: 1vw;
+	text-align: start;
+}
+/* #search-form {
+	margin-bottom: 0;
+	text-align: center;
+} */
+.search-btn {
+	display: none;
+}
+.profile_music_search {
+	margin-bottom: 10px;
+}
+.search__input {
+	width: 100%;
+	border-radius: 5px;
+	border: none;
+}
+#search-form {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+/* #search-form i {
+	position: absolute;
+	right: 6%;
+	top: 11%;
+	z-index: 8;
+	color: #2f2e2f;
+} */
+::placeholder {
+	text-align: center;
+}
+
 .profile-setting-music {
 	display: flex;
 	flex-direction: column;
@@ -220,72 +321,6 @@
 	display: flex;
 	flex-direction: column;
 }
-.search-off {
-	display: none;
-}
-.search-list {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	overflow: auto;
-	height: 270px;
-	width: 45vw;
-	z-index: 8;
-	overflow-x: hidden;
-	margin: 0;
-}
-.search-item {
-	display: grid;
-	grid-template-columns: 40% 60%;
-	grid-template-rows: 90px;
-	width: 45vw;
-	padding: 0;
-	margin: 0;
-	background-color: var(--inputbg-color);
-	color: #2f2e2f;
-}
-.music_img {
-	width: 100%;
-}
-.music_info {
-	width: 100%;
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-}
-.music_title {
-	width: 180px;
-	white-space: nowrap;
-	overflow-x: hidden;
-	text-overflow: ellipsis;
-	font-size: 10px;
-	text-align: start;
-}
-.music_channel {
-	width: 180px;
-	white-space: nowrap;
-	overflow-x: hidden;
-	text-overflow: ellipsis;
-	font-size: 10px;
-	text-align: start;
-}
-#search-form {
-	margin-bottom: 0;
-}
-.search-btn {
-	display: none;
-}
-.profile_music_search {
-	margin-bottom: 10px;
-}
-.search__input {
-	width: 45vw;
-	border-radius: 5px;
-}
-::placeholder {
-	text-align: center;
-}
-
 /* my_following_page */
 .following,
 .follower {

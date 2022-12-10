@@ -29,40 +29,40 @@
   </div>
   <br>
   <!-- 프로필뮤직 검색창 -->
-  <div class="p-5 d-flex justify-content-center">
+  <div class="container">
     <form id="search-form" data-user-id={{ user.pk }}>
       {% csrf_token %}
       <input type="search" id="search-input" class="search__input" onkeydown="if(event.keyCode == 13){searchForm();}" placeholder="프로필 뮤직 검색">
-      <input id="search-btn" class="search-btn" type="submit">
-      <label for="search-btn"><i class="fa-solid fa-magnifying-glass"></i></label>
+      {% comment %} <input id="search-btn" class="search-btn" type="submit"> {% endcomment %}
+      <i class="fa-solid fa-magnifying-glass"></i>
     </form>
-    <div id="search-list" class="search-off search-list ">
+    <div id="search-list" class="search-off search-list">
     </div>
   </div>
   <br>
   <!-- user's profile_music -->
-  <div class="profile-setting-music">
-    <p>현재 설정된 프로필 뮤직</p>
-      <!-- 프로필 뮤직 -->
-      <div id="profile_music" class="profile-music">
-        {% if user.profile_music.vidid %}
-        <div id="{{ user.profile_music.vidid }}" class="search-item">
-          <div class="music_img">
-            <img src="{{ user.profile_music.hqdefault }}" alt="">
-          </div>
-          <div class="music_info">
-            <div class="music_title">
-              {{ user.profile_music.title }}
-            </div>
-            <div class="music_channel">
-              {{ user.profile_music.channel }}
-            </div>
-          </div>
+  <div class="card-big-box">
+    <div id="profile_music" class="my-music">
+      {% if user.profile_music.vidid %}
+      <div id="{{ user.profile_music.vidid }}" class="vid">
+        <div class="position-relative">
+          <img src="{{ user.profile_music.hqdefault }}" style="width: 100%;" alt="">
+          <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
         </div>
-        {% else %}
-        <p>프로필 뮤직이 없습니다...</p>
-        {% endif %}
+        <div class="my-3">
+          <div class="title">
+            {{ user.profile_music.title }}
+          </div>
+          <span> - </span>
+           <div class="channel">
+            {{ user.profile_music.channel }}
+           </div>
+        </div>
       </div>
+      {% else %}
+      <p class="my-3">프로필 뮤직을 설정해주세요</p>
+      {% endif %}
+    </div>
   </div>
   
   <hr>
@@ -75,14 +75,36 @@
 <!-- 검색 스크립트 -->
 <script>
   const searchForm = document.querySelector("#search-form")
+  const search_input = document.querySelector('#search-input');
+  const search_list = document.querySelector('#search-list');
+  const box_open = false;
+
   searchForm.addEventListener('submit', function(event) {
     event.preventDefault()
     const kw = searchForm.querySelector("#search-input").value
     getSearchList(kw)
+
+    console.log("검색클릭");
+    search_list.classList.remove('search-off');
+    search_list.classList.add('search-on');
+    const box_open = true;
+    console.log("검색 열림");
   })
 
+  document.addEventListener('click', function (e) {
+    console.log(e.target)
+    console.log(search_list.id)
+    if (box_open === true); {
+      if (e.target !== search_input) {
+        search_list.classList.remove('search-on');
+        search_list.classList.add('search-off');
+        console.log("검색디브 닫힘")
+      }
+    }
+  });
+
   function getSearchList(kw) {
-    const apiKey = "AIzaSyC6_bB2PiPp_Vtf8cPdnhoQ-hzL4gNVFIE"
+    const apiKey = "AIzaSyDglrT26TS8c3g7EhbV-wEZeGZnIiK2ObE"
     axios.get('https://www.googleapis.com/youtube/v3/search', {
       params: {
         key: apiKey,
@@ -97,22 +119,20 @@
       .then(function (response) {
         console.log('good', response)
         const searchList = document.querySelector('#search-list')
+
+        searchList.classList.add('search-list')
         searchList.innerHTML = ''
         const searchItems = response.data.items
         const searchItemsList = []
         searchItems.forEach((searchItem) => {
           searchList.innerHTML += `
             <div id="` + searchItem.id.videoId + `" class="search-item">
-              <div class="music_img">
-                <img src="`+ searchItem.snippet.thumbnails.default.url + `" alt="">
+              <div>  
+              <img src="`+ searchItem.snippet.thumbnails.default.url + `" alt="">
               </div>
               <div class="music_info">
-                <div class="music_title">
-                  `+ searchItem.snippet.title +`
-                </div>
-                <div class="music_channel">
-                  `+ searchItem.snippet.channelTitle +`
-                </div>
+                <h4 class="title">`+ searchItem.snippet.title +`</h4>
+                <p class="channel">`+ searchItem.snippet.channelTitle +`</p>
               </div>
             </div>
           `
@@ -129,11 +149,11 @@
       const profileMusic = document.querySelector("#profile_music")
       profileMusic.innerHTML = ''
       profileMusic.append(searchItem)
-
+      console.log('넘겼어');
       // 폼에 담아서 뷰로 넘겨주기
       const profileMusicId = searchItem.id
-      const profileMusicTitle = searchItem.querySelector('.music_title').innerText
-      const profileMusicChannelTitle = searchItem.querySelector('.music_channel').innerText
+      const profileMusicTitle = searchItem.querySelector('.title`').innerText
+      const profileMusicChannelTitle = searchItem.querySelector('.channel').innerText
 
       const form = new FormData()
       form.append('vidid', profileMusicId)
@@ -161,6 +181,7 @@
       searchList.innerHTML = ''
       const searchForm = document.querySelector("#search-form")
       searchForm.reset()
+      // window.location.reload()
     }
   })
 </script>
