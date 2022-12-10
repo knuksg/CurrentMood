@@ -14,6 +14,9 @@ import os
 import pprint
 import json
 
+# redis
+# from django.core.cache import cache
+
 # Create your views here.
 def private(request):
     comment_form = CommentForm()
@@ -178,8 +181,8 @@ def location_get(request):
     else:
         user_loc = ["somewhere"]
         user_position = ["somewhere"]
-    # Place 테이블에 geocoding된 위치 값을 저장한다. => 위치 지속적으로 업데이트 되도록 해야함
     user_position = Place.objects.order_by("-id").values()[0]["name"]
+    # Place 테이블에 geocoding된 위치 값을 저장한다. => 위치 지속적으로 업데이트 되도록 해야함
     context = {
         "user_position": user_position,
         "key": gmap_api_key,
