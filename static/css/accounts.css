@@ -203,7 +203,9 @@
 	.loginform__button,
 	.loginform__button-signup,
 	.updateform-info,
-	.updateform__button
+	.updateform__button,
+	.updateform__button-password,
+	.updateform__button-delete
 	{
 		width: 70vw;
 	}
