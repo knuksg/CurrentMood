@@ -64,13 +64,14 @@ def logout(request):
 
 @login_required
 def update(request, pk):
+    user = get_user_model().objects.get(pk=request.user.pk)
     if request.method == "POST":
-        form = CustomUserChangeForm(request.POST, request.FILES, instance=request.user)
+        form = CustomUserChangeForm(request.POST, request.FILES, instance=user)
         if form.is_valid():
             form.save()
             return redirect("accounts:mypage")
     else:
-        form = CustomUserChangeForm(instance=request.user)
+        form = CustomUserChangeForm(instance=user)
     context = {"form": form}
 
     return render(request, "accounts/update.html", context)
