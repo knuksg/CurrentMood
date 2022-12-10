@@ -32,9 +32,9 @@
   <div class="container">
     <form id="search-form" data-user-id={{ user.pk }}>
       {% csrf_token %}
-      <input type="search" id="search-input" class="search__input" onkeydown="if(event.keyCode == 13){searchForm();}" placeholder="프로필 뮤직 검색">
-      {% comment %} <input id="search-btn" class="search-btn" type="submit"> {% endcomment %}
-      <i class="fa-solid fa-magnifying-glass"></i>
+      <input type="search" id="search-input" class="search__input" onkeydown="if(event.keyCode == 13){getSearchList(this.value);}" placeholder="프로필 뮤직 검색">
+      <input id="search-btn" class="search-btn" type="submit">
+      <label for="search-btn"><i class="fa-solid fa-magnifying-glass"></i></label>
     </form>
     <div id="search-list" class="search-off search-list">
     </div>
