@@ -66,10 +66,6 @@
       {% endif %}
     </div>
   </div>
-  
-  <hr>
-  <a href="{% url 'accounts:mypage' %}">뒤로가기</a>
-  <hr>
 
 <!-- CDN axios -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
@@ -131,7 +127,7 @@
           <div id="` + searchItem.id.videoId + `" class="search-item">
             <ul class="d-flex justify-content-center align-items-center">
               <li><img src="`+ searchItem.snippet.thumbnails.default.url + `" alt=""></li>
-              <ul class="d-flex flex-column w-100">
+              <ul class="d-flex flex-column">
                 <li class="title">`+ searchItem.snippet.title +`</li>
                 <li class="channel">`+ searchItem.snippet.channelTitle +`</li>
               </ul>
@@ -154,8 +150,8 @@
       console.log('넘겼어');
       // 폼에 담아서 뷰로 넘겨주기
       const profileMusicId = searchItem.id
-      const profileMusicTitle = searchItem.querySelector('.title').innerText
-      const profileMusicChannelTitle = searchItem.querySelector('.chnnel').innerText
+      const profileMusicTitle = searchItem.querySelector('li.title').innerText
+      const profileMusicChannelTitle = searchItem.querySelector('li.channel').innerText
 
       const form = new FormData()
       form.append('vidid', profileMusicId)
