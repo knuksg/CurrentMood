@@ -151,15 +151,15 @@ if DEBUG:
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-    CACHE = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/1",
-            "OPTION": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            },
-        }
-    }
+    # CACHE = {
+    #     "default": {
+    #         "BACKEND": "django_redis.cache.RedisCache",
+    #         "LOCATION": "redis://127.0.0.1:6379/1",
+    #         "OPTION": {
+    #             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+    #         },
+    #     }
+    # }
 
 else:
     DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
@@ -184,12 +184,12 @@ else:
             "PORT": "5432",
         }
     }
-    CACHE = {
-        "default": {
-            "BACKEND": "django_redis.cache.RedisCache",
-            "LOCATION": "redis://127.0.0.1:6379/1",
-            "OPTION": {
-                "CLIENT_CLASS": "django_redis.client.DefaultClient",
-            },
-        }
-    }
+    # CACHE = {
+    #     "default": {
+    #         "BACKEND": "django_redis.cache.RedisCache",
+    #         "LOCATION": "redis://127.0.0.1:6379/1",
+    #         "OPTION": {
+    #             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+    #         },
+    #     }
+    # }
