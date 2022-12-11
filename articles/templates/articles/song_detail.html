@@ -6,47 +6,103 @@
 {% endblock %}
 {% block body %}
 
-<div class="songDetail__container"> 
-
-  <div class="row align-items-center my-5">
-    <div class="col-lg-6 my-3" id="{{ song.vidid }}">
-      <img src="https://i.ytimg.com/vi/{{ song.vidid }}/hqdefault.jpg" alt="" class="imgCenter">
+<div class="songDetail__container d-flex flex-column align-items-center mt-5"> 
+  <div class="card">
+    <div class="card--image">
+      <img src="{% static 'image/bbibbi.jpg' %}" alt="" id="getColor">
+      {% comment %} <img src="https://i.ytimg.com/vi/{{ song.vidid }}/maxresdefault.jpg" alt=""> {% endcomment %}
     </div>
 
-    <div class="songDetail__imgText col-8 col-lg-6">
-      <p>{{ song.title }}</p>
-      <p>{{ song.channel }}</p>
+    <div class="card--info info--1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ song.title }}">
+      <div class="icon">
+        <ion-icon name="add-outline"></ion-icon>
+      </div>
+    </div>
+
+    <div class="card--info info--2" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title='{{ song.channel }}'>
+      <div class="icon">
+        <ion-icon name="add-outline"></ion-icon>
+      </div>
     </div>
   </div>
+  
+  {% comment %} 사연 {% endcomment %}
+  <div class="article_cards-list mt-5">
 
-  <div class="">
-    {% if articles %}
     {% for article in articles %}
-
-    <a href="{% url 'articles:detail' article.pk %}" class="d-flex gap-3 border-top">
-      <div class="d-flex flex-column justify-content-center align-items-center mt-3">
-        {% if article.user.user_img %}
-        <img class="rounded-circle" src="{{ article.user.user_img.url }}" alt="" style="width:30px;">
-        {% else %}
-        <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:30px;">
-        {% endif %}
-        <p>{{ article.user }}</p>
+      <div class="article_card">
+        <div class="article_card_image">
+          <img src="{{ article.user.user_img.url }}"/>
+        </div>
+        <div class="article_card_title title-white">
+          <p>{{ article.content }}</p>
+        </div>
       </div>
-
-      <div class="mt-3">
-        <p class="mb-1 opacity-75">{{ article.place }}</p>
-        <p>{{ article.content }}</p>
-      </div>
-    </a>
-
     {% endfor %}
 
-    {% else %}
-    <div class="d-flex justify-content-center">
-      <p class="my-3">작성된 글이 없습니다</p>
-    </div>
-
-    {% endif %}
   </div>
+
 </div>
+
 {% endblock body %}
+
+{% block script %}
+<script>
+
+  var rgb = getAverageRGB(document.querySelector('#getColor'));
+  document.body.style.backgroundColor = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
+  console.log(rgb);
+
+  function getAverageRGB(imgEl) {
+
+    var blockSize = 5, // only visit every 5 pixels
+        defaultRGB = {r:0,g:0,b:0}, // for non-supporting envs
+        canvas = document.createElement('canvas'),
+        context = canvas.getContext && canvas.getContext('2d'),
+        data, width, height,
+        i = -4,
+        length,
+        rgb = {r:0,g:0,b:0},
+        count = 0;
+        
+    if (!context) {
+        return defaultRGB;
+    }
+    
+    height = canvas.height = imgEl.naturalHeight || imgEl.offsetHeight || imgEl.height;
+    width = canvas.width = imgEl.naturalWidth || imgEl.offsetWidth || imgEl.width;
+    
+    context.drawImage(imgEl, 0, 0);
+    
+    try {
+        data = context.getImageData(0, 0, width, height);
+    } catch(e) {
+        /* security error, img on diff domain */alert('x');
+        return defaultRGB;
+    }
+    
+    length = data.data.length;
+    
+    while ( (i += blockSize * 4) < length ) {
+        ++count;
+        rgb.r += data.data[i];
+        rgb.g += data.data[i+1];
+        rgb.b += data.data[i+2];
+    }
+    
+    // ~~ used to floor values
+    rgb.r = ~~(rgb.r/count);
+    rgb.g = ~~(rgb.g/count);
+    rgb.b = ~~(rgb.b/count);
+    
+    return rgb;
+  }
+</script>
+
+<script>
+  {% comment %} 제목 {% endcomment %}
+  const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+  const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>
+
+{% endblock script %}
