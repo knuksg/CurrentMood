@@ -319,7 +319,6 @@
 /* 프로필뮤직*/
 .container {
 	width: 40vw;
-	position: relative;
 }
 /* .search_box {
 	display: flex;
@@ -346,23 +345,18 @@
 	align-items: center;
 	background-color: #00000000;
 	color: #d6d6d6;
-	border-radius: 5px;	
+	border-radius: 5px;
 }
 .search-item:hover {
   background-color: #8e048b7f;
   color: #d6d6d6;
-}
-.search-item img {
-	border-radius: 7px;
 }
 .music_info {
 	display: table;
 	table-layout: fixed; 
   margin-left: 10px;
 }
-.music_info h4 {
-	display: table-cell;
-	font-size: 1vw;
+h5 {
 	white-space: nowrap;
 	overflow-x: hidden;
 	text-overflow: ellipsis;
@@ -402,11 +396,19 @@
 	border-radius: 5px;
 	border: none;
 }
-#search-form {
+.channel,
+.title {
+	padding: 5px 15px;
+	max-width: 25vw;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+/* #search-form {
 	position: relative;
 	display: flex;
 	align-items: center;
-}
+} */
 /* #search-form i {
 	position: absolute;
 	right: 6%;
@@ -490,6 +492,9 @@ ul {
 		padding: 8px 10px;
 	}
 	/* 프로필뮤직 */
+	.container {
+		width: 50vw;
+	}
 	.search-item {
 		height: 100px;
 	}
@@ -513,8 +518,19 @@ ul {
 	.search-item {
 		height: 70px;
 	}
-	.search__input {
+	/* .search__input {
 		width: 15rem;
+	} */
+	.container {
+		width: 80vw;
+	}
+	.channel,
+	.title {
+	padding: 5px 15px;
+	max-width: 43vw;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 	}
 	/* follow page */
 	.following,
