@@ -49,7 +49,7 @@
 	function readImage(input) {
 		console.log('파일첨부');
     // 인풋 태그에 파일이 있는 경우
-    if(input.files == null ) {
+    if(input.files) {
         // 이미지 파일인지 검사 (생략)
         // FileReader 인스턴스 생성
         const reader = new FileReader();
