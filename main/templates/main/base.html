@@ -29,12 +29,15 @@
     <!-- <script type="module" src='/static/js/location.js'></script> -->
     <!-- favicon 임시 -->
     <link rel="shortcut icon" href="#">
+    <!-- 아이콘 -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
   </head>
   
   <body>
     <!-- nav -->
     <header>
-      <nav class="navbar">
+      <nav class="navbar bg-black">
           <div class="navbar__logo">
             <i class="bi bi-music-note-beamed"></i>
             <a href="{% url 'articles:private' %}">
@@ -43,6 +46,7 @@
           </div>
 
         <div class="navbar__top">
+          {% comment %} 퍼블릭 페이지 -> 메인 {% endcomment %}
           {% if request.path == "/public/" %}
           <a href="{% url 'articles:private' %}" class="mt-3">
             <div class="location">
@@ -50,6 +54,17 @@
               <p class="d-inline-block">서울 강남구 역삼동</p>
             </div>
           </a>
+
+          {% comment %} 퍼블릭X 메인X -> 메인 {% endcomment %}
+          {% elif request.path != "/" %}
+          <a href="{% url 'articles:private' %}" class="mt-3">
+            <div class="location">
+              <img src="{% static 'image/location.png' %}" alt="" style="width: 20px; filter: invert(1);">
+              <p class="d-inline-block">블루보틀 역삼 카페</p>
+            </div>
+          </a>
+
+          {% comment %} 메인 -> 퍼블릭 {% endcomment %}
           {% else %}
           <a href="{% url 'articles:public' %}" class="mt-3">
             <div class="location">
@@ -86,9 +101,6 @@
       <section>
         {% block body %}{% endblock body %}
       </section>
-      {% comment %} <div class="footer">
-        footer
-      </div> {% endcomment %}
     </div>
     <hr>
 
@@ -107,10 +119,10 @@
         <div class="d-flex justify-content-center align-items-center bg-black">
           <a href="{% url 'articles:song' %}" class="col-9 d-flex justify-content-center align-items-center">
             <img id="now-playing-sm" class="col-3" src="" alt="">
-            <div class="col-9 mx-3">
+            <d class="col-9 mx-3">
               <p id="now-playing-title" class="m-0">재생 중인 곡이 없습니다</p>
               <p id="now-playing-channel" class="m-0 opacity-75"></p>
-            </div>
+            </d
           </a>
           <div class="col-3">
             <i id="previous" class="bi bi-skip-start-fill fs-1" style="cursor: pointer;"></i>
@@ -250,7 +262,7 @@
           function updateNowPlayingDisplay() {
             // bottomPlayer
             const nowPlayingSm = document.querySelector('#now-playing-sm')
-            nowPlayingSm.src = `https://i.ytimg.com/vi/${videoIDs[currentVideoId]}/default.jpg`
+            nowPlayingSm.src = `https://i.ytimg.com/vi/${videoIDs[currentVideoId]}/hqdefault.jpg`
             const nowPlayingTitle = document.querySelector('#now-playing-title')
             nowPlayingTitle.innerText = videoTitles[currentVideoId]
             const nowPlayingChannel = document.querySelector('#now-playing-channel')

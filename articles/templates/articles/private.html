@@ -49,9 +49,11 @@
   <div class="private-carousel text-center">
     <div class="mainSlide">
       {% for song in song_list %}
-      <div class="box">
-        <img src="{{ song.hqdefault }}">
-      </div>
+      <a href="{% url 'articles:song_detail' song.vidid %}">
+        <div class="box">
+          <img src="{{ song.hqdefault }}">
+        </div>
+      </a>
       {% endfor %}
     </div>
   </div>
@@ -63,9 +65,11 @@
   <div class="private-carousel text-center">
     <div class="mainSlide">
       {% for song in song_list %}
+      <a href="{% url 'articles:song_detail' song.vidid %}">
         <div class="box">
           <img src="{{ song.hqdefault }}">
         </div>
+      </a>
       {% endfor %}
     </div>
   </div>
