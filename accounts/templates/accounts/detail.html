@@ -81,7 +81,7 @@
 
 <div class="card-big-box" id="cab2" style="display: none;">
   {% if user.article_set.all %}
-    {% for article in user.article_set.all %}
+  {% for article in user.article_set.all|slice:":5" %}
     <ul>
       <a href="{% url 'articles:detail' article.pk %}" class="box__menu">
         <li><img class="box-img" src="{{ article.song.hqdefault }}"></li>
@@ -90,6 +90,9 @@
       </a>
     </ul>
     {% endfor %}
+    {% if user.article_set.all.count > 5 %}
+    <a href="{% url 'accounts:mylist' %}">더보기</a>
+    {% endif %}
   {% else %}
     <p class="my-3">작성한 글이 없습니다</p>
   {% endif %}

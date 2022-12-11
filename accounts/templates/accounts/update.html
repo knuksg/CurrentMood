@@ -17,7 +17,11 @@
 				<div class="updateform-userimg">
 					<input id='user_img' type="file" name="user_img" onchange="readImage(this);" class="d-none">
 					<label for="user_img" id="preview-img" class="user_img-btn">
+						{% if user.user_img %}
 						<img id="preview-image" src="{{ user.user_img.url }}" alt="">
+						{% else %}
+						<img id="preview-image" src="{% static 'image/profile.jpg' %}" alt="">
+						{% endif %}
 					</label>
 				<p class="m-1">프로필 사진 변경</p>
 				</div>
