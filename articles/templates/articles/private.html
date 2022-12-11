@@ -153,9 +153,9 @@
       
       {% comment %} 유저 정보 {% endcomment %}
       <div class="col-2">
-        <a href="{% url 'accounts:detail' top_article.user.pk %}">
-          <div class="d-flex flex-column align-items-center mb-0 mt-3 p-0">
             {% if top_article %}
+            <a href="{% url 'accounts:detail' top_article.user.pk %}">
+              <div class="d-flex flex-column align-items-center mb-0 mt-3 p-0">
             {% if top_article.user.user_img %}
               <img src="{{ top_article.user.user_img.url }}" alt="" style="width: 3.5rem; border-radius: 50%;">
             {% else %}
