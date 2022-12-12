@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+{% block body %}
+<div class="d-flex justify-content-center">
+  <div id="playlist-bottom" class="playlist">
+    <div class="w-100 bg-black">
+      <div id="playlist-btn" class="playlist-btn">
+        <i class="bi bi-music-note-list"></i><span>playlist</span>
+      </div>
+      <div id="playlist" style="height: 620px; overflow: auto;">
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const playlist = document.querySelector('#playlist')
+  var videoIDs = JSON.parse(window.sessionStorage.getItem('videoIDs'))
+  var videoTitles = JSON.parse(window.sessionStorage.getItem('videoTitles'))
+  var videoChannels = JSON.parse(window.sessionStorage.getItem('videoChannels'))
+  
+  for (idx in videoIDs){
+    playlist.innerHTML += `
+    <div id="playlist-item" class="playlist-item">
+      <div id="${videoIDs[idx]}" class="playlist-vidid"></div>
+      <hr class="my-0">
+      <div class="d-flex justify-content-center align-items-center">
+        <img id="playlist-sm" class="col-2" src="https://i.ytimg.com/vi/${videoIDs[idx]}/default.jpg" alt="">
+        <div class="col-9 ms-3">
+          <p id="playlist-title" class="playlist-title m-0">${videoTitles[idx]}</p>
+          <p id="playlist-channel" class="playlist-channel m-0 opacity-75">${videoChannels[idx]}</p>
+        </div>
+      </div>
+    </div>
+    `
+  } 
+</script>
+{% endblock body %}

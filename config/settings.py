@@ -144,14 +144,12 @@ DEBUG = os.getenv("DEBUG") == "True"
 if DEBUG:
     MEDIA_ROOT = BASE_DIR / "images"
     MEDIA_URL = "/media/"
-
     DATABASES = {
         "default": {
             "ENGINE": "django.db.backends.sqlite3",
             "NAME": BASE_DIR / "db.sqlite3",
         }
     }
-
     # CACHE = {
     #     "default": {
     #         "BACKEND": "django_redis.cache.RedisCache",
@@ -161,6 +159,7 @@ if DEBUG:
     #         },
     #     }
     # }
+    # 서버에 DB 올릴때 쓰는 코드
     # DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
     # AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
@@ -183,7 +182,6 @@ if DEBUG:
     #         "PORT": "5432",
     #     }
     # }
-
 else:
     DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
