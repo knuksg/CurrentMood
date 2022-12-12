@@ -245,6 +245,27 @@ def like(request, pk):
     return JsonResponse(context)
 
 
+def songlike(request, pk):
+
+    song = Song.objects.get(pk=pk)
+
+    if song.like_users.filter(pk=request.user.pk).exists():
+        song.like_users.remove(request.user)
+        is_liked = False
+    else:
+        song.like_users.add(request.user)
+        is_liked = True
+
+    songlike_count = song.like_users.count()
+
+    context = {
+        "is_liked": is_liked,
+        "likeCount": songlike_count,
+    }
+
+    return JsonResponse(context)
+
+
 def comment_create(request, pk):
     article = get_object_or_404(Article, pk=pk)
     comment_form = CommentForm(request.POST)
@@ -296,3 +317,38 @@ def song_like(request, pk):
         "likeCount": like_count,
     }
     return JsonResponse(context)
+
+@login_required
+def create_test(request):
+    if request.method == "POST":
+        place = request.POST.get("place", "")
+        content = request.POST.get("content", "")
+        vidid = request.POST.get("vidid", "")
+        vidtitle = request.POST.get("vidtitle", "")
+        channel = request.POST.get("channel", "")
+        hqdefault = request.POST.get("hqdefault", "")
+        default = request.POST.get("default", "")
+        mqdefault = request.POST.get("mqdefault", "")
+        print(vidid, place, content)
+        if vidid and place and content:
+            try:
+                song = Song.objects.get(vidid=vidid)
+            except:
+                song = Song.objects.create(
+                    vidid=vidid,
+                    title=vidtitle,
+                    channel=channel,
+                    hqdefault=hqdefault,
+                    default=default,
+                    mqdefault=mqdefault,
+                )
+            new_article = Article.objects.create(
+                user=request.user,
+                place=place,
+                content=content,
+                song=song,
+            )
+            return redirect("articles:detail", new_article.pk)
+        else:
+            return redirect("articles:create_test")
+    return render(request, "articles/create_test.html")
