@@ -275,3 +275,24 @@ def song_detail(request, video_id):
         "comment_form": comment_form,
     }
     return render(request, "articles/song_detail.html", context)
+
+
+@login_required
+def song_like(request, pk):
+
+    song = Song.objects.get(pk=pk)
+
+    if song.like_users.filter(pk=request.user.pk).exists():
+        song.like_users.remove(request.user)
+        is_liked = False
+    else:
+        song.like_users.add(request.user)
+        is_liked = True
+
+    like_count = song.like_users.count()
+
+    context = {
+        "is_liked": is_liked,
+        "likeCount": like_count,
+    }
+    return JsonResponse(context)

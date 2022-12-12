@@ -38,7 +38,7 @@
   <body>
     <!-- nav -->
     <header>
-      <nav class="navbar bg-black">
+      <nav class="navbar bg-dark">
           <div class="navbar__logo">
             <i class="bi bi-music-note-beamed"></i>
             <a href="{% url 'articles:private' %}">
@@ -88,7 +88,7 @@
           <li><a href="{% url 'articles:private' %}"><i class="fa-sharp fa-solid fa-house"></i> 홈</a></li>
           {% if request.user.is_authenticated %}
           <li><a href="{% url 'accounts:mypage' %}"><i class="fa-solid fa-user"></i> 내 정보</a></li>
-          <li><a href="{% url 'accounts:mylist' %}"><i class="bi bi-music-note-list"></i> 보관함</a></li>
+          <li><a href="{% url 'accounts:playlist' %}"><i class="bi bi-music-note-list"></i> 플레이리스트</a></li>
           <li class="navbar-logout"><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
           {% else %}
           <li><a href="{% url 'accounts:login' %}">로그인</a></li>
@@ -119,16 +119,20 @@
         <hr class="my-0">
         <div class="d-flex justify-content-center align-items-center bg-black">
           <a href="{% url 'articles:song' %}" class="col-9 d-flex justify-content-center align-items-center">
-            <img id="now-playing-sm" class="col-3" src="" alt="">
-            <d class="col-9 mx-3">
-              <p id="now-playing-title" class="m-0">재생 중인 곡이 없습니다</p>
-              <p id="now-playing-channel" class="m-0 opacity-75"></p>
-            </d
+            <img id="now-playing-sm" class="col-3 mx-3" src="" alt="">
+            <div class="col-8">
+              <div class="marquee" style="margin: 0;">
+                <p id="now-playing-title" class="now-playing-title">재생 중인 곡이 없습니다</p>
+              </div>
+              <div style="">
+                <p id="now-playing-channel" class="now-playing-channel"></p>
+              </div>
+            </div>
           </a>
-          <div class="col-3">
-            <i id="previous" class="bi bi-skip-start-fill fs-1" style="cursor: pointer;"></i>
-            <i id="video-button" class="bi bi-play-fill fs-1" style="cursor: pointer;"></i>
-            <i id="next" class="bi bi-skip-end-fill fs-1" style="cursor: pointer;"></i>
+          <div class="col-3 d-flex justify-content-center align-items-center">
+            <i id="previous" class="bi bi-skip-start-fill fs-2" style="cursor: pointer;"></i>
+            <i id="video-button" class="bi bi-play-fill fs-2" style="cursor: pointer;"></i>
+            <i id="next" class="bi bi-skip-end-fill fs-2" style="cursor: pointer;"></i>
           </div>
         </div>
         <hr class="my-0">
@@ -280,8 +284,19 @@
               const detailPlayingLink = document.querySelector('#detail-playing-link')
               var link ="{% url 'articles:song_detail' 12345 %}".replace(/12345/, video_id=videoIDs[currentVideoId]);
               detailPlayingLink.href = link
-              const playlist = document.querySelectorAll('#playlist-item')
-              playlist.forEach((playlistActive) => {
+              const playlistItems = document.querySelectorAll('#playlist-item')
+              playlistItems.forEach((playlistActive) => {
+                const playlistTitle = playlistActive.querySelector('#playlist-title')
+                if (playlistTitle.innerText == videoTitles[currentVideoId]) {
+                  playlistActive.classList.add('bg-dark')
+                } else {
+                  playlistActive.classList.remove('bg-dark')
+                }
+              })
+            }
+            if (document.querySelector('.playlist')) {
+              const playlistItems = document.querySelectorAll('#playlist-item')
+              playlistItems.forEach((playlistActive) => {
                 const playlistTitle = playlistActive.querySelector('#playlist-title')
                 if (playlistTitle.innerText == videoTitles[currentVideoId]) {
                   playlistActive.classList.add('bg-dark')
@@ -335,14 +350,16 @@
             const songImg = song.querySelector('img')
             songImg.src = `https://i.ytimg.com/vi/${videoIDs[currentVideoId]}/hqdefault.jpg`
             bottomPlayer.classList.add('d-none')
-            const footer = document.querySelector('div.footer')
-            footer.classList.add('d-none')
             if (document.querySelector('#playlist-bottom')) {
               const body = document.querySelector('body')
               body.style.overflow = 'hidden'
             }
           } else {
             bottomPlayer.classList.remove('d-none')
+          }
+          if (document.querySelector('.playlist')) {
+            const body = document.querySelector('body')
+            body.style.overflow = 'hidden'
           }
         }
         function playVideo() {
@@ -398,8 +415,8 @@
           if (e.target.closest("div.my-music")) {
             slideUp(bottomPlayer, duration=500)
             const myMusic = e.target.closest("div.my-music").querySelector('div.vid')
-            const myTitle = myMusic.querySelector('div.title').innerText
-            const myChannel = myMusic.querySelector('div.channel').innerText
+            const myTitle = myMusic.querySelector('div.my-title').innerText
+            const myChannel = myMusic.querySelector('div.my-channel').innerText
 
             // 플레이리스트에 이미 존재하는 노래인지 판단
             // 플레이리스트에 존재한다면

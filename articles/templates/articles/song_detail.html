@@ -6,11 +6,12 @@
 {% endblock %}
 {% block body %}
 
-<div class="songDetail__container d-flex flex-column align-items-center mt-5"> 
-  <div class="card">
+<div class="songDetail__container d-flex flex-column align-items-center"> 
+  <div class="card mt-5">
     <div class="card--image">
       <img src="{% static 'image/bbibbi.jpg' %}" alt="" id="getColor">
-      {% comment %} <img src="https://i.ytimg.com/vi/{{ song.vidid }}/maxresdefault.jpg" alt=""> {% endcomment %}
+      {% comment %} <p class="card--image--url d-none">{{ song.vidid }}</p> {% endcomment %}
+      {% comment %} <img src="https://i.ytimg.com/vi/{{ song.vidid }}/maxresdefault.jpg" alt="" id="getColor"> {% endcomment %}
     </div>
 
     <div class="card--info info--1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ song.title }}">
@@ -27,33 +28,81 @@
   </div>
   
   {% comment %} 사연 {% endcomment %}
-  <div class="article_cards-list mt-5">
-
+  <div class="article_cards-list mt-5 row-cols-3">
     {% for article in articles %}
-      <div class="article_card">
+      <div class="article_card mx-1">
         <div class="article_card_image">
-          <img src="{{ article.user.user_img.url }}"/>
+          <img src="{{ article.user.user_img.url }}">
         </div>
-        <div class="article_card_title title-white">
-          <p>{{ article.content }}</p>
-        </div>
+        <a href="{% url 'articles:detail' article.pk %}">
+          <div class="article_card_title title-white pt-3">
+            <p class="text-truncate">{{ article.content }}</p>
+          </div>
+        </a>
       </div>
     {% endfor %}
-
   </div>
-
 </div>
+
+
+<!-- 좋아요 -->
+<div>
+  <form class='like-forms' data-song-id="{{ song.pk }}">
+    {% csrf_token %}
+    {% if request.user in song.like_users.all %}
+      <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+        id='like-btn-{{ song.pk }}'>
+        <i class="bi bi-heart-fill" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart">
+          <span id='like-count-{{ song.pk }}'>{{ song.like_users.count }}</span>
+        </i> 
+      </button>
+    {% else %}
+      <button type=" submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+        id='like-btn-{{ song.pk }}'>
+        <i class="bi bi-heart" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart">
+          <span id='like-count-{{ song.pk }}'>{{ song.like_users.count }}</span>
+        </i> 
+      </button>
+    {% endif %}
+  </form>
+</div>
+
 
 {% endblock body %}
 
 {% block script %}
 <script>
 
+  {% comment %} 
+  let cardImageUrl = document.querySelector('.card--image--url');
+  let newImgAddress = "https://i.ytimg.com/vi/" + cardImageUrl.innerText + "/maxresdefault.jpg";
+  let newImg = new Image();
+  
+  newImg.crossorigin = "anonymous";
+  newImg.src = newImgAddress;
+  newImg.id = "getColor"; 
+  
+  cardImageUrl.after(newImg); 
+  {% endcomment %}
+
   var rgb = getAverageRGB(document.querySelector('#getColor'));
-  document.body.style.backgroundColor = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
   console.log(rgb);
 
+  let wrap = document.querySelector('#wrap')
+  wrap.classList.add("style");
+  wrap.style.backgroundColor = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
+
   function getAverageRGB(imgEl) {
+
+    // let cardImageUrl = document.querySelector('.card--image--url');
+    // let newImgAddress = "https://i.ytimg.com/vi/" + cardImageUrl.innerText + "/maxresdefault.jpg";
+    // let newImg = new Image();
+    
+    // newImg.crossorigin = "anonymous";
+    // newImg.src = newImgAddress;
+    // newImg.id = "getColor";
+
+    // cardImageUrl.after(newImg);
 
     var blockSize = 5, // only visit every 5 pixels
         defaultRGB = {r:0,g:0,b:0}, // for non-supporting envs
@@ -103,6 +152,47 @@
   {% comment %} 제목 {% endcomment %}
   const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+</script>
+
+</script>
+<!-- 좋아요 비동기 -->
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+<script>
+  const forms = document.querySelectorAll('.like-forms')
+  const likecsrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+  forms.forEach((form) => {
+    form.addEventListener('submit', function (event) {
+      event.preventDefault()
+      const songId = event.target.dataset.songId
+
+      axios({
+        method: 'post',
+        url: `/${event.target.dataset.songId}/like/`,
+        headers: { 'X-CSRFToken': likecsrftoken },
+      })
+        .then((response) => {
+          const likeBtn = document.querySelector(`#like-btn-${songId}`)
+          const likeCount = document.querySelector(`#like-count-${songId}`)
+          const isLiked = response.data.is_liked
+          const heart = document.querySelector(`#heart-${songId}`)
+
+          if (isLiked === true) {
+            heart.classList.add('bi-heart-fill')
+            heart.classList.remove('bi-heart')
+            likeCount.innerText = response.data.likeCount
+          } else {
+            heart.classList.remove('bi-heart-fill')
+            heart.classList.add('bi-heart')
+            likeCount.innerText = response.data.likeCount
+          }
+
+        })
+        .catch((error) => {
+          console.log(error.response)
+        })
+    })
+  })
 </script>
 
 {% endblock script %}

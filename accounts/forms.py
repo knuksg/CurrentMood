@@ -6,12 +6,11 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = (
-            "username", 
-            "address", 
-            "last_name", 
-            "first_name", 
-            "email", 
-            "user_img"
+            "username",
+            "address",
+            "first_name",
+            "email",
+            "user_img",
         )
 
 
@@ -21,7 +20,6 @@ class CustomUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = get_user_model()
         fields = (
-            "last_name",
             "first_name",
             "email",
             "address",
