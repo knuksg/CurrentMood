@@ -17,6 +17,7 @@ class Article(models.Model):
 
 class Place(models.Model):
     name = models.TextField()
+    # coords, models.TextField()
 
 
 class Like(models.Model):
