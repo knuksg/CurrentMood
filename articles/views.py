@@ -249,21 +249,28 @@ def songlike(request, pk):
 
     song = Song.objects.get(pk=pk)
 
-    if song.like_users.filter(pk=request.user.pk).exists():
+    if request.user in song.like_users.all():
         song.like_users.remove(request.user)
-        is_liked = False
     else:
         song.like_users.add(request.user)
-        is_liked = True
 
-    songlike_count = song.like_users.count()
+    return redirect("articles:private")
 
-    context = {
-        "is_liked": is_liked,
-        "likeCount": songlike_count,
-    }
+    # if song.like_users.filter(pk=request.user.pk).exists():
+    #     song.like_users.remove(request.user)
+    #     is_liked = False
+    # else:
+    #     song.like_users.add(request.user)
+    #     is_liked = True
 
-    return JsonResponse(context)
+    # songlike_count = song.like_users.count()
+
+    # context = {
+    #     "is_liked": is_liked,
+    #     "likeCount": songlike_count,
+    # }
+
+    # return JsonResponse(context)
 
 
 def comment_create(request, pk):
@@ -317,6 +324,7 @@ def song_like(request, pk):
         "likeCount": like_count,
     }
     return JsonResponse(context)
+
 
 @login_required
 def create_test(request):
