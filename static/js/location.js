@@ -3,31 +3,19 @@
 let map, infoWindow;
 function initMap() {
   const coords = localStorage.getItem('crds').split(",").map(Number)
-  const userCoords = { lat: coords[0], lng: coords[1] };
+  // const userCoords = { lat: coords[0], lng: coords[1] };
+  const currentLocationCoords = currentLocation.split(",")
+  const userCoords = {lat:Number(currentLocationCoords[0]), lng:Number(currentLocationCoords[1])}
   const map = new google.maps.Map(document.getElementById("map"), {
     zoom: 20,
     center: userCoords,
+    gestureHandling: "none", // 지도 이동 금지
+    zoomControl:false, // 확대/축소 금지
   });
-  map.setOptions({draggable:false}); // 지도 이동 금지
-  // 확대/축소 금지
-  //
+  // map.setOptions({draggable:false}); // 지도 이동 금지
   
   // // 장소 검색
   // https://velog.io/@gkwlsdl1/Django-redis-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0
-  // https://developers.google.com/maps/documentation/javascript/places#find_place_from_query
-  // const searchedPlace = document.querySelector("#pac-input")
-  // const searchButton = document.querySelector("#searchButton")
-  // var request = {
-  //   query : "인천",
-  //   fields: ['name', 'geometry'],
-  // };
-  
-  // var service = new google.maps.places.PlacesService(map);
-  // service.findPlaceFromQuery(request, function(results, status) {
-  // if (status === google.maps.places.PlacesServiceStatus.OK) {
-  //   map.setCenter(results[0].geometry.location);
-  // }
-  // });
 
   // 위치 정보 동기화 : 지연시간 짧도록 수정
   infoWindow = new google.maps.InfoWindow();
@@ -90,7 +78,7 @@ function initMap() {
       //     console.log(results[0])
       //   }
       // })
-      
+      console.log(currentLocation.split(",")[0])
     });
     // 검색바
     const mapsearch = document.getElementById("mapsearch")
@@ -101,7 +89,7 @@ function initMap() {
       var bounds = new google.maps.LatLngBounds();
       var i, place;
       for (i=0; place=places[i];i++){
-        console.log(place.geometry.location);
+        // console.log(place.geometry.location);
         bounds.extend(place.geometry.location);
         marker.setPosition(place.geometry.location)
       }

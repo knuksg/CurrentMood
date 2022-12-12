@@ -32,13 +32,9 @@ function getCookie(name) {
     var crd = pos.coords;
     // const usrCrd = [crd.latitude,crd.longitude]
     // result.innerHTML= [crd.latitude,crd.longitude]
-    // 1. form으로 전송하기
-    // const reqForm = document.querySelector("#locationForm")
-    // reqForm.userLocation.value = usrCrd
-    // 2. 다른 방법
     localStorage.setItem('crds',usrCrd)
     const request = new XMLHttpRequest;
-    request.open('POST',`http://127.0.0.1:8000/locations/`)
+    request.open('POST','http://127.0.0.1:8000/locations/')
     request.setRequestHeader("X-CSRFToken", csrftoken); 
     request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     request.send(`userLocation=${usrCrd}`)
