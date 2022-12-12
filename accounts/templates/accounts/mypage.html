@@ -56,6 +56,11 @@
 
 
 <div class="card-big-box" id="cab1">
+  <div class="mylist-btn">
+    <a href="{% url 'accounts:profile_music' user.pk %}"><i class="fa-solid fa-pen"></i></a>
+    |
+    <a href="{% url 'accounts:profile_music_delete' user.pk %}"><i class="bi bi-trash3-fill"></i></a>
+  </div>
   <div id="profile_music" class="my-music">
     {% if user.profile_music.vidid %}
     <div id="{{ user.profile_music.vidid }}" class="vid">
@@ -84,6 +89,11 @@
 
 
 <div class="card-big-box" id="cab2" style="display: none;">
+  <div class="mylist-btn">
+    <a href="#"><i id="comment-update-btn" class="fa-solid fa-pen"></i></a>
+    |
+    <a href="#"><i id="comment-delete-btn" class="bi bi-trash3-fill"></i></a>
+  </div>
   {% if user.article_set.all %}
     {% for article in user.article_set.all|slice:":5" %}
     <ul>
@@ -103,8 +113,11 @@
 </div>
 
 <div class="card-big-box" id="cab3" style="display: none;">
-  {% if user.like_song.all %}
-    {% for song in user.like_song.all|slice:":5" %}
+  <div class="mylist-btn">
+    <a href="#"><i id="like-delete-btn" class="bi bi-trash3-fill"></i></a>
+  </div>
+  {% if user.like_article.all %}
+    {% for article in user.like_article.all|slice:":5" %}
     <ul>
       <li>
         <a href="{% url 'articles:song_detail' song.vidid %}">
@@ -156,4 +169,35 @@
   </div>
 </div> {% endcomment %}
 
+<script>
+  const commentUpdateBtn = document.querySelector('#comment-update-btn')
+  commentUpdateBtn.addEventListener('click', function(e) {
+    const commentUpdates = document.querySelectorAll('#comment-update')
+    const commentDeletes = document.querySelectorAll('#comment-delete')
+    commentDeletes.forEach((commentDelete) => {
+      commentDelete.classList.add('d-none')
+    })
+    commentUpdates.forEach((commentUpdate) => {
+      commentUpdate.classList.remove('d-none')
+    })
+  })
+  const commentDeleteBtn = document.querySelector('#comment-delete-btn')
+  commentDeleteBtn.addEventListener('click', function(e) {
+    const commentUpdates = document.querySelectorAll('#comment-update')
+    const commentDeletes = document.querySelectorAll('#comment-delete')
+    commentUpdates.forEach((commentUpdate) => {
+      commentUpdate.classList.add('d-none')
+    })
+    commentDeletes.forEach((commentDelete) => {
+      commentDelete.classList.remove('d-none')
+    })
+  })
+  const likeDeleteBtn = document.querySelector('#like-delete-btn')
+  likeDeleteBtn.addEventListener('click', function(e) {
+    const likeDeletes = document.querySelectorAll('#like-delete')
+    likeDeletes.forEach((likeDelete) => {
+      likeDelete.classList.remove('d-none')
+    })
+  })
+</script>
 {% endblock body %}
