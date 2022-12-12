@@ -251,6 +251,27 @@ def like(request, pk):
     return JsonResponse(context)
 
 
+def songlike(request, pk):
+
+    song = Song.objects.get(pk=pk)
+
+    if song.like_users.filter(pk=request.user.pk).exists():
+        song.like_users.remove(request.user)
+        is_liked = False
+    else:
+        song.like_users.add(request.user)
+        is_liked = True
+
+    songlike_count = song.like_users.count()
+
+    context = {
+        "is_liked": is_liked,
+        "likeCount": songlike_count,
+    }
+
+    return JsonResponse(context)
+
+
 def comment_create(request, pk):
     article = get_object_or_404(Article, pk=pk)
     comment_form = CommentForm(request.POST)
