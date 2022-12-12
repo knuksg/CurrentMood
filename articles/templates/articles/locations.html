@@ -1,7 +1,7 @@
 {% extends 'main/base.html' %}
 {% load static %}
 {% block body %}
-<form action="{% url 'articles:clicked_location'%}" method="POST" style="display:flex">
+<form action="{% url 'articles:location_test' %}" method="POST" style="display:flex">
   {% csrf_token %}
   <input id="clicked" type="text" value="" name="clicked" size="38" placeholder="click한 위치">
   <!-- <input id="pac-input" type="text" size="35" name="searched_location" placeholder="장소 검색" style="margin-left: 38rem;"> -->
@@ -9,11 +9,11 @@
 <!-- <p id="result"></p> -->
 <input type="text" id="mapsearch" size="38">
 <p>현재위치 : {{user_position}} 인근</p>
+<button><a href="{% url 'articles:create'%}">작성 페이지로</a></button>
 <!-- 지도 -->
 <div id="map" style="width:100%;height:700px;"></div>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQjvkVCuRWteXvMvioRJZ0P24bi_XSHaw&libraries=places&region=KR&callback=initMap&v=weekly" defer></script>
 <script type="text/javascript">var currentLocation = "{{user_coords|safe}}";</script>
-
 <script>
 // GPS script => gps.js
 

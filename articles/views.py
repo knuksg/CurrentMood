@@ -103,8 +103,7 @@ def create(request):
             return redirect("articles:index")
         else:
             return redirect("articles:create")
-    context = {}
-    return render(request, "articles/create.html", context)
+    return render(request, "articles/create.html")
 
 
 @login_required
@@ -168,25 +167,21 @@ def update(request, pk):
 
 def location_get(request):
     print(request.POST.get("userLocation"))
-    print(request.POST.get("markerLocation"))
     # 위치 정보 가져오기 : google geolocation api 요청
-    gmap_api_key = os.getenv("gmap_api")
     user_location = request.POST.get("userLocation")
     marker_location = request.POST.get("markerLocation")
-    if request.method == "POST" and user_location:
+    if request.method == "POST":
         user_coords = user_location.split(",")
         user_loc = parsing_geocoded(user_coords[0], user_coords[1])["loc"]
-        user_place = Place.objects.create(name=user_loc[0])
-        # user_coords_save = Place.objects.create(coords=user_coords)
+        user_place = Place.objects.create(name=" ".join(user_loc[0].split(" ")[3:5]))
     else:
-        user_loc = ["somewhere"]
-        user_position = ["somewhere"]
+        user_position = "somewhere"
     user_position = Place.objects.order_by("-id").values()[0]["name"]
+    # user_coords_save = Place.objects.create(coords=user_coords)
     # user_current_coords = Place.objects.order_by("-id").values()[0]["coords"]
     # Place 테이블에 geocoding된 위치 값을 저장한다. => 위치 지속적으로 업데이트 되도록 해야함
     context = {
         "user_position": user_position,
-        "key": gmap_api_key,
         # "user_coords": user_current_coords.lstrip("[").rstrip("]").replace("'", ""),
     }
     return render(request, "articles/locations.html", context)
@@ -211,7 +206,6 @@ def location_test(request):
     # DB 가져올 수 있게 저장하기
     # 현재위치 요청에서 가져오기
     # 초기화면 로드 오류 fix
-    # 스크롤 방지
     return render(request, "articles/locationInputTest.html", context)
 
 
