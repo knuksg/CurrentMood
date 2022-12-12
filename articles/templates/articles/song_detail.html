@@ -47,7 +47,7 @@
 
 <!-- 좋아요 -->
 
-<div>
+{% comment %} <div>
   <form class='like-forms' data-song-id="{{ song.pk }}">
     {% csrf_token %}
     {% if request.user in song.like_users.all %}
@@ -66,7 +66,7 @@
       </button>
     {% endif %}
   </form>
-</div>
+</div> {% endcomment %}
 
 
 {% endblock body %}
