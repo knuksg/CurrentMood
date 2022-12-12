@@ -8,7 +8,6 @@ class Song(models.Model):
     default = models.CharField(max_length=130, default=None, null=True)
     mqdefault = models.CharField(max_length=130, default=None, null=True)
     hqdefault = models.CharField(max_length=130, default=None, null=True)
-    maxresdefault = models.CharField(max_length=130, default=None, null=True)
 
     def __str__(self):
         return self.title
