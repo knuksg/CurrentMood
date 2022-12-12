@@ -116,8 +116,8 @@
   <div class="mylist-btn">
     <a href="#"><i id="like-delete-btn" class="bi bi-trash3-fill"></i></a>
   </div>
-  {% if user.like_article.all %}
-    {% for article in user.like_article.all|slice:":5" %}
+  {% if user.like_song.all %}
+    {% for song in user.like_song.all|slice:":5" %}
     <ul>
       <li>
         <a href="{% url 'articles:song_detail' song.vidid %}">
