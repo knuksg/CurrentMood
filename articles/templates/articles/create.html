@@ -30,7 +30,9 @@
       <input type="hidden" id="mqdefault" name="mqdefault" value="">
       <div class="d-flex justify-content-center mb-3">
         {% comment %} <label for="place">사연 장소</label> {% endcomment %}
-      <a href="{% url 'articles:locations' %}"><input id="place" name="place" type="text" class="col-12" placeholder='장소를 검색해주세요.'></a>
+      {% comment %} <a href="{% url 'articles:locations' %}"> {% endcomment %}
+        <input id="place" name="place" type="text" class="col-12" placeholder='장소를 검색해주세요.'>
+      {% comment %} </a> {% endcomment %}
       </div>
       <div class="d-flex justify-content-center mb-3">
         <label for="content"></label>
