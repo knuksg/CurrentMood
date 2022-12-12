@@ -3,6 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from django.core.validators import MinLengthValidator
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
+from main.models import Song
 
 # Create your models here.
 class User(AbstractUser):
