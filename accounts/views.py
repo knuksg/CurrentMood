@@ -264,3 +264,10 @@ def profile_music_delete(request, pk):
         "user": user,
     }
     return redirect("accounts:mylist")
+
+@login_required
+def playlist(request):
+    context = {
+
+    }
+    return render(request, "accounts/playlist.html", context)

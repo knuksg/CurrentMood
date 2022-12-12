@@ -32,4 +32,5 @@ urlpatterns = [
     path("<int:pk>/followlist/", views.followlist, name="followlist"),
     path("<int:pk>/followerlist/", views.followerlist, name="followerlist"),
     path("mylist/", views.mylist, name="mylist"),
+    path("playlist/", views.playlist, name="playlist"),
 ]
