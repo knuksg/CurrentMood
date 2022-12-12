@@ -14,6 +14,7 @@ urlpatterns = [
     path("locationTest/", views.location_test, name="location_test"),
     path("locationTest/", views.clicked_location, name="clicked_location"),
     path("<int:pk>/like/", views.like, name="like"),
+    path("<int:pk>/songlike/", views.songlike, name="songlike"),
     path("public/", views.public, name="public"),
     path("test/", views.test, name="test"),
     path("<int:pk>/comments/", views.comment_create, name="comment_create"),
