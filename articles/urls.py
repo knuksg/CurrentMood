@@ -21,4 +21,5 @@ urlpatterns = [
     path("song/", views.song, name="song"),
     path("song/<slug:video_id>/", views.song_detail, name="song_detail"),
     path("song/<int:pk>/like/", views.song_like, name="song_like"),
+    path("create_test/", views.create_test, name="create_test"),
 ]
