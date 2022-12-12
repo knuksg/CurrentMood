@@ -6,7 +6,7 @@ let map, infoWindow;
 function initMap() {
   const coords = localStorage.getItem('crds').split(",").map(Number)
   const userCoords = { lat: coords[0], lng: coords[1] };
-  const currentLocationCoords = currentLocation.split(",")
+  // const currentLocationCoords = currentLocation.split(",")
   // const userCoords = {lat:Number(currentLocationCoords[0]), lng:Number(currentLocationCoords[1])}
   const map = new google.maps.Map(document.getElementById("map"), {
     zoom: 20,
@@ -30,8 +30,8 @@ function initMap() {
         // DB/server에서 위치값 가져오기
         // lat: position.coords.latitude,
         // lng: position.coords.longitude,
-        lat : 37.55483,
-        lng : 126.95498,
+        lat : coords[0],
+        lng : coords[1],
       };
       map.setCenter(pos);
       if (navigator.geolocation==false){
