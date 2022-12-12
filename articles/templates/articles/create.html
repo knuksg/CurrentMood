@@ -30,7 +30,9 @@
       <input type="hidden" id="mqdefault" name="mqdefault" value="">
       <div class="d-flex justify-content-center mb-3">
         {% comment %} <label for="place">사연 장소</label> {% endcomment %}
+      {% comment %} <a href="{% url 'articles:locations' %}"> {% endcomment %}
         <input id="place" name="place" type="text" class="col-12" placeholder='장소를 검색해주세요.'>
+      {% comment %} </a> {% endcomment %}
       </div>
       <div class="d-flex justify-content-center mb-3">
         <label for="content"></label>
@@ -52,6 +54,11 @@
 </div>
   <!-- 검색 스크립트 -->
   <script>
+    // 지도에서 클릭한 위치 가져오기
+    const place = document.querySelector("#place")
+    const clickedPlace = localStorage.getItem("clickedPlace")
+    place.value = clickedPlace
+
     const searchForm = document.querySelector("#search-form")
     searchForm.addEventListener('submit', function(event) {
       event.preventDefault()
@@ -60,7 +67,7 @@
     })
   
     function getSearchList(kw) {
-      const apiKey = "AIzaSyC6_bB2PiPp_Vtf8cPdnhoQ-hzL4gNVFIE"
+      const apiKey = "AIzaSyDIO31dA0bX-9SaFNF5PHremAmZ2VRt3fc"
       axios.get('https://www.googleapis.com/youtube/v3/search', {
         params: {
           key: apiKey,

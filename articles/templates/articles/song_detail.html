@@ -46,6 +46,7 @@
 
 
 <!-- 좋아요 -->
+
 <div>
   <form class='like-forms' data-song-id="{{ song.pk }}">
     {% csrf_token %}
@@ -57,7 +58,7 @@
         </i> 
       </button>
     {% else %}
-      <button type=" submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+      <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
         id='like-btn-{{ song.pk }}'>
         <i class="bi bi-heart" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart">
           <span id='like-count-{{ song.pk }}'>{{ song.like_users.count }}</span>
@@ -159,7 +160,7 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
   const forms = document.querySelectorAll('.like-forms')
-  const likecsrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
   forms.forEach((form) => {
     form.addEventListener('submit', function (event) {
@@ -168,14 +169,15 @@
 
       axios({
         method: 'post',
-        url: `/${event.target.dataset.songId}/like/`,
-        headers: { 'X-CSRFToken': likecsrftoken },
+        url: `/${event.target.dataset.songId}/songlike/`,
+        headers: { 'X-CSRFToken': csrftoken },
       })
         .then((response) => {
           const likeBtn = document.querySelector(`#like-btn-${songId}`)
           const likeCount = document.querySelector(`#like-count-${songId}`)
           const isLiked = response.data.is_liked
           const heart = document.querySelector(`#heart-${songId}`)
+          console.log(isLiked)
 
           if (isLiked === true) {
             heart.classList.add('bi-heart-fill')

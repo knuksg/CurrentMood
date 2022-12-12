@@ -103,8 +103,7 @@ def create(request):
             return redirect("articles:index")
         else:
             return redirect("articles:create")
-    context = {}
-    return render(request, "articles/create.html", context)
+    return render(request, "articles/create.html")
 
 
 @login_required
@@ -168,25 +167,21 @@ def update(request, pk):
 
 def location_get(request):
     print(request.POST.get("userLocation"))
-    print(request.POST.get("markerLocation"))
     # 위치 정보 가져오기 : google geolocation api 요청
-    gmap_api_key = os.getenv("gmap_api")
     user_location = request.POST.get("userLocation")
     marker_location = request.POST.get("markerLocation")
-    if request.method == "POST" and user_location:
+    if request.method == "POST":
         user_coords = user_location.split(",")
         user_loc = parsing_geocoded(user_coords[0], user_coords[1])["loc"]
-        user_place = Place.objects.create(name=user_loc[0])
-        # user_coords_save = Place.objects.create(coords=user_coords)
+        user_place = Place.objects.create(name=" ".join(user_loc[0].split(" ")[3:5]))
     else:
-        user_loc = ["somewhere"]
-        user_position = ["somewhere"]
+        user_position = "somewhere"
     user_position = Place.objects.order_by("-id").values()[0]["name"]
+    # user_coords_save = Place.objects.create(coords=user_coords)
     # user_current_coords = Place.objects.order_by("-id").values()[0]["coords"]
     # Place 테이블에 geocoding된 위치 값을 저장한다. => 위치 지속적으로 업데이트 되도록 해야함
     context = {
         "user_position": user_position,
-        "key": gmap_api_key,
         # "user_coords": user_current_coords.lstrip("[").rstrip("]").replace("'", ""),
     }
     return render(request, "articles/locations.html", context)
@@ -211,7 +206,6 @@ def location_test(request):
     # DB 가져올 수 있게 저장하기
     # 현재위치 요청에서 가져오기
     # 초기화면 로드 오류 fix
-    # 스크롤 방지
     return render(request, "articles/locationInputTest.html", context)
 
 
@@ -248,6 +242,27 @@ def like(request, pk):
         "is_liked": is_liked,
         "likeCount": like_count,
     }
+    return JsonResponse(context)
+
+
+def songlike(request, pk):
+
+    song = Song.objects.get(pk=pk)
+
+    if song.like_users.filter(pk=request.user.pk).exists():
+        song.like_users.remove(request.user)
+        is_liked = False
+    else:
+        song.like_users.add(request.user)
+        is_liked = True
+
+    songlike_count = song.like_users.count()
+
+    context = {
+        "is_liked": is_liked,
+        "likeCount": songlike_count,
+    }
+
     return JsonResponse(context)
 
 
@@ -302,3 +317,38 @@ def song_like(request, pk):
         "likeCount": like_count,
     }
     return JsonResponse(context)
+
+@login_required
+def create_test(request):
+    if request.method == "POST":
+        place = request.POST.get("place", "")
+        content = request.POST.get("content", "")
+        vidid = request.POST.get("vidid", "")
+        vidtitle = request.POST.get("vidtitle", "")
+        channel = request.POST.get("channel", "")
+        hqdefault = request.POST.get("hqdefault", "")
+        default = request.POST.get("default", "")
+        mqdefault = request.POST.get("mqdefault", "")
+        print(vidid, place, content)
+        if vidid and place and content:
+            try:
+                song = Song.objects.get(vidid=vidid)
+            except:
+                song = Song.objects.create(
+                    vidid=vidid,
+                    title=vidtitle,
+                    channel=channel,
+                    hqdefault=hqdefault,
+                    default=default,
+                    mqdefault=mqdefault,
+                )
+            new_article = Article.objects.create(
+                user=request.user,
+                place=place,
+                content=content,
+                song=song,
+            )
+            return redirect("articles:detail", new_article.pk)
+        else:
+            return redirect("articles:create_test")
+    return render(request, "articles/create_test.html")

@@ -1,12 +1,17 @@
 {% extends 'main/base.html' %}
 {% load django_bootstrap5 %}
 {% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/articles.css' %}">
+{% endblock style %}
+
 {% block body %}
 <div class="container">
   
   {% comment %} 음악 정보 {% endcomment %}
-  <div class="d-inline-block">
-    <div class="d-flex gap-3 mt-3">
+  <div>
+    <div class="d-flex gap-3 mt-4 mb-2">
       <a href="{% url 'accounts:detail' article.user.pk %}">
         {% if article.user.user_img %}
         <img class="rounded-circle" src="{{ article.user.user_img.url }}" style="width:50px; height: 50px;">
@@ -19,43 +24,45 @@
         <a href="{% url 'accounts:detail' article.user.pk %}">
           <p class="m-0">{{ article.user }}</p>
         </a>
-        <p>{{ article.place }}</p>
+        <p style="font-size: 11px;">{{ article.place }}</p>
       </div>
     </div>
 
-    <div id="art
-    icle-music" class="article-music position-relative d-flex justify-content-center mb-1">
-      <div id="{{ article.song.vidid }}" class="music-vidid d-none">이 태그를 지우지 마세요.</div>
-      <img src="{{ article.song.hqdefault }}" alt="" style="width: 100%;">
-      <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
-    </div>
-
-    <div class="mt-3">
-      <div id="title" class="article-title">{{ article.song.title }}</div>  
-      <div id="channel" class="article-channel opacity-75">{{ article.song.channel }}</div>
-      <hr>
-      <div class="my-3">
-        <p>{{ article.content }}</p>
+    <div class="d-flex flex-column justify-content-center align-content-center">
+      <div id="art
+      icle-music" class="article-music position-relative d-flex justify-content-center mb-1">
+        <div id="{{ article.song.vidid }}" class="music-vidid d-none">이 태그를 지우지 마세요.</div>
+        <img src="{{ article.song.hqdefault }}" alt="" style="width: 100%;">
+        <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
+      </div>
+      </div>
+  
+      <div class="mt-3">
+        <div id="title" class="article-title">{{ article.song.title }}</div>  
+        <div id="channel" class="article-channel opacity-75">{{ article.song.channel }}</div>
         <small class="opacity-50">{{ article.created_at }}</small>
+        <hr>
+        <div class="my-3">
+          <p>{{ article.content }}</p>
+        </div>
       </div>
     </div>
-  </div>
 
   <!-- 좋아요 -->
-  <div>
+  <div class="d-flex justify-content-center">
     <form class='like-forms' data-article-id="{{ article.pk }}">
       {% csrf_token %}
       {% if request.user in article.like_users.all %}
         <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
           id='like-btn-{{ article.pk }}'>
-          <i class="bi bi-heart-fill" id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" name="heart">
+          <i class="fa-solid fa-thumbs-up" id='heart-{{ article.pk }}' style="color: var(--text-color); font-size: 1.3rem;" name="heart">
             <span id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span>
           </i> 
         </button>
       {% else %}
         <button type=" submit" class="d-flex text-center" style="border: 0px; background: transparent;"
           id='like-btn-{{ article.pk }}'>
-          <i class="bi bi-heart" id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" name="heart">
+          <i class="fa-regular fa-thumbs-up" id='heart-{{ article.pk }}' style="color: var(--text-color); font-size: 1.3rem;" name="heart">
             <span id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span>
           </i> 
         </button>
@@ -64,11 +71,14 @@
   </div>
   
   <!-- 버튼 -->
-  <div class="mt-3">
-    <a href="{% url 'articles:index' %}" class="text-white text-decoration-none"><button class="btn btn-secondary">목록</button></a>
-    <a href="{% url 'articles:update' article.pk %}" class="text-white text-decoration-none"><button class="btn btn-primary">수정</button></a>
-    <a href="{% url 'articles:delete' article.pk %}" class="text-white text-decoration-none"><button class="btn btn-danger">삭제</button></a>
+  <div class="d-flex justify-content-end mt-2">
+    <a href="{% url 'articles:index' %}" class="text-white text-decoration-none"><button class="detail__button">목록</button></a>
+    {% if request.user == article.user %}
+    <a href="{% url 'articles:update' article.pk %}" class="text-white text-decoration-none"><button class="detail__button">수정</button></a>
+    <a href="{% url 'articles:delete' article.pk %}" class="text-white text-decoration-none"><button class="detail__button">삭제</button></a>
+    {% endif %}
   </div>
+   
   
   <hr class="my-3">
   
@@ -78,13 +88,19 @@
     <form id="comment-form" data-article-id="{{ article.pk }}">
       {% csrf_token %}
       {% bootstrap_form comment_form %}
-      {% bootstrap_button button_type="submit" content="OK" %}
+      {% bootstrap_button button_type="submit" style="display: none;" content="OK" %}
     </form>
     {% endif %}
     <hr>
     <div id="comments">
       {% for comment in comments %}
-        <p>{{ comment.user }} | {{ comment.content }}</p>
+      {% if comment.user.user_img %}
+      <img class="rounded-circle" src="{{ comment.user.user_img.url }}" style="width:30px; height: 30px;">
+      <span class="fw-bolder">{{ comment.user }}</span>
+      <span class="fw-lighter">{{ comment.content }}</span>
+      {% else %}
+      <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:50px; height: 50px;"> <span class="fw-bolder">{{ comment.user }}</span> <span class="fw-lighter">{{ comment.content }}</span>
+      {% endif %}
         <hr>
       {% endfor %}
     </div>
@@ -143,12 +159,12 @@
           const heart = document.querySelector(`#heart-${articleId}`)
 
           if (isLiked === true) {
-            heart.classList.add('bi-heart-fill')
-            heart.classList.remove('bi-heart')
+            heart.classList.add('fa-solid')
+            heart.classList.remove('fa-regular')
             likeCount.innerText = response.data.likeCount
           } else {
-            heart.classList.remove('bi-heart-fill')
-            heart.classList.add('bi-heart')
+            heart.classList.remove('fa-solid')
+            heart.classList.add('fa-regular')
             likeCount.innerText = response.data.likeCount
           }
 

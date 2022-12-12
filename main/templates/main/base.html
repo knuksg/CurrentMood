@@ -22,10 +22,9 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <script defer="defer" src="{% static 'js/script.js' %}"></script>
-    <!-- 지도 가져오기 -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script type="module" src="{% static 'js/location.js' %}?120"></script>
-    <script type="module" src="{% static 'js/gps.js' %}?3"></script>
+    <script type="module" src="{% static 'js/location.js' %}?126"></script>
+    <script type="module" src="{% static 'js/gps.js' %}?5"></script>
     <script type="text/javascript"></script>
     <!-- <script type="module" src='/static/js/location.js'></script> -->
     <!-- favicon 임시 -->
@@ -52,7 +51,7 @@
           <a href="{% url 'articles:private' %}" class="mt-3">
             <div class="location">
               <img src="{% static 'image/location.png' %}" alt="" style="width: 20px; filter: invert(1);">
-              <p class="d-inline-block">서울 강남구 역삼동</p>
+              <p id="currentPlace" class="d-inline-block"></p>
             </div>
           </a>
 
@@ -61,7 +60,7 @@
           <a href="{% url 'articles:private' %}" class="mt-3">
             <div class="location">
               <img src="{% static 'image/location.png' %}" alt="" style="width: 20px; filter: invert(1);">
-              <p class="d-inline-block">블루보틀 역삼 카페</p>
+              <p id="currentPlace" class="d-inline-block"></p>
             </div>
           </a>
 
@@ -70,7 +69,7 @@
           <a href="{% url 'articles:public' %}" class="mt-3">
             <div class="location">
               <img src="{% static 'image/location.png' %}" alt="" style="width: 20px; filter: invert(1);">
-              <p class="d-inline-block">블루보틀 역삼 카페</p>
+              <p id="currentPlace" class="d-inline-block"></p>
             </div>
           </a>
           {% endif %}
@@ -124,7 +123,7 @@
               <div class="marquee" style="margin: 0;">
                 <p id="now-playing-title" class="now-playing-title">재생 중인 곡이 없습니다</p>
               </div>
-              <div style="">
+              <div>
                 <p id="now-playing-channel" class="now-playing-channel"></p>
               </div>
             </div>
@@ -140,6 +139,9 @@
       {% endblock player %}
       
       <script>
+        const currentPlace = document.querySelector("#currentPlace")
+        storageCurrentPlace = localStorage.getItem("clickedPlace")
+        currentPlace.innerHTML=storageCurrentPlace
         // 2. iframe api 불러오기
         var tag = document.createElement('script');
 
