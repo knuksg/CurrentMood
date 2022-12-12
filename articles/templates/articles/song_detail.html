@@ -27,15 +27,15 @@
   </div>
   
   {% comment %} 사연 {% endcomment %}
-  <div class="article_cards-list mt-5">
+  <div class="article_cards-list mt-5 row-cols-3">
 
     {% for article in articles %}
       <div class="article_card">
         <div class="article_card_image">
-          <img src="{{ article.user.user_img.url }}"/>
+          <img src="{{ article.user.user_img.url }}">
         </div>
-        <div class="article_card_title title-white">
-          <p>{{ article.content }}</p>
+        <div class="article_card_title title-white pt-2">
+          <p class="text-truncate">{{ article.content }}</p>
         </div>
       </div>
     {% endfor %}
