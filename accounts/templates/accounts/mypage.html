@@ -120,9 +120,7 @@
     {% for song in user.like_song.all|slice:":5" %}
     <ul>
       <li>
-        <a href="{% url 'articles:song_detail' song.vidid %}">
-          <img src="{{ song.mqdefault }}">
-        </a>
+        <img src="{{ song.mqdefault }}">
       </li>
       <li>{{ song.title }}  -  {{ song.channel }}</li>
       {% comment %} <a href="{% url 'articles:detail' article.pk %}"  class="box__menu">
