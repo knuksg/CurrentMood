@@ -24,8 +24,8 @@
     <script defer="defer" src="{% static 'js/script.js' %}"></script>
     <!-- 지도 가져오기 -->
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <script type="module" src="{% static 'js/location.js' %}?120"></script>
-    <script type="module" src="{% static 'js/gps.js' %}?3"></script>
+    <script type="module" src="{% static 'js/location.js' %}?125"></script>
+    <script type="module" src="{% static 'js/gps.js' %}?4"></script>
     <script type="text/javascript"></script>
     <!-- <script type="module" src='/static/js/location.js'></script> -->
     <!-- favicon 임시 -->
@@ -38,7 +38,7 @@
   <body>
     <!-- nav -->
     <header>
-      <nav class="navbar bg-black">
+      <nav class="navbar bg-dark">
           <div class="navbar__logo">
             <i class="bi bi-music-note-beamed"></i>
             <a href="{% url 'articles:private' %}">
@@ -350,8 +350,6 @@
             const songImg = song.querySelector('img')
             songImg.src = `https://i.ytimg.com/vi/${videoIDs[currentVideoId]}/hqdefault.jpg`
             bottomPlayer.classList.add('d-none')
-            const footer = document.querySelector('div.footer')
-            footer.classList.add('d-none')
             if (document.querySelector('#playlist-bottom')) {
               const body = document.querySelector('body')
               body.style.overflow = 'hidden'

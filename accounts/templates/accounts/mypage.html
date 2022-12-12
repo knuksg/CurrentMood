@@ -119,18 +119,24 @@
   {% if user.like_article.all %}
     {% for article in user.like_article.all|slice:":5" %}
     <ul>
-      <a href="{% url 'articles:detail' article.pk %}"  class="box__menu">
+      <li>
+        <a href="{% url 'articles:song_detail' song.vidid %}">
+          <img src="{{ song.mqdefault }}">
+        </a>
+      </li>
+      <li>{{ song.title }}  -  {{ song.channel }}</li>
+      {% comment %} <a href="{% url 'articles:detail' article.pk %}"  class="box__menu">
         <li><img src="{{ article.song.hqdefault }}" style="width:50px;"></li>
         <li class="box__menu--song">{{ article.song }}</li>  
         <li>{{ article.content }}</li>
-      </a>
+      </a> {% endcomment %}
     </ul>
     {% endfor %}
-    {% if user.like_article.all > 5 %}
+    {% if user.like_song.all > 5 %}
     <a href="{% url 'accounts:mylist' %}">더보기</a>
     {% endif %}
   {% else %}
-  <p class="my-3">좋아요한 글이 없습니다</p>
+  <p class="my-3">좋아요한 곡이 없습니다</p>
   {% endif %}
 </div>
 

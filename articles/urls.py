@@ -14,9 +14,11 @@ urlpatterns = [
     path("locationTest/", views.location_test, name="location_test"),
     path("locationTest/", views.clicked_location, name="clicked_location"),
     path("<int:pk>/like/", views.like, name="like"),
+    path("<int:pk>/songlike/", views.songlike, name="songlike"),
     path("public/", views.public, name="public"),
     path("test/", views.test, name="test"),
     path("<int:pk>/comments/", views.comment_create, name="comment_create"),
     path("song/", views.song, name="song"),
     path("song/<slug:video_id>/", views.song_detail, name="song_detail"),
+    path("song/<int:pk>/like/", views.song_like, name="song_like"),
 ]

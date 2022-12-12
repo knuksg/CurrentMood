@@ -1,11 +1,13 @@
 // Initialize and add the map
 // https://developers.google.com/maps/documentation/javascript/geolocation
+// 지도생성
 let map, infoWindow;
+
 function initMap() {
   const coords = localStorage.getItem('crds').split(",").map(Number)
-  // const userCoords = { lat: coords[0], lng: coords[1] };
+  const userCoords = { lat: coords[0], lng: coords[1] };
   const currentLocationCoords = currentLocation.split(",")
-  const userCoords = {lat:Number(currentLocationCoords[0]), lng:Number(currentLocationCoords[1])}
+  // const userCoords = {lat:Number(currentLocationCoords[0]), lng:Number(currentLocationCoords[1])}
   const map = new google.maps.Map(document.getElementById("map"), {
     zoom: 20,
     center: userCoords,
@@ -56,6 +58,8 @@ function initMap() {
         // });
       // Input창에 위치 넣기
       const exampleInput = document.querySelector("#clicked")
+      const clickedPlace = map.__gm.eventCapturer.innerText.split("\n")[0]
+      localStorage.setItem("clickedPlace",clickedPlace) // 1
       console.log(map.__gm.eventCapturer.innerText.split("\n")[0])
       exampleInput.value = map.__gm.eventCapturer.innerText.split("\n")[0]
       const geocoder = new google.maps.Geocoder();
@@ -78,7 +82,7 @@ function initMap() {
       //     console.log(results[0])
       //   }
       // })
-      console.log(currentLocation.split(",")[0])
+      // console.log(currentLocation.split(",")[0])
     });
     // 검색바
     const mapsearch = document.getElementById("mapsearch")
@@ -99,14 +103,5 @@ function initMap() {
 }
   
 window.initMap = initMap;
-
-// location.js?60:72 Uncaught ReferenceError: names is not defined
-//     at kj.<anonymous> (location.js?60:72:13)
-//     at _.O (js?key=AIzaSyBQjvkVCuRWteXvMvioRJZ0P24bi_XSHaw&libraries=places&region=KR&callback=initMap&v=weekly:111:320)
-//     at pka (map.js:31:109)
-//     at ju (map.js:28:488)
-//     at Object.onClick (map.js:27:441)
-//     at _.n.onClick (common.js:238:286)
-//     at G._.Ih.fd (common.js:81:469)
 
 
