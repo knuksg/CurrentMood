@@ -47,17 +47,15 @@
 
 <!-- 좋아요 -->
 
-<i class="bi bi-heart-fill"><span>{{ song.like_users.count }}</span></i> 
-
-{% comment %} {% if request.user in song.like_users.all %}
+{% if request.user in song.like_users.all %}
 <a href="{% url 'articles:songlike' song.pk %}" class="position-absolute top-0 end-0" style="margin: 1rem 1rem 0rem 0; text-decoration: none">
-  <i class="bi bi-heart-fill" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"><span id='like-count-{{ song.pk }}'>{{ song.like_users.count }}</span></i> 
+  <i class="bi bi-heart-fill" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"></i> 
 </a>
 {% else %}
 <a href="{% url 'articles:songlike' song.pk %}" class="position-absolute top-0 end-0" style="margin: 1rem 1rem 0rem 0; text-decoration: none">
-  <i class="bi bi-heart" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"><span id='like-count-{{ song.pk }}'>{{ song.like_users.count }}</span></i> 
+  <i class="bi bi-heart" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"></i> 
 </a>
-{% endif %} {% endcomment %}
+{% endif %}
 
 
 {% comment %} <div>
