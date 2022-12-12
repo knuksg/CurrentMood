@@ -142,24 +142,26 @@ AUTH_USER_MODEL = "accounts.User"
 DEBUG = os.getenv("DEBUG") == "True"
 
 if DEBUG:
-    # MEDIA_ROOT = BASE_DIR / "images"
-    # MEDIA_URL = "/media/"
+    MEDIA_ROOT = BASE_DIR / "images"
+    MEDIA_URL = "/media/"
 
-    # DATABASES = {
-    #     "default": {
-    #         "ENGINE": "django.db.backends.sqlite3",
-    #         "NAME": BASE_DIR / "db.sqlite3",
-    #     }
-    # }
-    # CACHE = {
-    #     "default": {
-    #         "BACKEND": "django_redis.cache.RedisCache",
-    #         "LOCATION": "redis://127.0.0.1:6379/1",
-    #         "OPTION": {
-    #             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-    #         },
-    #     }
-    # }
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
+    CACHE = {
+        "default": {
+            "BACKEND": "django_redis.cache.RedisCache",
+            "LOCATION": "redis://127.0.0.1:6379/1",
+            "OPTION": {
+                "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            },
+        }
+    }
+
+    # 서버에 DB 올릴때 쓰는 코드
     DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
     AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
