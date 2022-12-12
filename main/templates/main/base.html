@@ -350,8 +350,6 @@
             const songImg = song.querySelector('img')
             songImg.src = `https://i.ytimg.com/vi/${videoIDs[currentVideoId]}/hqdefault.jpg`
             bottomPlayer.classList.add('d-none')
-            const footer = document.querySelector('div.footer')
-            footer.classList.add('d-none')
             if (document.querySelector('#playlist-bottom')) {
               const body = document.querySelector('body')
               body.style.overflow = 'hidden'
