@@ -49,7 +49,7 @@
   </div>
 </div>
 <!-- 클릭하면 바로 공유되는 폼 -->
-<form id="article-create-form" action="create/" method="POST">
+<form id="article-create-form" action="/create/" method="POST">
   {% csrf_token %}
   <input type="hidden" id="vidid" name="vidid" value="">
   <input type="hidden" id="place" name="place" value="">
@@ -109,14 +109,16 @@
   imgBtn.addEventListener('click', function(e) {
     const articleCreateForm = document.querySelector('#article-create-form')
     articleCreateForm.vidid.value = videoIDs[index]
-    articleCreateForm.place.value = "서울"
+    const place = document.querySelector('#base-place-1').innerText
+    articleCreateForm.place.value = place
     articleCreateForm.submit()
   })
 
   imgBtn.addEventListener('touch', function(e) {
     const articleCreateForm = document.querySelector('#article-create-form')
     articleCreateForm.vidid.value = videoIDs[index]
-    articleCreateForm.place.value = "서울"
+    const place = document.querySelector('#base-place-1').innerText
+    articleCreateForm.place.value = place
     articleCreateForm.submit()
   })
 

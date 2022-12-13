@@ -103,7 +103,7 @@
           <p class="mt-3 opacity-25 text-truncate">{{ article.song }}</p>
         </div>
       {% else %}
-        <p class="my-0 px-5 text-truncate"> 첫 번째 글을 작성해 주세요. </p>
+        <p class="my-0 px-5"> 첫 번째 글을 작성해 주세요. </p>
       {% endif %}
       </div>
       
@@ -161,8 +161,8 @@
     <div class="row d-flex justify-content-between">    
       
       {% comment %} 유저 정보 {% endcomment %}
+      {% if top_article %}
       <div class="col-2 ms-5">
-        {% if top_article %}
         <a href="{% url 'accounts:detail' top_article.user.pk %}">
           <div class="d-flex flex-column align-items-center mb-0 mt-3 p-0">
           {% if top_article.user.user_img %}
@@ -182,10 +182,10 @@
           <p class="my-0 text-truncate">{{ top_article.content }}</p>
           <p class="mt-3 opacity-25 text-truncate">{{ top_article.song }}</p>
         </div>
-      {% else %}
-      <p class="my-0 px-5 text-truncate"> 첫 번째 글을 작성해 주세요. </p>
-      {% endif %}
       </div>
+      {% else %}
+      <p class="my-0 px-5"> 첫 번째 글을 작성해 주세요. </p>
+      {% endif %}
 
     </div>
     <hr>
