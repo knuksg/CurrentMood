@@ -1,4 +1,4 @@
-// csrftoken 생성
+// // csrftoken 생성
 function getCookie(name) {
     var cookieValue = null;
     if (document.cookie && document.cookie !== '') {
@@ -14,11 +14,10 @@ function getCookie(name) {
     }
     return cookieValue;
   }
-  
-  var csrftoken = getCookie('csrftoken');
-  
-  
-  
+
+var csrftoken = getCookie('csrftoken');
+// var csrftoken = Cookies.get('csrftoken');
+
   // web geolocation으로 좌표값 가져오기
   var options = {
     enableHighAccuracy: false,
@@ -32,15 +31,15 @@ function getCookie(name) {
     var crd = pos.coords;
     // const usrCrd = [crd.latitude,crd.longitude]
     // result.innerHTML= [crd.latitude,crd.longitude]
-    localStorage.setItem('crds',usrCrd)
-    const request = new XMLHttpRequest;
-    request.open('POST','http://127.0.0.1:8000/locations/')
-    request.setRequestHeader("X-CSRFToken", csrftoken); 
-    request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-    request.send(`userLocation=${usrCrd}`)
-    request.onreadystatechange=function(event){
-    console.log('location send')
-  }
+    // localStorage.setItem('crds',usrCrd)
+    // const request = new XMLHttpRequest;
+    // request.open('POST','http://127.0.0.1:8000/locations/')
+    // request.setRequestHeader("X-CSRFToken", csrftoken); 
+    // request.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+    // request.send(`userLocation=${usrCrd}`)
+    // request.onreadystatechange=function(event){
+    // console.log('location send')
+    // }
   }
   
   function error(err) {

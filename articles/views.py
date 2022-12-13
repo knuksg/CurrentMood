@@ -20,10 +20,10 @@ import json
 # Create your views here.
 def private(request):
     comment_form = CommentForm()
-
-    # 임시로 서울로 설정함. 현재 위치 받아오게 되면 현재 위치 기준으로 설정하면 됨.
+    # 현재위치 가져오기 : 동 단위
+    user_position = Place.objects.order_by("-id").values()[0]["name"].split(" ")
     song_queryset = (
-        Article.objects.filter(place__icontains="서울")
+        Article.objects.filter(place__icontains=user_position[0])
         .values("song")
         .annotate(Count("id"))
     )
@@ -33,9 +33,11 @@ def private(request):
         song_list.append(song)
 
     # 해당 위치 작성 글 가져오기
-    articles = Article.objects.filter(place__icontains="서울").order_by("-pk")
+    articles = Article.objects.filter(place__icontains=user_position[0]).order_by("-pk")
     if articles:
-        top_article = Article.objects.filter(place__icontains="서울").order_by("-pk")[0]
+        top_article = Article.objects.filter(
+            place__icontains=user_position[0]
+        ).order_by("-pk")[0]
     else:
         top_article = ""
 
@@ -49,9 +51,10 @@ def private(request):
 
 
 def index(request):
-    # 임시로 서울로 설정함. 현재 위치 받아오게 되면 현재 위치 기준으로 설정하면 됨.
+    # 현재위치 가져오기 : 동 단위
+    user_position = Place.objects.order_by("-id").values()[0]["name"].split(" ")
     song_queryset = (
-        Article.objects.filter(place__icontains="서울")
+        Article.objects.filter(place__icontains=user_position[0])
         .values("song")
         .annotate(Count("id"))
         .order_by("-id__count")
@@ -61,7 +64,7 @@ def index(request):
         song = Song.objects.get(id=song_id["song"])
         song_list.append(song)
     carousel_list = song_list[1:]
-    articles = Article.objects.filter(place__icontains="서울").order_by("-pk")
+    articles = Article.objects.filter(place__icontains=user_position[0]).order_by("-pk")
     context = {
         "articles": articles,
         "song_list": song_list,

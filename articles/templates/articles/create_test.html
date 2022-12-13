@@ -39,11 +39,12 @@
           <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQjvkVCuRWteXvMvioRJZ0P24bi_XSHaw&callback=initMap&libraries=marker,places&region=KR&v=beta" defer></script>
           <script>
             let map, infoWindow;
-      
+            const coords = localStorage.getItem('crds').split(",").map(Number)
+            const userCoords = { lat: coords[0], lng: coords[1] };
             function initMap() {
               
               map = new google.maps.Map(document.getElementById("map"), {
-                center: { lat: -34.397, lng: 150.644 },
+                center: userCoords,
                 zoom: 17,
                 gestureHandling: "none",
                 zoomControl: false,
@@ -51,55 +52,30 @@
                 mapId: '67b4df68bf916aff',
               });
       
-              if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(
-                  (position) => {
-                    const pos = {
-                      lat: position.coords.latitude,
-                      lng: position.coords.longitude,
-                    };
-      
-                    map.setCenter(pos);
-
-                    var geocoder = new google.maps.Geocoder
-
-                    geocoder.geocode({'location': pos}, function(results, status) {
-                      if (status === 'OK') {
-                        var placeId = results[0].place_id
-                        console.log(placeId)
-
-                        var request = {
-                          placeId: placeId,
-                          fields: ['address_component', 'adr_address', 'business_status', 'formatted_address', 'geometry', 'icon', 'icon_mask_base_uri', 'icon_background_color', 'name', 'photo', 'place_id', 'plus_code', 'type', 'url', 'utc_offset_minutes', 'vicinity'],
-                        };
-    
-                        service = new google.maps.places.PlacesService(map);
-                        service.getDetails(request, callback);
-
-                        function callback(place, status) {
-                          console.log(place)
-                          if (status == google.maps.places.PlacesServiceStatus.OK) {
-                              var markerView = new google.maps.Marker({
-                                map: map,
-                                position: pos,
-                              })
-                              const searchPlaceInput = document.querySelector('#search-place-input')
-                              searchPlaceInput.value = place.name
-                          }
-                        }
-                      } else {
-                        console.log('잘못된 주소.')
-                      }
-                    })
-                  },
-                  () => {
-                    handleLocationError(true, infoWindow, map.getCenter());
+              const locationButton = document.createElement("button");
+              locationButton.textContent = "현재위치로";
+              locationButton.classList.add("custom-map-control-button");
+              map.controls[google.maps.ControlPosition.TOP_CENTER].push(locationButton);
+              locationButton.addEventListener("click", () => {
+                const pos = {
+                  // lat: position.coords.latitude,
+                  // lng: position.coords.longitude,
+                    lat : coords[0],
+                    lng : coords[1],
+                  };
+                  map.setCenter(pos);
+                  if (navigator.geolocation==false){
+                    handleLocationError(false, infoWindow, map.getCenter());
                   }
+                },
+                function handleLocationError(browserHasGeolocation) {
+                console.log(
+                  browserHasGeolocation
+                    ? "Error: The Geolocation service failed."
+                    : "Error: Your browser doesn't support geolocation."
                 );
-              } else {
-                // Browser doesn't support Geolocation
-                handleLocationError(false, infoWindow, map.getCenter());
               }
+              )
       
               map.addListener("click", () => {
                 // 3 seconds after the center of the map has changed, pan back to the
@@ -111,7 +87,7 @@
                     searchPlaceInput.value = searchPlace
                     
                   }
-                }, 1000);
+                }, 500);
               });
   
             }
