@@ -69,7 +69,11 @@
     {% for article in articles %}
       <div class="article_card mt-5 mx-1">
         <div class="article_card_image">
+          {% if article.user.user_img %}
           <img src="{{ article.user.user_img.url }}">
+          {% else %}
+          <img src="{{ article.song.hqdefault }}" alt="">
+          {% endif %}
         </div>
         <a href="{% url 'articles:detail' article.pk %}">
           <div class="article_card_title title-white pt-3">
