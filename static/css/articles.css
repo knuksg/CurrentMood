@@ -9,7 +9,6 @@
 }
 
 .private-player--write {
-  position: absolute;
   top: 17.5rem;
   right: 1rem;
 }
@@ -295,6 +294,7 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  border-radius: 75px;
 }
 
 .card--image img {
@@ -330,7 +330,7 @@
   background: #FDA8CF;
   border-radius: 75px;
   z-index: -1;
-  animation: 1.5s clockwise infinite ease;
+  animation: 1s clockwise infinite ease;
 }
 
 .card--div:hover:after {
@@ -639,4 +639,83 @@ box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.2
   border-radius: 5px;
   font-size: 1.5vw;
   padding: 3px 9px;
+}
+
+/* ########### 좋아요 버튼 ############# */
+
+.heart-like-button {
+  position: relative;
+  width: 160px;
+  height: 130px;
+}
+
+.heart-like-button:before {
+  position: absolute;
+  top: 0;
+  left: 80px;
+  transform: rotate(-45deg);
+  transform-origin: 0 100%;
+  width: 80px;
+  height: 125px;
+  border-radius: 40px 40px 0 0;
+  background-color: #574136;
+  content: "";
+  cursor: pointer;
+  transition: background .4s;
+}
+
+.heart-like-button:after {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: rotate(45deg);
+  transform-origin: 100% 100%;
+  width: 80px;
+  height: 125px;
+  border-radius: 40px 40px 0 0;
+  background-color: #574136;
+  content: "";
+  cursor: pointer;
+  transition: background .4s;
+}
+
+h1 {
+  margin: 0;
+  color: #574136;
+  font-size: 3rem;
+  letter-spacing: 1px;
+  text-align: center;
+}
+
+.heart-like-button.liked::before,
+.heart-like-button.liked::after {
+  background-color: #d65076;
+}
+
+.heart-like-button.liked {
+  animation: liked .4s ease;
+}
+
+@keyframes liked {
+  0% {
+    transform: scale(.8);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #container {
+    height: auto;
+  }
+
+  h1 {
+    font-size: 2.5rem;
+  }
 }
