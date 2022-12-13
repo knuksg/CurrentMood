@@ -34,8 +34,9 @@
           <input id="search-place-input" type="text" id="place" name="place" class="w-100" readonly placeholder='장소를 선택해주세요.'>
           <!-- 지도 -->
           <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+          
           <div id="map" class="mb-3" style="width: 295px; height: 295px;"></div>
-          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQjvkVCuRWteXvMvioRJZ0P24bi_XSHaw&libraries=places&region=KR&callback=initMap&v=weekly" defer></script>
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQjvkVCuRWteXvMvioRJZ0P24bi_XSHaw&callback=initMap&libraries=marker,places&region=KR&v=beta" defer></script>
           <script>
             let map, infoWindow;
       
@@ -47,6 +48,7 @@
                 gestureHandling: "none",
                 zoomControl: false,
                 disableDefaultUI: true,
+                mapId: '67b4df68bf916aff',
               });
       
               if (navigator.geolocation) {
@@ -58,6 +60,37 @@
                     };
       
                     map.setCenter(pos);
+
+                    var geocoder = new google.maps.Geocoder
+
+                    geocoder.geocode({'location': pos}, function(results, status) {
+                      if (status === 'OK') {
+                        var placeId = results[0].place_id
+                        console.log(placeId)
+
+                        var request = {
+                          placeId: placeId,
+                          fields: ['address_component', 'adr_address', 'business_status', 'formatted_address', 'geometry', 'icon', 'icon_mask_base_uri', 'icon_background_color', 'name', 'photo', 'place_id', 'plus_code', 'type', 'url', 'utc_offset_minutes', 'vicinity'],
+                        };
+    
+                        service = new google.maps.places.PlacesService(map);
+                        service.getDetails(request, callback);
+
+                        function callback(place, status) {
+                          console.log(place)
+                          if (status == google.maps.places.PlacesServiceStatus.OK) {
+                              var markerView = new google.maps.Marker({
+                                map: map,
+                                position: pos,
+                              })
+                              const searchPlaceInput = document.querySelector('#search-place-input')
+                              searchPlaceInput.value = place.name
+                          }
+                        }
+                      } else {
+                        console.log('잘못된 주소.')
+                      }
+                    })
                   },
                   () => {
                     handleLocationError(true, infoWindow, map.getCenter());
@@ -80,9 +113,9 @@
                   }
                 }, 1000);
               });
-      
+  
             }
-      
+
             function handleLocationError(browserHasGeolocation, infoWindow, pos) {
               infoWindow.setPosition(pos);
               infoWindow.setContent(
