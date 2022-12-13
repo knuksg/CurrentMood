@@ -6,7 +6,7 @@
 {% endblock %}
 {% block body %}
 
-<div class="songDetail__container d-flex flex-column align-items-center"> 
+<di class="songDetail__container d-flex flex-column align-items-center"> 
   <div class="card mt-5">
     <div class="card--image card--div">
       {% comment %} <img src="{% static 'image/bbibbi.jpg' %}" alt="" id="getColor"> {% endcomment %}
@@ -26,11 +26,48 @@
       </div>
     </div>
   </div>
-  
+
+  <!-- 좋아요 -->
+  <div class="songDetail--likeBtn mt-5 mb-3">
+    <form class='like-forms' data-song-id="{{ song.pk }}">
+      {% csrf_token %}
+      {% if request.user in song.like_users.all %}
+        <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+          id='like-btn-{{ song.pk }}'>
+          <i class="bi bi-heart-fill" id='heart-{{ song.pk }}' style="color: red; font-size: 2.5rem; z-index: 1;" name="heart"></i> 
+        </button>
+      {% else %}
+        <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+          id='like-btn-{{ song.pk }}'>
+          <i class="bi bi-heart" id='heart-{{ song.pk }}' style="color: red; font-size: 2.5rem;" name="heart"></i> 
+        </button>
+      {% endif %}
+    </form>
+  </div>
+
+
+  {% comment %} 글 작성 버튼 {% endcomment %}
+  <div class="private-player--write position-absolute end-0 me-2">
+    <a href="{% url 'articles:index' %}">
+      <lord-icon
+          src="https://cdn.lordicon.com/wloilxuq.json"
+          trigger="loop-on-hover"
+          delay="500"
+          colors="primary:#ffffff,secondary:#6c16c7"
+          style="width:10vw; height:10vh; transform: rotate(30deg);">
+      </lord-icon>
+    </a>
+  </div>
+
+  <div>
+    <h6 class="position-absolute start-0 border-bottom pb-2 ps-2" style="width: 100%;">작성된 글</h6>
+  </div>
+
   {% comment %} 사연 {% endcomment %}
+  {% if articles %}
   <div class="article_cards-list mt-5 row-cols-3">
     {% for article in articles %}
-      <div class="article_card mx-1">
+      <div class="article_card mt-5 mx-1">
         <div class="article_card_image">
           <img src="{{ article.user.user_img.url }}">
         </div>
@@ -42,39 +79,15 @@
       </div>
     {% endfor %}
   </div>
-</div>
+  {% else %}
+  <a href="">
+    <div class="bg-dark pt-2 d-flex justify-content-center align-items-center" style="width: 80vw; height: 100px; margin-top: 70px;">
+      <p>첫 번째 글을 작성해 주세요.</p>
+    </div>
+  </a>
+  {% endif %}
 
 
-<!-- 좋아요 -->
-
-{% comment %} {% if request.user in song.like_users.all %}
-<a href="{% url 'articles:songlike' song.pk %}" class="position-absolute top-0 end-0" style="margin: 1rem 1rem 0rem 0; text-decoration: none">
-  <i class="bi bi-heart-fill" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"></i> 
-</a>
-{% else %}
-<a href="{% url 'articles:songlike' song.pk %}" class="position-absolute top-0 end-0" style="margin: 1rem 1rem 0rem 0; text-decoration: none">
-  <i class="bi bi-heart" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"></i> 
-</a>
-{% endif %} {% endcomment %}
-<p>{{ song }}</p>
-<p>{{ song.pk }}</p>
-<p>{{ song.vidid }}</p>
-
-<div>
-  <form class='like-forms' data-song-id="{{ song.pk }}">
-    {% csrf_token %}
-    {% if request.user in song.like_users.all %}
-      <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
-        id='like-btn-{{ song.pk }}'>
-        <i class="bi bi-heart-fill" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"></i> 
-      </button>
-    {% else %}
-      <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
-        id='like-btn-{{ song.pk }}'>
-        <i class="bi bi-heart" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"></i> 
-      </button>
-    {% endif %}
-  </form>
 </div>
 
 
@@ -119,7 +132,7 @@
   {% endcomment %}
 
 
-  /* 
+  
   var rgb = getAverageRGB(document.querySelector('#getColor'));
   console.log(rgb);
 
@@ -181,7 +194,7 @@
     rgb.b = ~~(rgb.b/count);
     
     return rgb;
-  } */
+  } 
 </script>
 
 <script>
@@ -220,6 +233,7 @@
             // likeCount.innerText = response.data.likeCount
             console.log('true')
           } else {
+            heart.classList.remove('liked')
             heart.classList.remove('bi-heart-fill')
             heart.classList.add('bi-heart')
             // likeCount.innerText = response.data.likeCount

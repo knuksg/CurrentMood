@@ -1,6 +1,11 @@
 from django.db import models
 from django.conf import settings
 
+# 썸네일 저장
+from django.core.files import File
+import urllib.request
+import os
+
 
 # Create your models here.
 class Song(models.Model):

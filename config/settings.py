@@ -160,28 +160,28 @@ if DEBUG:
     #     }
     # }
     # 서버에 DB 올릴때 쓰는 코드
-    DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
+    # DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 
-    AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
-    AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
-    AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
+    # AWS_ACCESS_KEY_ID = os.getenv("AWS_ACCESS_KEY_ID")
+    # AWS_SECRET_ACCESS_KEY = os.getenv("AWS_SECRET_ACCESS_KEY")
+    # AWS_STORAGE_BUCKET_NAME = os.getenv("AWS_STORAGE_BUCKET_NAME")
 
-    AWS_REGION = "ap-northeast-2"
-    AWS_S3_CUSTOM_DOMAIN = "%s.s3.%s.amazonaws.com" % (
-        AWS_STORAGE_BUCKET_NAME,
-        AWS_REGION,
-    )
+    # AWS_REGION = "ap-northeast-2"
+    # AWS_S3_CUSTOM_DOMAIN = "%s.s3.%s.amazonaws.com" % (
+    #     AWS_STORAGE_BUCKET_NAME,
+    #     AWS_REGION,
+    # )
 
-    DATABASES = {
-        "default": {
-            "ENGINE": "django.db.backends.postgresql",
-            "NAME": os.getenv("DATABASE_NAME"),
-            "USER": "postgres",
-            "PASSWORD": os.getenv("DATABASE_PASSWORD"),
-            "HOST": os.getenv("DATABASE_HOST"),
-            "PORT": "5432",
-        }
-    }
+    # DATABASES = {
+    #     "default": {
+    #         "ENGINE": "django.db.backends.postgresql",
+    #         "NAME": os.getenv("DATABASE_NAME"),
+    #         "USER": "postgres",
+    #         "PASSWORD": os.getenv("DATABASE_PASSWORD"),
+    #         "HOST": os.getenv("DATABASE_HOST"),
+    #         "PORT": "5432",
+    #     }
+    # }
 else:
     DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
 

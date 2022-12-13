@@ -35,13 +35,6 @@
     </div>
   </div>
 
-  {% comment %} 글 작성 버튼 {% endcomment %}
-  <div class="private-player--write">
-    <a href="{% url 'articles:index' %}">
-      <h3><i class="bi bi-pencil-square"></i></h3>
-    </a>
-  </div>
-
   <div style="height: 10vh;"></div>
 
   {% comment %} 캐러셀1 {% endcomment %}
@@ -146,7 +139,22 @@
 
   <div class="my-5"></div>
 
+
+  {% comment %} 글 작성 버튼 {% endcomment %}
+  <div class="private-player--write d-flex justify-content-end me-2">
+    <a href="{% url 'articles:index' %}">
+      <lord-icon
+          src="https://cdn.lordicon.com/wloilxuq.json"
+          trigger="loop-on-hover"
+          delay="500"
+          colors="primary:#ffffff,secondary:#6c16c7"
+          style="width:10vw; height:10vh; transform: rotate(30deg);">
+      </lord-icon>
+    </a>
+  </div>
+
   <hr>
+
   <!-- 댓글창 : 클릭 전 -->
   <div onclick="openNav()">
 
@@ -186,7 +194,8 @@
   {% comment %} ################## {% endcomment %}
   {% comment %} ################## {% endcomment %}
   {% comment %} ################## {% endcomment %}
-  
+
+
 
 {% endblock body %}
 
