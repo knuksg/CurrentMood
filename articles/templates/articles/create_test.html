@@ -34,8 +34,9 @@
           <input id="search-place-input" type="text" id="place" name="place" class="w-100" readonly placeholder='장소를 선택해주세요.'>
           <!-- 지도 -->
           <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+          
           <div id="map" class="mb-3" style="width: 295px; height: 295px;"></div>
-          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQjvkVCuRWteXvMvioRJZ0P24bi_XSHaw&libraries=places&region=KR&callback=initMap&v=weekly" defer></script>
+          <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBQjvkVCuRWteXvMvioRJZ0P24bi_XSHaw&callback=initMap&libraries=marker,places&region=KR&v=beta" defer></script>
           <script>
             let map, infoWindow;
             const coords = localStorage.getItem('crds').split(",").map(Number)
@@ -48,6 +49,7 @@
                 gestureHandling: "none",
                 zoomControl: false,
                 disableDefaultUI: true,
+                mapId: '67b4df68bf916aff',
               });
       
               const locationButton = document.createElement("button");
@@ -87,9 +89,9 @@
                   }
                 }, 500);
               });
-      
+  
             }
-      
+
             function handleLocationError(browserHasGeolocation, infoWindow, pos) {
               infoWindow.setPosition(pos);
               infoWindow.setContent(
