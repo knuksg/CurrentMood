@@ -205,15 +205,18 @@
           const likeCount = document.querySelector(`#like-count-${songId}`)
           const isLiked = response.data.is_liked
           const heart = document.querySelector(`#heart-${songId}`)
+          console.log(isLiked)
 
           if (isLiked === true) {
             heart.classList.add('bi-heart-fill')
             heart.classList.remove('bi-heart')
             // likeCount.innerText = response.data.likeCount
+            console.log('true')
           } else {
             heart.classList.remove('bi-heart-fill')
             heart.classList.add('bi-heart')
             // likeCount.innerText = response.data.likeCount
+            console.log('false')
           }
 
         })
