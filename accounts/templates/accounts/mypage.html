@@ -96,14 +96,20 @@
   </div>
   {% if user.article_set.all %}
     {% for article in user.article_set.all|slice:":5" %}
-    <ul>
+    <ul class="position-relative">
       <a href="{% url 'articles:detail' article.pk %}" class="box__menu">
-        <li><img class="box-img" src="{{ article.song.hqdefault }}"></li>
+        <li style="width: 20vw;"><img class="box-img" src="{{ article.song.hqdefault }}" style="width:15vw;"></li>
         <li class="box__menu--song">{{ article.song }}</li>  
         <li>{{ article.place }}</li>  
       </a>
+      <li class="position-absolute" style="top: 50%; right: 15px; transform: translate(0%, -50%)">
+        <a href="{% url 'articles:update' article.pk %}"><i id="comment-update" class="fa-solid fa-pen d-none"></i></a>
+        <a href="{% url 'articles:delete' article.pk %}"><i id="comment-delete" class="bi bi-trash3-fill d-none"></i></a>
+      </li>
     </ul>
+    
     {% endfor %}
+    
     {% if user.article_set.all.count > 5 %}
     <a href="{% url 'accounts:mylist' %}">더보기</a>
     {% endif %}
@@ -119,16 +125,18 @@
   </div>
   {% if user.like_song.all %}
     {% for song in user.like_song.all|slice:":5" %}
-    <ul>
-      <li>
+    <ul class="position-relative">
+      {% comment %} <li>
         <img src="{{ song.mqdefault }}">
       </li>
-      <li>{{ song.title }}  -  {{ song.channel }}</li>
-      {% comment %} <a href="{% url 'articles:detail' article.pk %}"  class="box__menu">
-        <li><img src="{{ article.song.hqdefault }}" style="width:50px;"></li>
-        <li class="box__menu--song">{{ article.song }}</li>  
-        <li>{{ article.content }}</li>
-      </a> {% endcomment %}
+      <li>{{ song.title }}  -  {{ song.channel }}</li> {% endcomment %}
+      <a href="{% url 'articles:song_detail' song.vidid %}" class="box__menu">
+        <li style="width: 30vw;"><img src="{{ song.hqdefault }}" style="width: 20vw;"></li>
+        <li class="box__menu--song">{{ song.title }}</li>  
+      </a>
+      <div class="position-absolute" style="top: 50%; right: 15px; transform: translate(0%, -50%)">
+        <a href="#"><i id="like-delete" class="bi bi-trash3-fill d-none"></i></a>
+      </div>
     </ul>
     {% endfor %}
     {% if user.like_song.all > 5 %}
