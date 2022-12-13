@@ -45,6 +45,9 @@
       <a href="{% url 'articles:song_detail' song.vidid %}">
         <div class="box">
           <img src="{{ song.hqdefault }}">
+          <input class="title" type="hidden" value="{{ song.title }}">
+          <input class="channel" type="hidden" value="{{ song.channel }}">
+          <input class="vidid" type="hidden" value="{{ song.vidid }}">
         </div>
       </a>
       {% endfor %}
@@ -89,32 +92,7 @@
       {% else %}
         <p class="my-0 px-5"> 첫 번째 글을 작성해 주세요. </p>
       {% endif %}
-      </div>
-      
-      {% comment %} 좋아요 {% endcomment %}
-      {% comment %} <div class="col-1 d-flex">
-        <div class="align-self-center">
-          <form class='like-forms' data-article-id="{{ article.pk }}">
-            {% csrf_token %}
-            {% if request.user in article.like_users.all %}
-              <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
-                id='like-btn-{{ article.pk }}'>
-                <i class="bi bi-heart-fill" id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" name="heart">
-                  <span id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span>
-                </i> 
-              </button>
-            {% else %}
-              <button type=" submit" class="d-flex text-center" style="border: 0px; background: transparent;"
-                id='like-btn-{{ article.pk }}'>
-                <i class="bi bi-heart" id='heart-{{ article.pk }}' style="color: red; font-size: 1.5rem;" name="heart">
-                  <span id='like-count-{{ article.pk }}'>{{ article.like_users.count }}</span>
-                </i> 
-              </button>
-            {% endif %}
-          </form>
-        </div>
-      </div> {% endcomment %}
-      
+      </div>     
     </div>
 
     <hr>
@@ -178,8 +156,6 @@
   {% comment %} ################## {% endcomment %}
   {% comment %} ################## {% endcomment %}
   {% comment %} ################## {% endcomment %}
-
-
 
 {% endblock body %}
 

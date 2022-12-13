@@ -6,12 +6,17 @@
 {% endblock %}
 {% block body %}
 
-<di class="songDetail__container d-flex flex-column align-items-center"> 
+<div class="songDetail__container d-flex flex-column align-items-center"> 
   <div class="card mt-5">
     <div class="card--image card--div">
       {% comment %} <img src="{% static 'image/bbibbi.jpg' %}" alt="" id="getColor"> {% endcomment %}
       {% comment %} <p class="card--image--url d-none">{{ song.vidid }}</p> {% endcomment %}
-      <img src="https://i.ytimg.com/vi/{{ song.vidid }}/maxresdefault.jpg" alt="" id="getColor">
+      <div class="detail-music">
+        <img src="https://i.ytimg.com/vi/{{ song.vidid }}/maxresdefault.jpg" alt="" id="getColor">
+        <input id="{{ song.vidid }}" class="vidid" type="hidden">
+        <input id="{{ song.title }}" class="title" type="hidden">
+        <input id="{{ song.channel }}" class="channel" type="hidden">
+      </div>
     </div>
 
     <div class="card--info info--1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ song.title }}">
