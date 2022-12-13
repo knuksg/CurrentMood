@@ -19,11 +19,40 @@ import json
 
 # Create your views here.
 def private(request):
+    if request.method == "POST":
+        place = request.POST.get('place-to-view-input', '')
+        comment_form = CommentForm()
+
+        song_queryset = (
+            Article.objects.filter(place__icontains=place)
+            .values("song")
+            .annotate(Count("id"))
+        )
+        song_list = []
+        for song_id in song_queryset:
+            song = Song.objects.get(id=song_id["song"])
+            song_list.append(song)
+
+        # 해당 위치 작성 글 가져오기
+        articles = Article.objects.filter(place__icontains=place).order_by("-pk")
+        if articles:
+            top_article = Article.objects.filter(place__icontains=place).order_by("-pk")[0]
+        else:
+            top_article = ""
+
+        context = {
+            "comment_form": comment_form,
+            "top_article": top_article,
+            "articles": articles,
+            "song_list": song_list,
+            "place": place,
+        }
+        return render(request, "articles/private.html", context)
+    place = request.COOKIES.get('key')
+    print(place)
     comment_form = CommentForm()
-    # 현재위치 가져오기 : 동 단위
-    # user_position = Place.objects.order_by("-id").values()[0]["name"].split(" ")
     song_queryset = (
-        Article.objects.filter(place__icontains="서울")
+        Article.objects.filter(place__icontains=place)
         .values("song")
         .annotate(Count("id"))
     )
@@ -33,9 +62,9 @@ def private(request):
         song_list.append(song)
 
     # 해당 위치 작성 글 가져오기
-    articles = Article.objects.filter(place__icontains="서울").order_by("-pk")
+    articles = Article.objects.filter(place__icontains=place).order_by("-pk")
     if articles:
-        top_article = Article.objects.filter(place__icontains="서울").order_by("-pk")[0]
+        top_article = Article.objects.filter(place__icontains=place).order_by("-pk")[0]
     else:
         top_article = ""
 
@@ -44,6 +73,7 @@ def private(request):
         "top_article": top_article,
         "articles": articles,
         "song_list": song_list,
+        "place": place,
     }
     return render(request, "articles/private.html", context)
 
@@ -95,13 +125,13 @@ def create(request):
                     default=default,
                     mqdefault=mqdefault,
                 )
-            Article.objects.create(
+            new_article = Article.objects.create(
                 user=request.user,
                 place=place,
                 content=content,
                 song=song,
             )
-            return redirect("articles:index")
+            return redirect("articles:detail", new_article.pk)
         else:
             return redirect("articles:create")
     return render(request, "articles/create.html")
@@ -157,7 +187,7 @@ def update(request, pk):
             article.content = content
             article.song = song
             article.save(update_fields=["user", "place", "content", "song"])
-            return redirect("articles:index")
+            return redirect("articles:detail", article.pk)
         else:
             return redirect("articles:update", pk)
     context = {
