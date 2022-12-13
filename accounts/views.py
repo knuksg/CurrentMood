@@ -263,7 +263,7 @@ def profile_music_delete(request, pk):
     context = {
         "user": user,
     }
-    return redirect("accounts:mylist")
+    return redirect("accounts:mypage")
 
 
 @login_required
