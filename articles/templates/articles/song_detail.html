@@ -188,7 +188,7 @@
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
   const forms = document.querySelectorAll('.like-forms')
-  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+  const songlikecsrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
   forms.forEach((form) => {
     form.addEventListener('submit', function (event) {
@@ -198,28 +198,28 @@
       axios({
         method: 'post',
         url: `/${event.target.dataset.songId}/songlike/`,
-        headers: { 'X-CSRFToken': csrftoken },
+        headers: { 'X-CSRFToken': songlikecsrftoken },
       })
         .then((response) => {
           const likeBtn = document.querySelector(`#like-btn-${songId}`)
           const likeCount = document.querySelector(`#like-count-${songId}`)
           const isLiked = response.data.is_liked
           const heart = document.querySelector(`#heart-${songId}`)
-          console.log(isLiked)
 
           if (isLiked === true) {
             heart.classList.add('bi-heart-fill')
             heart.classList.remove('bi-heart')
-            likeCount.innerText = response.data.likeCount
+            // likeCount.innerText = response.data.likeCount
           } else {
             heart.classList.remove('bi-heart-fill')
             heart.classList.add('bi-heart')
-            likeCount.innerText = response.data.likeCount
+            // likeCount.innerText = response.data.likeCount
           }
 
         })
         .catch((error) => {
           console.log(error.response)
+          console.log('error')
         })
     })
   })
