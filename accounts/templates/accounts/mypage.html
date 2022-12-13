@@ -54,7 +54,7 @@
   </div>
 </form>
 
-
+<!-- 프로필 뮤직 -->
 <div class="card-big-box" id="cab1">
   <div class="mylist-btn">
     <a href="{% url 'accounts:profile_music' user.pk %}"><i class="fa-solid fa-pen"></i></a>
@@ -87,7 +87,7 @@
   </div>
 </div>
 
-
+<!-- 작성한 글 목록-->
 <div class="card-big-box" id="cab2" style="display: none;">
   <div class="mylist-btn">
     <a href="#"><i id="comment-update-btn" class="fa-solid fa-pen"></i></a>
@@ -126,10 +126,6 @@
   {% if user.like_song.all %}
     {% for song in user.like_song.all|slice:":5" %}
     <ul class="position-relative">
-      {% comment %} <li>
-        <img src="{{ song.mqdefault }}">
-      </li>
-      <li>{{ song.title }}  -  {{ song.channel }}</li> {% endcomment %}
       <a href="{% url 'articles:song_detail' song.vidid %}" class="box__menu">
         <li style="width: 30vw;"><img src="{{ song.hqdefault }}" style="width: 20vw;"></li>
         <li class="box__menu--song">{{ song.title }}</li>  
