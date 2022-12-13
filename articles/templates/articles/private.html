@@ -53,22 +53,6 @@
 
   <div style="height: 10vh;"></div>
   
-  {% comment %} 캐러셀2 {% endcomment %}
-  <h2 class="ms-3 mb-2">추천 곡</h2>
-  <div class="private-carousel text-center">
-    <div class="mainSlide">
-      {% for song in song_list %}
-      <a href="{% url 'articles:song_detail' song.vidid %}">
-        <div class="box">
-          <img src="{{ song.hqdefault }}">
-        </div>
-      </a>
-      {% endfor %}
-    </div>
-  </div>
-
-  <div style="height: 10vh;"></div>
-  
   <!-- 댓글창 : 클릭 후 열린 창 -->
   <div id="mySidenav" class="sidenav border-top">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
@@ -142,7 +126,7 @@
 
   {% comment %} 글 작성 버튼 {% endcomment %}
   <div class="private-player--write d-flex justify-content-end me-2">
-    <a href="{% url 'articles:index' %}">
+    <a href="{% url 'articles:create' %}">
       <lord-icon
           src="https://cdn.lordicon.com/wloilxuq.json"
           trigger="loop-on-hover"
