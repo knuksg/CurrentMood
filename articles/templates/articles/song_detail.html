@@ -56,6 +56,9 @@
   <i class="bi bi-heart" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"></i> 
 </a>
 {% endif %} {% endcomment %}
+<p>{{ song }}</p>
+<p>{{ song.pk }}</p>
+<p>{{ song.vidid }}</p>
 
 <div>
   <form class='like-forms' data-song-id="{{ song.pk }}">
