@@ -34,11 +34,11 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
-            print(2)
+            # print(2)
             return redirect("accounts:login")
     else:
         form = CustomUserCreationForm()
-        print(3)
+        # print(3)
     context = {"form": form}
     return render(request, "accounts/signup.html", context)
 
@@ -265,9 +265,8 @@ def profile_music_delete(request, pk):
     }
     return redirect("accounts:mylist")
 
+
 @login_required
 def playlist(request):
-    context = {
-
-    }
+    context = {}
     return render(request, "accounts/playlist.html", context)
