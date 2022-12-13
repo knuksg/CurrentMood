@@ -637,8 +637,19 @@ box-shadow: 5px 5px 30px 7px rgba(0,0,0,0.25), -5px -5px 30px 7px rgba(0,0,0,0.2
   background-color: #2a2a2a00;
   border: 1px solid #626262;
   border-radius: 5px;
-  font-size: 1.5vw;
+  font-size: 0.7vw;
   padding: 3px 9px;
+}
+@media screen and (max-width: 1100px) {
+  .detail__button {
+    margin-left: 8px;
+    color: var(--text-color);
+    background-color: #2a2a2a00;
+    border: 1px solid #626262;
+    border-radius: 5px;
+    font-size: 1.5vw;
+    padding: 3px 9px;
+  }
 }
 
 /* ########### 좋아요 버튼 ############# */

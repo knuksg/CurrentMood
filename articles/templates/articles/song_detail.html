@@ -34,12 +34,12 @@
       {% if request.user in song.like_users.all %}
         <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
           id='like-btn-{{ song.pk }}'>
-          <i class="bi bi-heart-fill" id='heart-{{ song.pk }}' style="color: red; font-size: 2.5rem; z-index: 1;" name="heart"></i> 
+          <i class="fa-solid fa-heart" id='heart-{{ song.pk }}' style="color: #7E00E4; font-size: 2.5rem; z-index: 1;" name="heart"></i> 
         </button>
       {% else %}
         <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
           id='like-btn-{{ song.pk }}'>
-          <i class="bi bi-heart" id='heart-{{ song.pk }}' style="color: red; font-size: 2.5rem;" name="heart"></i> 
+          <i class="fa-regular fa-heart" id='heart-{{ song.pk }}' style="color: #7E00E4; font-size: 2.5rem;" name="heart"></i> 
         </button>
       {% endif %}
     </form>
@@ -224,14 +224,14 @@
           console.log(isLiked)
 
           if (isLiked === true) {
-            heart.classList.add('bi-heart-fill')
-            heart.classList.remove('bi-heart')
+            heart.classList.add('fa-solid')
+            heart.classList.remove('fa-regular')
             likeCount.innerText = response.data.likeCount
             console.log('true')
           } else {
             heart.classList.remove('liked')
-            heart.classList.remove('bi-heart-fill')
-            heart.classList.add('bi-heart')
+            heart.classList.remove('fa-solid')
+            heart.classList.add('fa-regular')
             likeCount.innerText = response.data.likeCount
             console.log('false')
           }
