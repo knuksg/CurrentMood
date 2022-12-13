@@ -86,12 +86,9 @@
     </div>
   </a>
   {% endif %}
-
-
 </div>
 
-
-{% comment %} <div>
+<div>
   <form class='like-forms' data-song-id="{{ song.pk }}">
     {% csrf_token %}
     {% if request.user in song.like_users.all %}
@@ -110,8 +107,7 @@
       </button>
     {% endif %}
   </form>
-</div> {% endcomment %}
-
+</div> 
 
 {% endblock body %}
 
@@ -230,13 +226,13 @@
           if (isLiked === true) {
             heart.classList.add('bi-heart-fill')
             heart.classList.remove('bi-heart')
-            // likeCount.innerText = response.data.likeCount
+            likeCount.innerText = response.data.likeCount
             console.log('true')
           } else {
             heart.classList.remove('liked')
             heart.classList.remove('bi-heart-fill')
             heart.classList.add('bi-heart')
-            // likeCount.innerText = response.data.likeCount
+            likeCount.innerText = response.data.likeCount
             console.log('false')
           }
 

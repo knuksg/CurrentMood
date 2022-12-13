@@ -54,6 +54,7 @@
   </div>
 </form>
 
+<!-- 프로필 뮤직 -->
 <div class="card-big-box" id="cab1">
   <div id="profile_music" class="my-music">
     {% if user.profile_music.vidid %}
@@ -63,11 +64,11 @@
         <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
       </div>
       <div class="my-3">
-        <div class="title">
+        <div class="my-title">
           {{ user.profile_music.title }}
         </div>
         <span> - </span>
-         <div class="channel">
+         <div class="my-channel">
           {{ user.profile_music.channel }}
          </div>
       </div>
@@ -78,13 +79,13 @@
   </div>
 </div>
 
-
+<!-- 작성한 글 목록-->
 <div class="card-big-box" id="cab2" style="display: none;">
   {% if user.article_set.all %}
   {% for article in user.article_set.all|slice:":5" %}
     <ul>
       <a href="{% url 'articles:detail' article.pk %}" class="box__menu">
-        <li><img class="box-img" src="{{ article.song.hqdefault }}"></li>
+        <li style="width: 20vw;"><img class="box-img" src="{{ article.song.hqdefault }}" style="width:15vw;"></li>
         <li class="box__menu--song">{{ article.song }}</li>  
         <li>{{ article.place }}</li>  
       </a>
@@ -98,25 +99,28 @@
   {% endif %}
 </div>
 
+<!-- 좋아요한 곡 목록 비동기 -->
 <div class="card-big-box" id="cab3" style="display: none;">
-  {% if user.like_article.all %}
-    {% for article in user.like_article.all %}
-    <ul>
-      <a href="{% url 'articles:detail' article.pk %}"  class="box__menu">
-        <li><img src="{{ article.song.hqdefault }}" style="width:50px;"></li>
-        <li class="box__menu--song">{{ article.song }}</li>  
-        <li>{{ article.content }}</li>
-      </a>
-    </ul>
-    {% endfor %}
+  {% if user.like_song.all %}
+  {% for song in user.like_song.all|slice:":5" %}
+  <ul class="position-relative">
+    <a href="{% url 'articles:song_detail' song.vidid %}" class="box__menu">
+      <li style="width: 30vw;"><img src="{{ song.hqdefault }}" style="width: 20vw;"></li>
+      <li class="box__menu--song">{{ song.title }}</li>  
+    </a>
+    <div class="position-absolute" style="top: 50%; right: 15px; transform: translate(0%, -50%)">
+      <a href="#"><i id="like-delete" class="bi bi-trash3-fill d-none"></i></a>
+    </div>
+  </ul>
+  {% endfor %}
+  {% if user.like_song.all > 5 %}
+  <a href="{% url 'accounts:mylist' %}">더보기</a>
+  {% endif %}
   {% else %}
-  <p class="my-3">좋아요한 글이 없습니다</p>
+  <p class="my-3">좋아요한 곡이 없습니다</p>
   {% endif %}
 </div>
 
-
-<hr>
-<a href="{% url 'articles:index' %}">뒤로가기</a>
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>

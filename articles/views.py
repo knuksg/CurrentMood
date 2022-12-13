@@ -20,8 +20,8 @@ import json
 # Create your views here.
 def private(request):
     comment_form = CommentForm()
-
-    # 임시로 서울로 설정함. 현재 위치 받아오게 되면 현재 위치 기준으로 설정하면 됨.
+    # 현재위치 가져오기 : 동 단위
+    # user_position = Place.objects.order_by("-id").values()[0]["name"].split(" ")
     song_queryset = (
         Article.objects.filter(place__icontains="서울")
         .values("song")
@@ -49,7 +49,8 @@ def private(request):
 
 
 def index(request):
-    # 임시로 서울로 설정함. 현재 위치 받아오게 되면 현재 위치 기준으로 설정하면 됨.
+    # 현재위치 가져오기 : 동 단위
+    # user_position = Place.objects.order_by("-id").values()[0]["name"].split(" ")
     song_queryset = (
         Article.objects.filter(place__icontains="서울")
         .values("song")
@@ -102,7 +103,7 @@ def create(request):
             )
             return redirect("articles:index")
         else:
-            return redirect("articles:create")
+            return render(request, "articles/create.html")
     return render(request, "articles/create.html")
 
 
