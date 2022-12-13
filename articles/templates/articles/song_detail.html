@@ -47,7 +47,7 @@
 
 <!-- 좋아요 -->
 
-{% if request.user in song.like_users.all %}
+{% comment %} {% if request.user in song.like_users.all %}
 <a href="{% url 'articles:songlike' song.pk %}" class="position-absolute top-0 end-0" style="margin: 1rem 1rem 0rem 0; text-decoration: none">
   <i class="bi bi-heart-fill" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"></i> 
 </a>
@@ -55,7 +55,24 @@
 <a href="{% url 'articles:songlike' song.pk %}" class="position-absolute top-0 end-0" style="margin: 1rem 1rem 0rem 0; text-decoration: none">
   <i class="bi bi-heart" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"></i> 
 </a>
-{% endif %}
+{% endif %} {% endcomment %}
+
+<div>
+  <form class='like-forms' data-song-id="{{ song.pk }}">
+    {% csrf_token %}
+    {% if request.user in song.like_users.all %}
+      <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+        id='like-btn-{{ song.pk }}'>
+        <i class="bi bi-heart-fill" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"></i> 
+      </button>
+    {% else %}
+      <button type="submit" class="d-flex text-center" style="border: 0px; background: transparent;"
+        id='like-btn-{{ song.pk }}'>
+        <i class="bi bi-heart" id='heart-{{ song.pk }}' style="color: red; font-size: 1.5rem;" name="heart"></i> 
+      </button>
+    {% endif %}
+  </form>
+</div>
 
 
 {% comment %} <div>
