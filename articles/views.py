@@ -103,7 +103,7 @@ def create(request):
             )
             return redirect("articles:index")
         else:
-            return redirect("articles:create")
+            return render(request, "articles/create.html")
     return render(request, "articles/create.html")
 
 
