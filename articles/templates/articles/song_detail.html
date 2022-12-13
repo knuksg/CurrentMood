@@ -119,7 +119,7 @@
   {% endcomment %}
 
 
-{% comment %} 
+  /* 
   var rgb = getAverageRGB(document.querySelector('#getColor'));
   console.log(rgb);
 
@@ -161,9 +161,10 @@
     try {
         data = context.getImageData(0, 0, width, height);
     } catch(e) {
-        /* security error, img on diff domain */alert('x');
+        // security error, img on diff domain
+        alert('x');
         return defaultRGB;
-    }
+    } 
     
     length = data.data.length;
     
@@ -179,8 +180,8 @@
     rgb.g = ~~(rgb.g/count);
     rgb.b = ~~(rgb.b/count);
     
-    return rgb; {% endcomment %}
-  }
+    return rgb;
+  } */
 </script>
 
 <script>
