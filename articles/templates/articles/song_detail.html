@@ -8,10 +8,10 @@
 
 <div class="songDetail__container d-flex flex-column align-items-center"> 
   <div class="card mt-5">
-    <div class="card--image">
-      <img src="{% static 'image/bbibbi.jpg' %}" alt="" id="getColor">
+    <div class="card--image card--div">
+      {% comment %} <img src="{% static 'image/bbibbi.jpg' %}" alt="" id="getColor"> {% endcomment %}
       {% comment %} <p class="card--image--url d-none">{{ song.vidid }}</p> {% endcomment %}
-      {% comment %} <img src="https://i.ytimg.com/vi/{{ song.vidid }}/maxresdefault.jpg" alt="" id="getColor"> {% endcomment %}
+      <img src="https://i.ytimg.com/vi/{{ song.vidid }}/maxresdefault.jpg" alt="" id="getColor">
     </div>
 
     <div class="card--info info--1" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-custom-class="custom-tooltip" title="{{ song.title }}">
@@ -103,6 +103,7 @@
 {% endblock body %}
 
 {% block script %}
+
 <script>
 
   {% comment %} 
@@ -117,6 +118,8 @@
   cardImageUrl.after(newImg); 
   {% endcomment %}
 
+
+{% comment %} 
   var rgb = getAverageRGB(document.querySelector('#getColor'));
   console.log(rgb);
 
@@ -124,17 +127,17 @@
   wrap.classList.add("style");
   wrap.style.backgroundColor = 'rgb('+rgb.r+','+rgb.g+','+rgb.b+')';
 
-  function getAverageRGB(imgEl) {
+  function getAverageRGB(imgEl){
 
-    // let cardImageUrl = document.querySelector('.card--image--url');
-    // let newImgAddress = "https://i.ytimg.com/vi/" + cardImageUrl.innerText + "/maxresdefault.jpg";
-    // let newImg = new Image();
+    let cardImageUrl = document.querySelector('.card--image--url');
+    let newImgAddress = "https://i.ytimg.com/vi/" + cardImageUrl.innerText + "/maxresdefault.jpg";
+    let newImg = new Image();
     
-    // newImg.crossorigin = "anonymous";
-    // newImg.src = newImgAddress;
-    // newImg.id = "getColor";
+    newImg.crossOrigin = "anonymous";
+    newImg.src = newImgAddress;
+    newImg.id = "getColor";
 
-    // cardImageUrl.after(newImg);
+    cardImageUrl.after(newImg);
 
     var blockSize = 5, // only visit every 5 pixels
         defaultRGB = {r:0,g:0,b:0}, // for non-supporting envs
@@ -176,7 +179,7 @@
     rgb.g = ~~(rgb.g/count);
     rgb.b = ~~(rgb.b/count);
     
-    return rgb;
+    return rgb; {% endcomment %}
   }
 </script>
 
@@ -186,10 +189,10 @@
   const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
 </script>
 
-</script>
-<!-- 좋아요 비동기 -->
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
 <script>
+  <!-- 좋아요 비동기 -->
   const forms = document.querySelectorAll('.like-forms')
   const songlikecsrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
 
