@@ -146,7 +146,6 @@
       const searchItem = e.target.closest('div.search-item')
       const profileMusic = document.querySelector("#profile_music")
       profileMusic.innerHTML = ''
-      profileMusic.append(searchItem)
       console.log('넘겼어');
       // 폼에 담아서 뷰로 넘겨주기
       const profileMusicId = searchItem.id
@@ -179,7 +178,7 @@
       searchList.innerHTML = ''
       const searchForm = document.querySelector("#search-form")
       searchForm.reset()
-      // window.location.reload()
+      window.location.reload()
     }
   })
 </script>
