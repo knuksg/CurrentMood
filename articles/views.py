@@ -20,7 +20,7 @@ import json
 # Create your views here.
 def private(request):
     if request.method == "POST":
-        place = request.POST.get('place-to-view-input', '')
+        place = request.POST.get("place-to-view-input", "")
         comment_form = CommentForm()
 
         song_queryset = (
@@ -36,7 +36,9 @@ def private(request):
         # 해당 위치 작성 글 가져오기
         articles = Article.objects.filter(place__icontains=place).order_by("-pk")
         if articles:
-            top_article = Article.objects.filter(place__icontains=place).order_by("-pk")[0]
+            top_article = Article.objects.filter(place__icontains=place).order_by(
+                "-pk"
+            )[0]
         else:
             top_article = ""
 
@@ -48,7 +50,7 @@ def private(request):
             "place": place,
         }
         return render(request, "articles/private.html", context)
-    place = request.COOKIES.get('key') or "서울"
+    place = request.COOKIES.get("key") or "서울"
     print(place)
     comment_form = CommentForm()
     song_queryset = (
@@ -217,27 +219,11 @@ def location_get(request):
     }
     return render(request, "articles/locations.html", context)
 
-
-def clicked_location(request):
-    return redirect("articles:location_test")
-
-
-def location_test(request):
-    clicked_location = request.POST.get("clicked")
-    user_position = " ".join(
-        Place.objects.order_by("-id").values()[0]["name"].split(" ")[3:5]
-    )
-    context = {
-        "user_position": user_position,
-        "clicked": clicked_location,
-    }
-
     # 마커, 현재위치버튼
 
     # DB 가져올 수 있게 저장하기
     # 현재위치 요청에서 가져오기
     # 초기화면 로드 오류 fix
-    return render(request, "articles/locationInputTest.html", context)
 
 
 def public(request):
