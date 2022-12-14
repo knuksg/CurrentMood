@@ -100,7 +100,7 @@
       <a href="{% url 'articles:detail' article.pk %}" class="box__menu">
         <li class="article_list"><img class="box-img" src="{{ article.song.hqdefault }}"></li>
         <li class="box__menu--song">{{ article.song }}</li>  
-        <li style="width: 70%">{{ article.place }}</li>  
+        <li class="box__menu--song" style="width: 50%">{{ article.place }}</li>  
       </a>
       <li class="position-absolute" style="top: 50%; right: 15px; transform: translate(0%, -50%)">
         <a href="{% url 'articles:update' article.pk %}"><i id="comment-update" class="fa-solid fa-pen d-none"></i></a>
