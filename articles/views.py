@@ -81,8 +81,8 @@ def private(request):
 
 
 def index(request):
-    if request.method == 'POST':
-        kw = request.POST.get('kw', '')
+    if request.method == "POST":
+        kw = request.POST.get("kw", "")
         song_queryset = (
             Article.objects.filter(place__icontains=kw)
             .values("song")
@@ -99,17 +99,19 @@ def index(request):
         article_list = []
         for article in articles:
             article_dict = {}
-            article_dict['pk'] = article.pk
-            article_dict['user'] = article.user.username
+            article_dict["pk"] = article.pk
+            article_dict["user"] = article.user.username
             try:
-                article_dict['user_img'] = article.user.user_img.url
+                article_dict["user_img"] = article.user.user_img.url
             except:
-                article_dict['user_img'] = "https://e7.pngegg.com/pngimages/1000/665/png-clipart-computer-icons-profile-s-free-angle-sphere.png"
-            article_dict['content'] = article.content
-            article_dict['song_vidid'] = article.song.vidid
-            article_dict['song_title'] = article.song.title
-            article_dict['song_channel'] = article.song.channel
-            article_dict['img'] = article.song.hqdefault
+                article_dict[
+                    "user_img"
+                ] = "https://e7.pngegg.com/pngimages/1000/665/png-clipart-computer-icons-profile-s-free-angle-sphere.png"
+            article_dict["content"] = article.content
+            article_dict["song_vidid"] = article.song.vidid
+            article_dict["song_title"] = article.song.title
+            article_dict["song_channel"] = article.song.channel
+            article_dict["img"] = article.song.hqdefault
             article_list.append(article_dict)
         data = {
             "article_list": article_list,
@@ -119,7 +121,7 @@ def index(request):
     return render(request, "articles/index.html")
 
 
-@login_required
+# @login_required
 def create(request):
     if request.method == "POST":
         place = request.POST.get("place", "")
@@ -215,14 +217,12 @@ def update(request, pk):
 
 
 def location_get(request):
-    print(request.POST.get("userLocation"))
     # 위치 정보 가져오기 : google geolocation api 요청
     user_location = request.POST.get("userLocation")
-    marker_location = request.POST.get("markerLocation")
     if request.method == "POST":
         user_coords = user_location.split(",")
         user_loc = parsing_geocoded(user_coords[0], user_coords[1])["loc"]
-        user_place = Place.objects.create(name=" ".join(user_loc[0].split(" ")[3:5]))
+        # user_place = Place.objects.create(name=" ".join(user_loc[0].split(" ")[3:5]))
     else:
         user_position = "somewhere"
     user_position = Place.objects.order_by("-id").values()[0]["name"]
