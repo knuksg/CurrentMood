@@ -4,9 +4,9 @@
 {% block style %}
 <link rel="stylesheet" href="{% static 'css/articles.css' %}">
 {% endblock %}
-{% block body %}
 
-<div class="songDetail__container d-flex flex-column align-items-center"> 
+{% block body %}
+<di class="songDetail__container d-flex flex-column align-items-center"> 
   <div class="card mt-5">
     <div class="card--image card--div">
       {% comment %} <img src="{% static 'image/bbibbi.jpg' %}" alt="" id="getColor"> {% endcomment %}
@@ -16,7 +16,6 @@
         <input id="{{ song.vidid }}" class="vidid" type="hidden">
         <input id="{{ song.title }}" class="title" type="hidden">
         <input id="{{ song.channel }}" class="channel" type="hidden">
-        <p>123</p>
       </div>
     </div>
 
@@ -65,28 +64,26 @@
     </a>
   </div>
 
-  <div>
-    <h6 class="position-absolute start-0 border-bottom pb-2 ps-2" style="width: 100%;">작성된 글</h6>
+  <div class="">
+    <h6 class="start-0 border-bottom pb-2 ps-2" style="width: 90vw;">작성된 글</h6>
   </div>
 
   {% comment %} 사연 {% endcomment %}
   {% if articles %}
-  <div class="article_cards-list mt-5 row-cols-3">
+  <div class="mt-3 ms-3" style="width: 90vw;">
     {% for article in articles %}
-      <div class="article_card mt-5 mx-1">
-        <div class="article_card_image">
-          {% if article.user.user_img %}
-          <img src="{{ article.user.user_img.url }}">
-          {% else %}
-          <img src="{{ article.song.hqdefault }}" alt="">
-          {% endif %}
-        </div>
-        <a href="{% url 'articles:detail' article.pk %}">
-          <div class="article_card_title title-white pt-3">
-            <p class="text-truncate">{{ article.content }}</p>
-          </div>
-        </a>
-      </div>
+    <div>
+      {% if article.user.user_img %}
+        <img class="rounded-circle" src="{{ article.user.user_img.url }}" style="width:30px; height: 30px;">
+        <span class="fw-bolder">{{ article.user }}</span>
+        <span class="fw-lighter">{{ article.content }}</span>
+      {% else %}
+        <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:50px; height: 50px;">
+        <span class="fw-bolder">{{ article.user }}</span>
+        <span class="fw-lighter">{{ article.content }}</span>
+      {% endif %}
+        <hr>
+    </div>
     {% endfor %}
   </div>
   {% else %}
@@ -118,7 +115,6 @@
     {% endif %}
   </form>
 </div> 
-
 {% endblock body %}
 
 {% block script %}
