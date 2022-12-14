@@ -35,10 +35,10 @@
     </div>
   </div>
 
-  <div style="height: 10vh;"></div>
+  <div style="height: 3vh;"></div>
 
   {% comment %} 캐러셀1 {% endcomment %}
-  <h2 class="ms-3 mb-2">추천 곡</h2>
+  <h6 class="m-2 mb-0">현재 장소의 음악 <i class="fa fa-angle-right"></i></h6>
   <div class="private-carousel text-center">
     <div class="mainSlide">
       {% for song in song_list %}
@@ -54,16 +54,18 @@
     </div>
   </div>
 
-  <div style="height: 10vh;"></div>
+  <div style="height: 3vh;"></div>
   
   <!-- 댓글창 : 클릭 후 열린 창 -->
+  
   <div id="mySidenav" class="sidenav border-top">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <div class="sidenav__comment ms-3 mt-4">
-      <h5>추천 글</h5>
-    </div>
+    {% comment %} <div class="sidenav__comment ms-3 mt-4">
+      <h6>현재 장소의 커런트무드 <i class="fa fa-angle-right"></i></h6>
+    </div> {% endcomment %}
 
-    <hr>
+  <br>
+  <br>
 
     {% for article in articles %}
     <div class="row d-flex justify-content-between">         
@@ -114,8 +116,11 @@
       </lord-icon>
     </a>
   </div>
-
+    
+  <h6 class="m-2 mb-0">현재 장소의 커런트무드 <i class="fa fa-angle-right"></i></h6>
+    
   <hr>
+  
 
   <!-- 댓글창 : 클릭 전 -->
   <div onclick="openNav()">
