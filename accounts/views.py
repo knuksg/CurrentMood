@@ -255,7 +255,7 @@ def mylist(request):
     context = {
         "user": user,
     }
-    return render(request, "accounts/mylist.html", context)
+    return render(request, "accounts/mypage.html", context)
 
 
 @login_required
