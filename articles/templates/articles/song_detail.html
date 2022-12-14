@@ -50,9 +50,8 @@
     </form>
   </div>
 
-
   {% comment %} 글 작성 버튼 {% endcomment %}
-  <div class="private-player--write position-absolute end-0 me-2">
+  <div class="private-player--write position-absolute">
     <a href="{% url 'articles:create' %}">
       <lord-icon
           src="https://cdn.lordicon.com/wloilxuq.json"
@@ -70,17 +69,37 @@
 
   {% comment %} 사연 {% endcomment %}
   {% if articles %}
-  <div class="mt-3 ms-3" style="width: 90vw;">
+  <div class="mt-2 ms-3" style="width: 90vw;">
     {% for article in articles %}
     <div>
       {% if article.user.user_img %}
-        <img class="rounded-circle" src="{{ article.user.user_img.url }}" style="width:30px; height: 30px;">
-        <span class="fw-bolder">{{ article.user }}</span>
-        <span class="fw-lighter">{{ article.content }}</span>
+        <div class="row">
+          <div class="col-5">
+            <a href="{% url 'accounts:detail' article.user.pk %}">
+              <img class="rounded-circle" src="{{ article.user.user_img.url }}" style="width:30px; height: 30px;">
+              <span class="fw-bolder ms-2">{{ article.user }}</span>
+            </a>
+          </div>
+          <div class="col-7 d-flex justify-content-center align-items-center " style="width: 50%;">
+            <a href="{% url 'articles:detail' article.pk %}" class="text-truncate">
+              <span class="fw-lighter">{{ article.content }}</span>
+            </a>
+          </div>
+        </div>
       {% else %}
-        <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:50px; height: 50px;">
-        <span class="fw-bolder">{{ article.user }}</span>
-        <span class="fw-lighter">{{ article.content }}</span>
+      <div class="row">
+        <div class="col-5 d-flex flex-column justify-content-center align-items-center">
+          <a href="{% url 'accounts:detail' article.user.pk %}">
+            <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:30px; height: 30px;">
+            <span class="fw-bolder ms-2">{{ article.user }}</span>
+          </a>
+        </div>
+        <div class="col-7 d-flex justify-content-center align-items-center" style="width: 50%;">
+          <a href="{% url 'articles:detail' article.pk %}" class="text-truncate">
+            <span class="fw-lighter" style="width: 50vw;">{{ article.content }}</span>
+          </a>          
+        </div>
+      </div>
       {% endif %}
         <hr>
     </div>
