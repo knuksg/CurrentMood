@@ -48,7 +48,7 @@ def private(request):
             "place": place,
         }
         return render(request, "articles/private.html", context)
-    place = request.COOKIES.get('key')
+    place = request.COOKIES.get('key') or "서울"
     print(place)
     comment_form = CommentForm()
     song_queryset = (
