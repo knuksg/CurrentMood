@@ -235,7 +235,7 @@
 .user-info {
 	text-align: start;
 	padding-bottom: 3vw;
-	font-size: 2rem;
+	font-size: 1.8rem;
 }
 .user-info__follow {
 	display: flex;
@@ -308,7 +308,7 @@
 	text-align: end;
 }
 .followbtn {
-	font-size: 2vw;
+	font-size: 1.5vw;
 	border-radius: 10px;
 	background-color: #75037F;
 	color: var(--text-color);
@@ -463,7 +463,7 @@ ul {
 }
 
 /* 반응형 */
-@media screen and (max-width: 970px) {
+@media screen and (max-width: 1200px) {
 	/* mypage */
 	.userprofile {
 		grid-template-rows: 150px;
