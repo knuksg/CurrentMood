@@ -28,4 +28,4 @@ var csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
     console.warn(`ERROR(${err.code}): ${err.message}`);
   }
   // 위치 DB 지속적으로 보내주기
-navigator.geolocation.watchPosition(success,error,options)
+// navigator.geolocation.watchPosition(success,error,options)
