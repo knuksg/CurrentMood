@@ -284,7 +284,7 @@
   width: 80vw;
   height: 60vh;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.014), 0 6.7px 5.3px rgba(0, 0, 0, 0.02), 0 12.5px 10px rgba(0, 0, 0, 0.025), 0 22.3px 17.9px rgba(0, 0, 0, 0.03), 0 41.8px 33.4px rgba(0, 0, 0, 0.036), 0 100px 80px rgba(0, 0, 0, 0.05);
-  background-color: black;
+  background-color:  rgb(20, 20, 20);
 }
 
 .card--image {
@@ -562,19 +562,23 @@
   box-shadow: 2px 2px 5px 3px rgba(0, 0, 0, 0.25), -2px -2px 15px 3px rgba(0, 0, 0, 0.22);
   cursor: pointer;
   transition: 0.4s;
+
 }
 
 .article_card .article_card_image {
-  width: inherit;
-  height: inherit;
+  width: 100%;
+  height: 100%;
   border-radius: 40px;
+  border: solid 4px antiquewhite;
+  overflow: hidden;
 }
 
-.article_card .article_card_image img {
-  width: inherit;
-  height: inherit;
+.article_card_image img {
+  width: 101%;
+  height: 101%;
   border-radius: 40px;
-  object-fit: cover;
+  object-fit: cover; 
+  filter: brightness(50%);
 }
 
 .article_card .article_card_title {
