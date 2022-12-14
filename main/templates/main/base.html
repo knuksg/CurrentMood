@@ -81,6 +81,7 @@
           {% if request.user.is_authenticated %}
           <li><a href="{% url 'accounts:mypage' %}"><i class="fa-solid fa-user"></i> 내 정보</a></li>
           <li><a href="{% url 'accounts:playlist' %}"><i class="bi bi-music-note-list"></i> 플레이리스트</a></li>
+          <li><a href="{% url 'articles:index' %}"><i class="bi bi-music-note-list"></i> 위치로 검색</a></li>
           <li class="navbar-logout"><a href="{% url 'accounts:logout' %}">로그아웃</a></li>
           {% else %}
           <li><a href="{% url 'accounts:login' %}">로그인</a></li>
