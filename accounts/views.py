@@ -18,13 +18,16 @@ from django.http import JsonResponse
 
 def index(request):
 
-    users = User.objects.all()
+    if request.user.is_superuser:
+        users = User.objects.all()
 
-    context = {
-        "users": users,
-    }
+        context = {
+            "users": users,
+        }
 
-    return render(request, "accounts/index.html", context)
+        return render(request, "accounts/index.html", context)
+    else:
+        return redirect("articles:private")
 
 
 def signup(request):
