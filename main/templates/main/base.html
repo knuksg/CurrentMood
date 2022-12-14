@@ -24,7 +24,7 @@
     <script defer="defer" src="{% static 'js/script.js' %}"></script>
     <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
     <script type="module" src="{% static 'js/location.js' %}?128"></script>
-    {% comment %} <script type="module" src="{% static 'js/gps.js' %}?10"></script> {% endcomment %}
+    <script type="module" src="{% static 'js/gps.js' %}?10"></script>
     <script type="text/javascript"></script>
     <!-- <script type="module" src='/static/js/location.js'></script> -->
     <!-- favicon 임시 -->
@@ -37,6 +37,10 @@
   </head>
   
   <body>
+    <form action="">
+      {% csrf_token %}
+      <input type="hidden">
+    </form>
     <!-- nav -->
     <header>
       <nav class="navbar bg-dark">
