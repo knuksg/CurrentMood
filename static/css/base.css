@@ -16,7 +16,7 @@ body {
   color: white;
 }
 .accounts {
-  padding: 20px 20vw 15vw 20vw;
+  padding: 70px 20vw 15vw 20vw;
 }
 #wrap {
   min-height: 100vh;
@@ -55,8 +55,10 @@ i.bi-heart-fill {
   cursor: pointer;
 }
 
-
 .navbar {
+  position: fixed;
+  z-index: 8;
+  width: 100%;
   display: flex;
   justify-content: space-around;
   align-items: center;
@@ -131,7 +133,7 @@ footer {
 /* 반응형 */
 @media screen and (max-width: 1200px) {
   .accounts {
-    padding: 20px 0 13vw 0;
+    padding: 70px 0 13vw 0;
   }
   .navbar {
     flex-direction: column;
