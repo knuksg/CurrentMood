@@ -19,8 +19,8 @@ def parsing_geocoded(lat, lng):
         for j, k in geocoded_locations.items():
             if j == "formatted_address":
                 # print("".join(k.split(",")[0:2]))
-                loc.append("".join(k.split(",")[0:2]))
+                loc.append(k)
     return {
-        "loc": loc,
+        "loc": loc[0],
         "geocoded": geocoded,
     }
