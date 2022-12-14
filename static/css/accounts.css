@@ -248,7 +248,7 @@
 	display: flex;
 	padding: 1em 0;
 	justify-content: space-evenly;
-	font-size: 3vw;
+	font-size: 2vw;
 }
 .form_radio_btn input[type=radio] {
   display: none;
@@ -269,7 +269,7 @@
 	list-style: none;
 	margin: 8px 0px;
 	border-radius: 5px;
-	font-size: 1.5rem;
+	font-size: 1rem;
 	padding: 0.5vw 0px;	
 	transition-duration: 0.3s;
 }
@@ -315,6 +315,10 @@
 	color: var(--text-color);
 	padding: 5px 8px;
 	border: 0;
+}
+.like_song img {
+	width: 10vw;
+	border-radius: 0.7vw;
 }
 /* 프로필뮤직*/
 .container {
@@ -404,18 +408,6 @@ h5 {
 	overflow: hidden;
 	text-overflow: ellipsis;
 }
-/* #search-form {
-	position: relative;
-	display: flex;
-	align-items: center;
-} */
-/* #search-form i {
-	position: absolute;
-	right: 6%;
-	top: 11%;
-	z-index: 8;
-	color: #2f2e2f;
-} */
 ::placeholder {
 	text-align: center;
 }

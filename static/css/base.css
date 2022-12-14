@@ -15,7 +15,9 @@ body {
   background-color: rgb(20, 20, 20);
   color: white;
 }
-
+.accounts {
+  padding: 20px 20vw 15vw 20vw;
+}
 #wrap {
   min-height: 100vh;
   position: relative;
@@ -58,7 +60,7 @@ i.bi-heart-fill {
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 16px 12px;
+  padding: 10px 12px;
   background-color: var(--bg-color);
 }
 
@@ -101,7 +103,7 @@ i.bi-heart-fill {
   letter-spacing: 3px;
   font-weight: bold;
   font-size: 14px;
-  padding: 8px 12px;
+  padding: 5px 12px;
 }
 
 .navbar__links i {
@@ -128,17 +130,18 @@ footer {
 }
 
 /* 반응형 */
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1200px) {
+  .accounts {
+    padding: 20px 0 13vw 0;
+  }
   .navbar {
     flex-direction: column;
     align-items: flex-start;
-    padding: 8px 12px;
+    padding: 5px 12px;
   }
-
   .navbar__logo {
     display: none;
   }
-
   .navbar__top {
     display: flex;
     justify-content: space-between;
