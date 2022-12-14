@@ -143,35 +143,6 @@
   {% endif %}
 </div>
 
-{% comment %} <div class='d-flex'>
-  <div>
-    {% if user.user_img %}
-    <img class="rounded-circle" src="{{ user.user_img.url }}" alt="" style="width:100px;">
-    {% else %}
-    <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:100px;">
-    {% endif %}
-  </div>
-  <div>
-    <h1 class="fw-bold mt-3">
-      {{ user.username }}님의개인정보
-      <span class='fs-5'>
-        {% if request.user.pk != user.pk%}
-          <a href="{% url 'accounts:follow' user.pk %}">
-          {% if request.user in user.followers.all %}
-            <button class='btn btn-primary'>팔로우 취소</button>
-          {% else %}
-            <button class='btn btn-outline-primary'>팔로우</button>
-          {% endif %}
-          </a>
-        {% endif %}
-      </span>
-    </h1>
-    <div>
-      <p><a href="{% url 'accounts:my_followlist' %}">팔로우</a> : {{ user.followings.count }} | <a href="{% url 'accounts:my_followerlist' %}">팔로워</a> : {{ user.followers.count }}</p>
-    </div>
-  </div>
-</div> {% endcomment %}
-
 <script>
   const commentUpdateBtn = document.querySelector('#comment-update-btn')
   commentUpdateBtn.addEventListener('click', function(e) {

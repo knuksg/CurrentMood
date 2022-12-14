@@ -319,6 +319,10 @@
 	width: 10vw;
 	border-radius: 0.7vw;
 }
+.article_list img {
+	width: 7vw;
+	border-radius: 0.5vw;
+}
 /* 프로필뮤직*/
 .container {
 	width: 40vw;
