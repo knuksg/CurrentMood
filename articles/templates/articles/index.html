@@ -1,96 +1,52 @@
 {% extends 'main/base.html' %}
 {% load static %}
-
 {% block body %}
-<div class="container">
-  <h1>현재 위치 기반 공유된 글들 - 임시(서울) - 지역 수정 뷰에서 가능</h1>
-  <!-- 사연 수 기준 1위 곡 -->
-  <div class="my-3">
-    {% if song_list %}
-    <div id="{{ song_list.0.vidid }}" class="article-music">
-      <div class="position-relative d-flex justify-content-center align-items-center">
-        <img src="{{ song_list.0.hqdefault }}" alt="">
-        <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
-      </div>
-      <div>
-        {{ song_list.0.title }} - {{ song_list.0.channel }}
-      </div>
-    </div>
-    {% else %}
-    <p>공유된 글이 없습니다.</p>
-    {% endif %}
+<div class="container d-flex flex-column justify-content-center align-items-center">
+  <h3 class="my-3">장소로 검색하기</h3>
+  <form id="index-search-form">
+    {% csrf_token %}
+    <input id="input" name="input" type="text">
+  </form>
+  <div id="article-list">
   </div>
-  <!-- 캐러셀형 보기 -->
-  <div>
-    {% if carousel_list %}
-    <div id="carouselId" class="carousel slide" data-bs-ride="carousel">
-      <ol class="carousel-indicators">
-        <li data-bs-target="#carouselId" data-bs-slide-to="0" class="active" aria-current="true" aria-label="First slide"></li>
-        {% for carousel in carousel_list %}
-        <li data-bs-target="#carouselId" data-bs-slide-to="{{ forloop.counter }}" aria-label="Second slide"></li>
-        {% endfor %}
-      </ol>
-      <div class="carousel-inner" role="listbox">
-        <div class="carousel-item active">
-          <div id="{{ song_list.0.vidid }}" class="article-music">
-            <div class="position-relative">
-              <img src="{{ song_list.0.hqdefault }}" class="w-100 d-block" alt="">
-              <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
-            </div>
-            <div class="d-none">
-              {{ song_list.0.title }} - {{ song_list.0.channel }}
-            </div>
-          </div>
-        </div>
-        {% for carousel in carousel_list %}
-        <div class="carousel-item">
-          <div id="{{ carousel.vidid }}" class="article-music">
-            <div class="position-relative">
-              <img src="{{ carousel.hqdefault }}" class="w-100 d-block" alt="">
-              <i class="bi bi-play-circle position-absolute" style="top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 100px;"></i>
-            </div>
-            <div class="d-none">
-              {{ carousel.title }} - {{ carousel.channel }}
-            </div>
-          </div>
-        </div>
-  
-  
-        {% endfor %}
-      </div>
-      <button class="carousel-control-prev" type="button" data-bs-target="#carouselId" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Previous</span>
-      </button>
-      <button class="carousel-control-next" type="button" data-bs-target="#carouselId" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-    {% endif %}
-  </div>
-  <!-- 리스트형 보기 -->
-  
-  <!-- 가장 최근 댓글 -->
-  <div class="my-3">
-    {% if articles %}
-    <div class="d-flex gap-3">
-      <div class="d-flex flex-column justify-content-center align-content-center">
-        {% if articles.0.user.user_img %}
-        <img class="rounded-circle" src="{{ articles.0.user.user_img }}" style="width:50px;">
-        {% else %}
-        <img class="rounded-circle" src="{% static 'image/profile.jpg' %}" style="width:50px;">
-        {% endif %}
-        <p>{{ articles.0.user }}</p>
-      </div>
-      <div class="text-truncate">
-        <p>{{ articles.0.title }}</p>
-        <p>{{ articles.0.content }}</p>
-      </div>
-    </div>
-    {% endif %}
-  </div>
-  <a href="{% url 'articles:create' %}" class="text-white text-decoration-none"><button class="btn btn-primary">사연 작성</button></a>
 </div>
+<script>
+  const indexSearchForm = document.querySelector('#index-search-form')
+  const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+  indexSearchForm.addEventListener('submit', function(e) {
+    e.preventDefault()
 
+    const form = new FormData()
+    form.append('kw', this.input.value)
+
+    axios.post('/index/', form, {
+      headers: {
+        'X-CSRFToken': csrftoken
+      }
+    })
+    .then((response) => {
+      const articleList = document.querySelector('#article-list')
+      articleList.innerHTML = ''
+      const articles = response.data.article_list
+      articles.forEach((article) => {
+        console.log(article)
+        articleList.innerHTML += `
+        <a href="/${article.pk}/">
+          <div class="d-flex gap-3 my-3">
+            <div>
+              <img src="${article.user_img}" style="width: 50px; height: 50px; border-radius: 50%;" alt="">
+              <p>${article.user}</p>
+            </div>
+            <div>
+              <p class="m-0" style="width:280px; overflow: hidden; white-space:nowrap; text-overflow: ellipsis;">${article.song_title}</p>
+              <p class="m-0 opacity-75" style="width:280px; overflow: hidden; white-space:nowrap; text-overflow: ellipsis;">${article.song_channel}</p>
+              <p class="m-0" style="width:280px; overflow: hidden; white-space:nowrap; text-overflow: ellipsis;">${article.content}</p>
+            </div>
+          </div>
+             </a>
+        `
+      })
+    })
+  })
+</script>
 {% endblock body %}
