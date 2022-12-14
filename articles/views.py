@@ -79,26 +79,42 @@ def private(request):
 
 
 def index(request):
-    # 현재위치 가져오기 : 동 단위
-    # user_position = Place.objects.order_by("-id").values()[0]["name"].split(" ")
-    song_queryset = (
-        Article.objects.filter(place__icontains="서울")
-        .values("song")
-        .annotate(Count("id"))
-        .order_by("-id__count")
-    )
-    song_list = []
-    for song_id in song_queryset:
-        song = Song.objects.get(id=song_id["song"])
-        song_list.append(song)
-    carousel_list = song_list[1:]
-    articles = Article.objects.filter(place__icontains="서울").order_by("-pk")
-    context = {
-        "articles": articles,
-        "song_list": song_list,
-        "carousel_list": carousel_list,
-    }
-    return render(request, "articles/index.html", context)
+    if request.method == 'POST':
+        kw = request.POST.get('kw', '')
+        song_queryset = (
+            Article.objects.filter(place__icontains=kw)
+            .values("song")
+            .annotate(Count("id"))
+            .order_by("-id__count")
+        )
+        song_list = []
+        for song_id in song_queryset:
+            song = Song.objects.get(id=song_id["song"])
+            song_list.append(song)
+        print(song_list)
+
+        articles = Article.objects.filter(place__icontains=kw).order_by("-pk")
+        article_list = []
+        for article in articles:
+            article_dict = {}
+            article_dict['pk'] = article.pk
+            article_dict['user'] = article.user.username
+            try:
+                article_dict['user_img'] = article.user.user_img.url
+            except:
+                article_dict['user_img'] = "https://e7.pngegg.com/pngimages/1000/665/png-clipart-computer-icons-profile-s-free-angle-sphere.png"
+            article_dict['content'] = article.content
+            article_dict['song_vidid'] = article.song.vidid
+            article_dict['song_title'] = article.song.title
+            article_dict['song_channel'] = article.song.channel
+            article_dict['img'] = article.song.hqdefault
+            article_list.append(article_dict)
+        data = {
+            "article_list": article_list,
+            # "song_list": song_list,
+        }
+        return JsonResponse(data)
+    return render(request, "articles/index.html")
 
 
 @login_required
