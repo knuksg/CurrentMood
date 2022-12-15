@@ -266,8 +266,8 @@
 
 /* articles:song_detail */
 .songDetail__container {
-  width: 100vw;
-  height: 100vh;
+  width: 100%;
+  height: 100%;
   margin: 0 auto;
 }
 
@@ -281,10 +281,14 @@
 
 .card {
   position: relative;
-  width: 90vw;
-
+  width: 70vw;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.014), 0 6.7px 5.3px rgba(0, 0, 0, 0.02), 0 12.5px 10px rgba(0, 0, 0, 0.025), 0 22.3px 17.9px rgba(0, 0, 0, 0.03), 0 41.8px 33.4px rgba(0, 0, 0, 0.036), 0 100px 80px rgba(0, 0, 0, 0.05);
   background-color:  rgb(20, 20, 20);
+}
+@media screen and (max-width: 1000px) {
+  .card {
+    width: 90vw;
+  }
 }
 
 .card--image {
