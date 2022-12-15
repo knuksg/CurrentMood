@@ -56,39 +56,48 @@
     </div>
   </div> {% endcomment %}
 
+  {% if top_song %}
 
-  <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
-    <div class="carousel-indicators">
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-      <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-    </div>
-    <div class="carousel-inner">
-      {% comment %} 첫번째 음악 {% endcomment %}
-      <a href="{% url 'articles:song_detail' top_song.vidid %}">
-        <div class="carousel-item active">
-          <img src="{{ top_song.hqdefault }}" class="d-block w-100" alt="...">
-        </div>
-      </a>
-      {% comment %} 나머지 음악 {% endcomment %}
-      {% for song in song_list %}
-      <a href="{% url 'articles:song_detail' song.vidid %}">
-        <div class="carousel-item">
-          <img src="{{ song.hqdefault }}" class="d-block w-100" alt="...">
-        </div>
-      </a>
-      {% endfor %}
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true">
+      <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+      </div>
+      <div class="carousel-inner">
+        {% comment %} 첫번째 음악 {% endcomment %}
+        <a href="{% url 'articles:song_detail' top_song.vidid %}">
+          <div class="carousel-item active">
+            <img src="{{ top_song.hqdefault }}" class="d-block w-100" alt="...">
+          </div>
+        </a>
+        {% comment %} 나머지 음악 {% endcomment %}
+        {% for song in song_list %}
+        <a href="{% url 'articles:song_detail' song.vidid %}">
+          <div class="carousel-item">
+            <img src="{{ song.hqdefault }}" class="d-block w-100" alt="...">
+          </div>
+        </a>
+        {% endfor %}
+      </div>
+
+      <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
 
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
-  </div>
+  {% else %}
+
+    <div class="bg-dark pt-2 d-flex justify-content-center align-items-center" style="width: 100vw; height: 100px; margin-top: 70px;">
+      <p class="text-center m-0">첫 번째 글을 작성해 주세요.</p>
+    </div>
+
+  {% endif %}
 
   <div style="height: 3vh;"></div>
   

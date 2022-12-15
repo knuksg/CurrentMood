@@ -29,7 +29,10 @@ def private(request):
             .annotate(Count("id"))
         )
 
-        top_song = Song.objects.get(id=song_queryset[0]["song"])
+        if song_queryset:
+            top_song = Song.objects.get(id=song_queryset[0]["song"])
+        else:
+            top_song = ""
 
         song_list = []
         for song_id in song_queryset[1:]:
@@ -63,7 +66,10 @@ def private(request):
         .annotate(Count("id"))
     )
 
-    top_song = Song.objects.get(id=song_queryset[0]["song"])
+    if song_queryset:
+        top_song = Song.objects.get(id=song_queryset[0]["song"])
+    else:
+        top_song = ""
 
     song_list = []
     for song_id in song_queryset[1:]:
