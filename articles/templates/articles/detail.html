@@ -130,11 +130,13 @@
       console.log(response.data)
       // 댓글을 추가하는 로직
       const comments = document.querySelector('#comments')
-      const p = document.createElement('p')
-      p.innerText = `${response.data.username} | ${response.data.content}`
-      const hr = document.createElement('hr')
-      comments.append(p, hr) 
-      commentForm.reset()
+      comments.innerHTML = ''
+      window.location.reload()
+      //const p = document.createElement('p')
+      //p.innerText = `${response.data.username} | ${response.data.content}`
+      //const hr = document.createElement('hr')
+      //comments.append(p, hr) 
+      //commentForm.reset()
     })
   })
 </script>

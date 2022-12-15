@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block body %}
-<di class="songDetail__container d-flex flex-column align-items-center"> 
+<div class="songDetail__container d-flex flex-column align-items-center"> 
   <div class="card mt-5">
     <div class="card--image card--div">
       {% comment %} <img src="{% static 'image/bbibbi.jpg' %}" alt="" id="getColor"> {% endcomment %}
@@ -51,7 +51,7 @@
   </div>
 
   {% comment %} 글 작성 버튼 {% endcomment %}
-  <div class="private-player--write position-absolute">
+  <div class="private-player--write w-100 d-flex justify-content-end">
     <a href="{% url 'articles:create' %}">
       <lord-icon
           src="https://cdn.lordicon.com/wloilxuq.json"
@@ -114,7 +114,7 @@
   {% endif %}
 </div>
 
-<div>
+{% comment %} <div>
   <form class='like-forms' data-song-id="{{ song.pk }}">
     {% csrf_token %}
     {% if request.user in song.like_users.all %}
@@ -133,7 +133,7 @@
       </button>
     {% endif %}
   </form>
-</div> 
+</div>  {% endcomment %}
 {% endblock body %}
 
 {% block script %}
