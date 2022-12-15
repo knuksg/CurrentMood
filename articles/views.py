@@ -28,8 +28,11 @@ def private(request):
             .values("song")
             .annotate(Count("id"))
         )
+
+        top_song = Song.objects.get(id=song_queryset[0]["song"])
+
         song_list = []
-        for song_id in song_queryset:
+        for song_id in song_queryset[1:]:
             song = Song.objects.get(id=song_id["song"])
             song_list.append(song)
 
@@ -46,6 +49,7 @@ def private(request):
             "comment_form": comment_form,
             "top_article": top_article,
             "articles": articles,
+            "top_song": top_song,
             "song_list": song_list,
             "place": place,
         }
@@ -58,8 +62,11 @@ def private(request):
         .values("song")
         .annotate(Count("id"))
     )
+
+    top_song = Song.objects.get(id=song_queryset[0]["song"])
+
     song_list = []
-    for song_id in song_queryset:
+    for song_id in song_queryset[1:]:
         song = Song.objects.get(id=song_id["song"])
         song_list.append(song)
 
@@ -74,6 +81,7 @@ def private(request):
         "comment_form": comment_form,
         "top_article": top_article,
         "articles": articles,
+        "top_song": top_song,
         "song_list": song_list,
         "place": place,
     }
