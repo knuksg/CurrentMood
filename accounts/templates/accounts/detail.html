@@ -105,7 +105,7 @@
   {% for song in user.like_song.all %}
   <ul class="position-relative">
     <a href="{% url 'articles:song_detail' song.vidid %}" class="box__menu">
-      <li class="like_song"><img src="{{ song.hqdefault }}" style="width: 20vw;"></li>
+      <li class="like_song"><img src="{{ song.hqdefault }}"></li>
       <li class="box__menu--song">{{ song.title }}</li>  
     </a>
     <div class="position-absolute" style="top: 50%; right: 15px; transform: translate(0%, -50%)">

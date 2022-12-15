@@ -86,11 +86,11 @@
 
 <!-- 작성한 글 목록-->
 <div class="card-big-box" id="cab2" style="display: none;">
-  <div class="mylist-btn">
+  {% comment %} <div class="mylist-btn">
     <a href="#"><i id="comment-update-btn" class="fa-solid fa-pen"></i></a>
     |
     <a href="#"><i id="comment-delete-btn" class="bi bi-trash3-fill"></i></a>
-  </div>
+  </div> {% endcomment %}
   {% if user.article_set.all %}
     {% for article in user.article_set.all %}
     <ul class="position-relative">
@@ -117,9 +117,9 @@
 
 <!-- 좋아요한 곡 목록 비동기 -->
 <div class="card-big-box" id="cab3" style="display: none;">
-  <div class="mylist-btn">
+  {% comment %} <div class="mylist-btn">
     <a href="#"><i id="like-delete-btn" class="bi bi-trash3-fill"></i></a>
-  </div>
+  </div> {% endcomment %}
   {% if user.like_song.all %}
     {% for song in user.like_song.all %}
     <ul class="position-relative">
