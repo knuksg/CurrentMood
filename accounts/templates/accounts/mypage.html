@@ -120,18 +120,19 @@
   {% comment %} <div class="mylist-btn">
     <a href="#"><i id="like-delete-btn" class="bi bi-trash3-fill"></i></a>
   </div> {% endcomment %}
-  {% if user.like_song.all %}
-    {% for song in user.like_song.all %}
-    <ul class="position-relative">
-      <a href="{% url 'articles:song_detail' song.vidid %}" class="box__menu">
-        <li class="like_song"><img src="{{ song.hqdefault }}"></li>
-        <li class="box__menu--song">{{ song.title }}</li>  
-      </a>
-      <div class="position-absolute" style="top: 50%; right: 15px; transform: translate(0%, -50%)">
-        <a href="#"><i id="like-delete" class="bi bi-trash3-fill d-none"></i></a>
-      </div>
-    </ul>
-    {% endfor %}
+  {% if request.user.pk in song.like_users.all %}
+      <ul class="position-relative">
+        {% for songlike in songlike_list %}
+        <a href="{% url 'articles:song_detail' songlike.vidid %}" class="box__menu">
+          <li class="like_song"><img src="{{ songlike.hqdefault }}"></li>
+          <li class="box__menu--song">{{ songlike.title }}</li>  
+        </a>
+        {% endfor %}
+        <div class="position-absolute" style="top: 50%; right: 15px; transform: translate(0%, -50%)">
+          <a href="#"><i id="like-delete" class="bi bi-trash3-fill d-none"></i></a>
+        </div>
+      </ul>
+    
     {% comment %} {% if user.like_song.all > 5 %}
     <a href="{% url 'accounts:mylist' %}">더보기</a>
     {% endif %} {% endcomment %}

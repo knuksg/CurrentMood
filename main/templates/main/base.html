@@ -57,12 +57,12 @@
             <div class="d-flex gap-1">
               <img src="{% static 'image/location.png' %}" alt="" style="width: 20px; height: 20px; filter: invert(1);">
               <div style="width: 200px;">
-                <a id="base-place-1" style="cursor: pointer;" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                <a id="base-place-3" style="cursor: pointer;" data-bs-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
                   현재 위치 탐색 중
                 </a>
                 <div class="collapse" id="collapseExample">
                   <div id="base-place-2" class="my-1" style="cursor: pointer;" onclick="placeToView(this.innerText)">현재 위치 탐색 중</div>
-                  <div id="base-place-3" style="cursor: pointer;" onclick="placeToView(this.innerText)">현재 위치 탐색 중</div>
+                  <div id="base-place-1" style="cursor: pointer;" onclick="placeToView(this.innerText)">현재 위치 탐색 중</div>
                 </div>
               </div>
             </div>
@@ -158,9 +158,9 @@
         if (videoIDs) {
           console.log(videoIDs)
         } else {
-          window.sessionStorage.setItem('videoIDs', JSON.stringify(['is-rjsfoYtY']))
-          window.sessionStorage.setItem('videoTitles', JSON.stringify(["KARA (카라) 'WHEN I MOVE' Official MV"]))
-          window.sessionStorage.setItem('videoChannels', JSON.stringify(["KARA Official"]))
+          window.sessionStorage.setItem('videoIDs', JSON.stringify(['QrCVBua83Aw']))
+          window.sessionStorage.setItem('videoTitles', JSON.stringify(["HAPPY TOGETHER (HAPPY TOGETHER)"]))
+          window.sessionStorage.setItem('videoChannels', JSON.stringify(["Park Ji Heon - Topic"]))
         }
 
         // 플레이어 생성
@@ -663,8 +663,10 @@
           map = new google.maps.Map(document.getElementById("map"), {
             center: { lat: -34.397, lng: 150.644 },
             zoom: 16,
-            gestureHandling: "none",
-            zoomControl: false,
+            minZoom : 15,
+            maxZoom : 17,
+            gestureHandling: "greedy",
+            zoomControl: true,
             disableDefaultUI: true,
           });
           if (navigator.geolocation) {
