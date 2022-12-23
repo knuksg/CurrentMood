@@ -92,9 +92,19 @@ def detail(request, pk):
 @login_required
 def mypage(request):
     user = get_user_model().objects.get(pk=request.user.pk)
-    context = {
-        "user": user,
-    }
+    songs = Song.objects.all()
+    songlike_list = []
+    for song in songs:
+        songlike = song.like_users.all()
+        for l in songlike:
+            if l.pk == user:
+                songlike_list.append(song)
+        context = {
+            "user": user,
+            "song": songs,
+            "songlike_list": songlike_list,
+        }
+        
     return render(request, "accounts/mypage.html", context)
 
 
