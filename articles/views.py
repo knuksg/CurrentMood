@@ -135,7 +135,7 @@ def index(request):
     return render(request, "articles/index.html")
 
 
-# @login_required
+@login_required
 def create(request):
     if request.method == "POST":
         place = request.POST.get("place", "")
